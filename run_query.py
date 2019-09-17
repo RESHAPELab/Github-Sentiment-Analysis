@@ -1,11 +1,12 @@
-# An example to get the remaining rate limit using the Github GraphQL API.
+# Script that prints all comments left on pull requests in a repository into a .cvs file for analysis
 
 import requests
 
-headers = {"Authorization": "token 9ed12876c3de6a527ab64ed3897ef159711b9f72"}
+# REMOVE PERSONAL TOKEN BEFORE PUSHING TO REPO
+headers = {"Authorization": "INSERTPERSONALTOKENHERE"}
 
-
-def run_query(query): # A simple function to use requests.post to make the API call. Note the json= section.
+# Funtion that uses requests.post to make the API call
+def run_query(query):
     request = requests.post('https://api.github.com/graphql', json={'query': query}, headers=headers)
     if request.status_code == 200:
         return request.json()
@@ -13,53 +14,43 @@ def run_query(query): # A simple function to use requests.post to make the API c
         raise Exception("Query failed to run by returning code of {}. {}".format(request.status_code, query))
 
 
-# The GraphQL query (with a few aditional bits included) itself defined as a multi-line string.
+# The GraphQL query defined as a multi-line string with format
+# Needs: owner, repo name, and pull_number
 query = """
-query{
-  repository(owner: astropy, name: astropy) {
-    pullRequest: issueOrPullRequest(number:5) {
+query{{
+  repository(owner: {owner}, name: {name}) {{
+    pullRequest: issueOrPullRequest(number:{pull_number}) {{
       __typename
-      ... on PullRequest {
-        reviewThreads(first: 100) {
-          edges {
-            node {
-              comments(first: 10) {
-                nodes {
-                  pullRequestReview {
+      ... on PullRequest {{
+        reviewThreads(first: 100) {{
+          edges {{
+            node {{
+              comments(first: 10) {{
+                nodes {{
+                  pullRequestReview {{
                     id
-                  }
+                  }}
                   bodyText
                   viewerDidAuthor
                   authorAssociation
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-}
-"""
+                }}
+              }}
+            }}
+          }}
+        }}
+      }}
+    }}
+  }}
+}}
+""".format(owner="astropy", name="astropy", pull_number="5")
 
-result = run_query(query) # Execute the query
+# Executes the query
+result = run_query(query)
 
-outside_index = 0
-while True:
-    try:
+# Saves one comment and prints to console
+# TODO: save all comments to a .cvs file
+outside_index = 0;
+inside_index = 0;
 
-        inside_index = 0
-        while True:
-            try:
-                remaining_rate_limit = result["data"]["repository"]["pullRequest"]["reviewThreads"]["edges"][outside_index]["node"]["comments"]["nodes"][inside_index]["bodyText"] # Drill down the dictionary
-                print("Remaining rate limit - {}".format(remaining_rate_limit))
-                inside_index += 1
-            except IndexError:
-                print("do i reach 1")
-                break
-
-
-        outside_index += 1
-    except IndexError:
-        print("do i reach 2")
-        break
+comment = result["data"]["repository"]["pullRequest"]["reviewThreads"]["edges"][outside_index]["node"]["comments"]["nodes"][inside_index]["bodyText"] # Drill down the dictionary
+print("{} \n".format(comment))
