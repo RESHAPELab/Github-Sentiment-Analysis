@@ -3,7 +3,7 @@
 import requests
 
 # REMOVE PERSONAL TOKEN BEFORE PUSHING TO REPO
-headers = {"Authorization": "INSERTPERSONALTOKENHERE"}
+headers = {"Authorization": "INSERT PERSONAL TOKEN HERE"}
 
 # Funtion that uses requests.post to make the API call
 def run_query(query):
@@ -63,5 +63,5 @@ result = run_query(query)
 outside_index = 0;
 inside_index = 0;
 
-comment = result["data"]["repository"]["pullRequest"]["reviewThreads"]["edges"][outside_index]["node"]["comments"]["nodes"][inside_index]["bodyText"] # Drill down the dictionary
+comment = result#["data"]["repository"]["pullRequest"]["reviewThreads"]["edges"][outside_index]["node"]["comments"]["nodes"][inside_index]["bodyText"] # Drill down the dictionary
 print("{} \n".format(comment))
