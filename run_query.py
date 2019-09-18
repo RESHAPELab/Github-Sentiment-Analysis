@@ -18,29 +18,40 @@ def run_query(query):
 # Needs: owner, repo name, and pull_number
 query = """
 query{{
-  repository(owner: {owner}, name: {name}) {{
-    pullRequest: issueOrPullRequest(number:{pull_number}) {{
-      __typename
-      ... on PullRequest {{
-        reviewThreads(first: 100) {{
-          edges {{
-            node {{
-              comments(first: 10) {{
-                nodes {{
-                  pullRequestReview {{
-                    id
-                  }}
-                  bodyText
-                  viewerDidAuthor
-                  authorAssociation
-                }}
-              }}
-            }}
-          }}
-        }}
-      }}
-    }}
-  }}
+ repository(owner: {owner}, name: {name}) {{
+   pullRequest: issueOrPullRequest(number: {pull_number}) {{
+     __typename
+     ... on PullRequest {{
+       title
+       number
+       closed
+       author {{
+         login
+       }}
+       bodyText
+       comments(first: 10) {{
+         edges{{
+           node {{
+             bodyText
+           }}
+         }}
+       }}
+       reviewThreads(first: 100) {{
+         edges {{
+           node {{
+             comments(first: 10) {{
+               nodes {{
+                 bodyText
+                 viewerDidAuthor
+                 authorAssociation
+               }}
+             }}
+           }}
+         }}
+       }}
+     }}
+   }}
+ }}
 }}
 """.format(owner="astropy", name="astropy", pull_number="5")
 
