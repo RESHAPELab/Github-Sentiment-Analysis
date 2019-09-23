@@ -1,1 +1,6 @@
 config.json
+*.swp
+env/
+__pycache__
+.vscode
+*.csv
