@@ -60,6 +60,8 @@ def run_query(query):
   request = requests.post('https://api.github.com/graphql', json={'query': query}, headers=headers)
   if request.status_code == 200:
       return request.json()
+  else:
+        raise Exception("Query failed to run by returning code of {}. {}".format(request.status_code, query))
 
 def get_comments_from_review_threads(query_data):
   review_nodes = query_data['data']['repository']['pullRequest']['reviewThreads']['edges']
@@ -75,7 +77,7 @@ def get_comments_from_pull_request(query_data):
   list_of_comments = list()
   for edge in comment_edges:
     list_of_comments.append(tuple([edge['node']['author']['login'], edge['node']['bodyText']]))
-  
+
   return list_of_comments
 
 def write_pull_request_comments_to_csv(list_of_comments=[]):
@@ -103,8 +105,8 @@ write_pull_request_comments_to_csv(list_of_pull_request_comments)
 
 # Saves one comment and prints to console
 # TODO: save all comments to a .cvs file
-# outside_index = 0;
-# inside_index = 0;
+outside_index = 0;
+inside_index = 0;
 
-# comment = result["data"]["repository"]["pullRequest"]["reviewThreads"]["edges"][outside_index]["node"]["comments"]["nodes"][inside_index]["bodyText"] # Drill down the dictionary
-# print("{} \n".format(comment))
+#comment = query_data#["data"]["repository"]["pullRequest"]["reviewThreads"]["edges"][outside_index]["node"]["comments"]["nodes"][inside_index]["bodyText"] # Drill down the dictionary
+#print("{} \n".format(comment))
