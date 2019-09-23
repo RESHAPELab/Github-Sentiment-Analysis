@@ -1,5 +1,8 @@
-# Script that prints all comments left on pull requests in a repository into a .cvs file for analysis
-
+'''
+Filename: run_query.py
+Author(s): Joshua Kruse and Champ Foronda
+Description: Script that runs a query on pull requests in a repository and writes them into a CSV file
+'''
 import requests
 import json
 import csv
@@ -7,44 +10,50 @@ from config import GITHUB_AUTHORIZATION_KEY
 
 headers = {"Authorization": GITHUB_AUTHORIZATION_KEY}
 
-# The GraphQL query defined as a multi-line string with format
-# Needs: owner, repo name, and pull_number
-query = """
-query{{
- repository(owner: {owner}, name: {name}) {{
-   pullRequest: issueOrPullRequest(number: {pull_number}) {{
-     __typename
-     ... on PullRequest {{
-       title
-       number
-       closed
-       author {{ login }}
-       bodyText
-       comments(first: 10) {{
-         edges{{
-           node {{
-             bodyText
-           }}
-         }}
-       }}
-       reviewThreads(first: 100) {{
-         edges {{
-           node {{
-             comments(first: 10) {{
-               nodes {{
-                 author {{login}}
-                 bodyText
-                 authorAssociation
-               }}
-             }}
-           }}
-         }}
-       }}
-     }}
-   }}
- }}
-}}
-""".format(owner="astropy", name="astropy", pull_number="5")
+def setup_query(owner = "", name = "", pull_request_number = 1, comment_range = 10):
+  query = f'''
+  query {{
+  repository(owner: {owner}, name: {name}) {{
+    pullRequest: issueOrPullRequest(number: {pull_request_number}) {{
+      __typename
+      ... on PullRequest {{
+        title
+        number
+        closed
+        author {{
+            login 
+        }}
+        bodyText
+        comments(first: {comment_range}) {{
+          edges {{
+            node {{
+              author {{
+                login
+              }}
+              bodyText
+            }}
+          }}
+        }}
+        reviewThreads(first: 100) {{
+          edges {{
+            node {{
+              comments(first: {comment_range}) {{
+                nodes {{
+                  author {{
+                    login
+                  }}
+                  bodyText
+                  authorAssociation
+                }}
+              }}
+            }}
+          }}
+        }}
+      }}
+    }}
+  }}
+  }}'''
+  return query
 
 # Funtion that uses requests.post to make the API call
 def run_query(query):
@@ -53,15 +62,30 @@ def run_query(query):
       return request.json()
 
 def get_comments_from_review_threads(query_data):
-  list_of_review_nodes = query_data['data']['repository']['pullRequest']['reviewThreads']['edges']
+  review_nodes = query_data['data']['repository']['pullRequest']['reviewThreads']['edges']
   list_of_comments = list()
-  for node in list_of_review_nodes:
-    for comment in node['node']['comments']['nodes']:
+  for review_node in review_nodes:
+    for comment in review_node['node']['comments']['nodes']:
       list_of_comments.append(tuple([comment['author']['login'], comment['bodyText']]))
 
   return list_of_comments
 
-def write_comments_to_csv(list_of_comments):
+def get_comments_from_pull_request(query_data):
+  comment_edges = query_data['data']['repository']['pullRequest']['comments']['edges']
+  list_of_comments = list()
+  for edge in comment_edges:
+    list_of_comments.append(tuple([edge['node']['author']['login'], edge['node']['bodyText']]))
+  
+  return list_of_comments
+
+def write_pull_request_comments_to_csv(list_of_comments=[]):
+  with open('pull_request_comments.csv', 'w', newline='') as csv_file:
+    writer = csv.writer(csv_file, delimiter=',')
+    for comment in list_of_comments:
+      writer.writerow([comment])
+    csv_file.close()
+
+def write_review_comments_to_csv(list_of_comments=[]):
   with open('review_thread_comments.csv', 'w', newline='') as csv_file:
     writer = csv.writer(csv_file, delimiter=',')
     for comment in list_of_comments:
@@ -70,9 +94,12 @@ def write_comments_to_csv(list_of_comments):
 
 
 # Executes the query
+query = setup_query("astropy", "astropy", 5, 10)
 query_data = run_query(query)
-print(json.dumps(query_data, indent=2))
-write_comments_to_csv(get_comments_from_review_threads(query_data))
+list_of_pull_request_comments = get_comments_from_pull_request(query_data)
+list_of_review_thread_comments = get_comments_from_review_threads(query_data)
+write_review_comments_to_csv(list_of_review_thread_comments)
+write_pull_request_comments_to_csv(list_of_pull_request_comments)
 
 # Saves one comment and prints to console
 # TODO: save all comments to a .cvs file

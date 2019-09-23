@@ -11,8 +11,10 @@ query {
                   pullRequestReview {
                     id
                   }
+                  author {
+                    login
+                  }
                   bodyText
-                  viewerDidAuthor
                   authorAssociation
                 }
               }
