@@ -95,22 +95,51 @@ def write_review_comments_to_csv(list_of_comments=[]):
       writer.writerow([comment])
     csv_file.close()
 
+owner_name = "astropy"
+repo_name = "astropy"
+number_of_pull_requests = 100
+comment_range = 100
+mongo_user = "jek248"
+mongo_pass = "SentimentAnalysis"
+mongo_client_string = "mongodb+srv://" + mongo_user + ":" + mongo_pass + "@sentiment-analysis-8snlg.mongodb.net/test?retryWrites=true&w=majority"
+database_name = repo_name + "_database"
+collection_name = "comments"
 
-# Executes the query
-query = setup_query("astropy", "astropy", 5, 10)
-query_data = run_query(query)
-list_of_pull_request_comments = get_comments_from_pull_request(query_data)
-list_of_review_thread_comments = get_comments_from_review_threads(query_data)
+# Establishing connection to mongoClient
+client = pymongo.MongoClient( mongo_client_string )
+db = client[ database_name ]
+db_collection = db[ collection_name ]
 
-# Adds comments to a MongoDB
-client = pymongo.MongoClient("mongodb+srv://jek248:SentimentAnalysis@sentiment-analysis-8snlg.mongodb.net/test?retryWrites=true&w=majority")
-db = client['testing_db']
-db_collection = db['pull_request_comments']
-db_collection.insert_one( list_of_pull_request_comments )
-db_collection.insert_one( list_of_review_thread_comments )
+# Loop for executing the query
+for pull_request_index in range( 1, number_of_pull_requests + 1 ):
+    # Executes the query
+    query = setup_query( owner_name, repo_name, pull_request_index, comment_range )
+    query_data = run_query( query )
+    list_of_pull_request_comments = get_comments_from_pull_request( query_data )
+    list_of_review_thread_comments = get_comments_from_review_threads( query_data )
+
+    # Inserts into database
+    db_collection.insert_one( list_of_pull_request_comments )
+    db_collection.insert_one( list_of_review_thread_comments )
+
+# Closing Connection
 client.close()
 
+# Executes the query
+# query = setup_query("astropy", "astropy", 5, 10)
+# query_data = run_query(query)
+# list_of_pull_request_comments = get_comments_from_pull_request(query_data)
+# list_of_review_thread_comments = get_comments_from_review_threads(query_data)
+
+# Adds comments to a MongoDB
+# client = pymongo.MongoClient("mongodb+srv://jek248:SentimentAnalysis@sentiment-analysis-8snlg.mongodb.net/test?retryWrites=true&w=majority")
+# db = client['testing_db']
+# db_collection = db['pull_request_comments']
+# db_collection.insert_one( list_of_pull_request_comments )
+# db_collection.insert_one( list_of_review_thread_comments )
+# client.close()
+
 # Adds comments to a CVS file
-#write_review_comments_to_csv(list_of_review_thread_comments)
-#write_pull_request_comments_to_csv(list_of_pull_request_comments)
+# write_review_comments_to_csv(list_of_review_thread_comments)
+# write_pull_request_comments_to_csv(list_of_pull_request_comments)
 
