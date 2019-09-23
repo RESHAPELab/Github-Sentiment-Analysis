@@ -6,6 +6,7 @@ Description: Script that runs a query on pull requests in a repository and write
 import requests
 import json
 import csv
+import pymongo
 from config import GITHUB_AUTHORIZATION_KEY
 
 headers = {"Authorization": GITHUB_AUTHORIZATION_KEY}
@@ -65,18 +66,18 @@ def run_query(query):
 
 def get_comments_from_review_threads(query_data):
   review_nodes = query_data['data']['repository']['pullRequest']['reviewThreads']['edges']
-  list_of_comments = list()
+  list_of_comments = dict()
   for review_node in review_nodes:
     for comment in review_node['node']['comments']['nodes']:
-      list_of_comments.append(tuple([comment['author']['login'], comment['bodyText']]))
+      list_of_comments.update({comment['author']['login'] : comment['bodyText']})
 
   return list_of_comments
 
 def get_comments_from_pull_request(query_data):
   comment_edges = query_data['data']['repository']['pullRequest']['comments']['edges']
-  list_of_comments = list()
+  list_of_comments = dict()
   for edge in comment_edges:
-    list_of_comments.append(tuple([edge['node']['author']['login'], edge['node']['bodyText']]))
+    list_of_comments.update({edge['node']['author']['login'] : edge['node']['bodyText']})
 
   return list_of_comments
 
@@ -100,13 +101,16 @@ query = setup_query("astropy", "astropy", 5, 10)
 query_data = run_query(query)
 list_of_pull_request_comments = get_comments_from_pull_request(query_data)
 list_of_review_thread_comments = get_comments_from_review_threads(query_data)
-write_review_comments_to_csv(list_of_review_thread_comments)
-write_pull_request_comments_to_csv(list_of_pull_request_comments)
 
-# Saves one comment and prints to console
-# TODO: save all comments to a .cvs file
-outside_index = 0;
-inside_index = 0;
+# Adds comments to a MongoDB
+client = pymongo.MongoClient("mongodb+srv://jek248:SentimentAnalysis@sentiment-analysis-8snlg.mongodb.net/test?retryWrites=true&w=majority")
+db = client['testing_db']
+db_collection = db['pull_request_comments']
+db_collection.insert_one( list_of_pull_request_comments )
+db_collection.insert_one( list_of_review_thread_comments )
+client.close()
 
-#comment = query_data#["data"]["repository"]["pullRequest"]["reviewThreads"]["edges"][outside_index]["node"]["comments"]["nodes"][inside_index]["bodyText"] # Drill down the dictionary
-#print("{} \n".format(comment))
+# Adds comments to a CVS file
+#write_review_comments_to_csv(list_of_review_thread_comments)
+#write_pull_request_comments_to_csv(list_of_pull_request_comments)
+
