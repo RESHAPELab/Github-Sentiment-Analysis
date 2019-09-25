@@ -7,7 +7,7 @@ import requests
 import json
 import csv
 import pymongo
-from config import GITHUB_AUTHORIZATION_KEY
+from config import GITHUB_AUTHORIZATION_KEY, MONGO_USER, MONGO_PASSWORD
 
 headers = {"Authorization": GITHUB_AUTHORIZATION_KEY}
 
@@ -69,7 +69,7 @@ def get_comments_from_review_threads(query_data):
     dict_of_comments = dict()
     for review_node in review_nodes:
         for comment in review_node['node']['comments']['nodes']:
-        dict_of_comments.update({comment['author']['login'] : comment['bodyText']})
+            dict_of_comments.update({comment['author']['login'] : comment['bodyText']})
 
     return dict_of_comments
 
@@ -85,9 +85,7 @@ owner_name = "astropy"
 repo_name = "astropy"
 number_of_pull_requests = 100
 comment_range = 100
-mongo_user = "jek248"
-mongo_pass = "SentimentAnalysis"
-mongo_client_string = "mongodb+srv://" + mongo_user + ":" + mongo_pass + "@sentiment-analysis-8snlg.mongodb.net/test?retryWrites=true&w=majority"
+mongo_client_string = "mongodb+srv://" + MONGO_USER + ":" + MONGO_PASSWORD + "@sentiment-analysis-8snlg.mongodb.net/test?retryWrites=true&w=majority"
 database_name = repo_name + "_database"
 collection_name = "comments"
 
