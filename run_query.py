@@ -7,10 +7,20 @@ import requests
 import json
 import csv
 import pymongo
+import time
 from config import GITHUB_AUTHORIZATION_KEY, MONGO_USER, MONGO_PASSWORD
 
+# Variables
 headers = {"Authorization": GITHUB_AUTHORIZATION_KEY}
+owner_name = "astropy"
+repo_name = "astropy"
+number_of_pull_requests = 100
+comment_range = 100
+mongo_client_string = "mongodb+srv://" + MONGO_USER + ":" + MONGO_PASSWORD + "@sentiment-analysis-8snlg.mongodb.net/test?retryWrites=true&w=majority"
+database_name = repo_name + "_database"
+collection_name = "comments"
 
+# Defines the query to run
 def setup_query(owner = "", name = "", pull_request_number = 1, comment_range = 10):
     query = f'''
     query {{
@@ -64,6 +74,19 @@ def run_query(query):
     else:
             raise Exception("Query failed to run by returning code of {}. {}".format(request.status_code, query))
 
+# Function that pulls parents comments from the pull request and saves to dict
+def get_comments_from_pull_request(query_data):
+    try:
+        comment_edges = query_data['data']['repository']['pullRequest']['comments']['edges']
+        dict_of_comments = dict()
+        for edge in comment_edges:
+            dict_of_comments.update({edge['node']['author']['login'] : edge['node']['bodyText']})
+    except KeyError:
+        dict_of_comments = {}
+
+    return dict_of_comments
+
+# Function that pulls all reveiw comments from the pull request and saves to dict
 def get_comments_from_review_threads(query_data):
     try:
         review_nodes = query_data['data']['repository']['pullRequest']['reviewThreads']['edges']
@@ -76,24 +99,6 @@ def get_comments_from_review_threads(query_data):
 
     return dict_of_comments
 
-def get_comments_from_pull_request(query_data):
-    try:
-        comment_edges = query_data['data']['repository']['pullRequest']['comments']['edges']
-        dict_of_comments = dict()
-        for edge in comment_edges:
-            dict_of_comments.update({edge['node']['author']['login'] : edge['node']['bodyText']})
-    except KeyError:
-        dict_of_comments = {}
-
-    return dict_of_comments
-
-owner_name = "astropy"
-repo_name = "astropy"
-number_of_pull_requests = 100
-comment_range = 100
-mongo_client_string = "mongodb+srv://" + MONGO_USER + ":" + MONGO_PASSWORD + "@sentiment-analysis-8snlg.mongodb.net/test?retryWrites=true&w=majority"
-database_name = repo_name + "_database"
-collection_name = "comments"
 
 # Establishing connection to mongoClient
 client = pymongo.MongoClient( mongo_client_string )
@@ -116,6 +121,8 @@ for pull_request_index in range( 1, number_of_pull_requests + 1 ):
     else:
         print( "Pull Request - Empty" )
     print( "Pull Request - {}".format( pull_request_index ) )
+
+    time.sleep(.2)
     
 # Closing Connection
 client.close()
@@ -133,8 +140,4 @@ client.close()
 # db_collection.insert_one( list_of_pull_request_comments )
 # db_collection.insert_one( list_of_review_thread_comments )
 # client.close()
-
-# Adds comments to a CVS file
-# write_review_comments_to_csv(list_of_review_thread_comments)
-# write_pull_request_comments_to_csv(list_of_pull_request_comments)
 
