@@ -9,7 +9,7 @@ import csv
 import pymongo
 from config import GITHUB_AUTHORIZATION_KEY, MONGO_USER, MONGO_PASSWORD
 
-headers = {"Authorization": GITHUB_AUTHORIZATION_KEY}
+headers = {"Authorization": "token 7032a26c7431d133f988ba7d2ee72be7dfa6746e"}
 
 def setup_query(owner = "", name = "", pull_request_number = 1, comment_range = 10):
     query = f'''
@@ -65,19 +65,25 @@ def run_query(query):
             raise Exception("Query failed to run by returning code of {}. {}".format(request.status_code, query))
 
 def get_comments_from_review_threads(query_data):
-    review_nodes = query_data['data']['repository']['pullRequest']['reviewThreads']['edges']
-    dict_of_comments = dict()
-    for review_node in review_nodes:
-        for comment in review_node['node']['comments']['nodes']:
-            dict_of_comments.update({comment['author']['login'] : comment['bodyText']})
+    try:
+        review_nodes = query_data['data']['repository']['pullRequest']['reviewThreads']['edges']
+        dict_of_comments = dict()
+        for review_node in review_nodes:
+            for comment in review_node['node']['comments']['nodes']:
+                dict_of_comments.update({comment['author']['login'] : comment['bodyText']})
+    except KeyError:
+        dict_of_comments = {}
 
     return dict_of_comments
 
 def get_comments_from_pull_request(query_data):
-    comment_edges = query_data['data']['repository']['pullRequest']['comments']['edges']
-    dict_of_comments = dict()
-    for edge in comment_edges:
-        dict_of_comments.update({edge['node']['author']['login'] : edge['node']['bodyText']})
+    try:
+        comment_edges = query_data['data']['repository']['pullRequest']['comments']['edges']
+        dict_of_comments = dict()
+        for edge in comment_edges:
+            dict_of_comments.update({edge['node']['author']['login'] : edge['node']['bodyText']})
+    except KeyError:
+        dict_of_comments = {}
 
     return dict_of_comments
 
@@ -103,9 +109,14 @@ for pull_request_index in range( 1, number_of_pull_requests + 1 ):
     list_of_review_thread_comments = get_comments_from_review_threads( query_data )
 
     # Inserts into database
-    db_collection.insert_one( list_of_pull_request_comments )
-    db_collection.insert_one( list_of_review_thread_comments )
-
+    if( list_of_pull_request_comments ):
+        db_collection.insert_one( list_of_pull_request_comments )
+    elif( list_of_review_thread_comments ):
+        db_collection.insert_one( list_of_review_thread_comments )
+    else:
+        print( "Pull Request - Empty" )
+    print( "Pull Request - {}".format( pull_request_index ) )
+    
 # Closing Connection
 client.close()
 
