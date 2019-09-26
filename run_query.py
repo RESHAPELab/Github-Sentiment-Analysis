@@ -9,7 +9,7 @@ import csv
 import pymongo
 from config import GITHUB_AUTHORIZATION_KEY, MONGO_USER, MONGO_PASSWORD
 
-headers = {"Authorization": "token 7032a26c7431d133f988ba7d2ee72be7dfa6746e"}
+headers = {"Authorization": GITHUB_AUTHORIZATION_KEY}
 
 def setup_query(owner = "", name = "", pull_request_number = 1, comment_range = 10):
     query = f'''
