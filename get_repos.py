@@ -1,7 +1,7 @@
 '''
-Filename: run_query.py
+Filename: get_repos.py
 Author(s): Joshua Kruse and Champ Foronda
-Description: Script that runs a query on pull requests in a repository and writes them into a CSV file
+Description: Script that runs a query on pull requests in a repository and writes them into a MongoDatabase
 '''
 import requests
 import json
@@ -11,7 +11,7 @@ import time
 from config import GITHUB_AUTHORIZATION_KEY, MONGO_USER, MONGO_PASSWORD
 
 # Variables
-headers = {"Authorization": "token 4d949e25e16134830d6af7130b4bdc237dd9facb"}
+headers = {"Authorization": GITHUB_AUTHORIZATION_KEY}
 owner_name = "astropy"
 repo_name = "astropy"
 number_of_pull_requests = 20
@@ -21,49 +21,75 @@ database_name = repo_name + "_database"
 collection_name = "comments"
 
 # Defines the query to run
-def setup_query(owner = "", name = "", pull_request_number = 1, comment_range = 10):
+def setup_query(queryString = "is:public archived:false created:<2017-07-15 pushed:>2017-12-15"):
     query = f'''
-    query {{
-        repository(owner: {owner}, name: {name}) {{
-            pullRequest: issueOrPullRequest(number: {pull_request_number}) {{
-            __typename
-            ... on PullRequest {{
-                title
-                number
-                closed
-                author {{
-                    login 
-                }}
-                bodyText
-                comments(first: {comment_range}) {{
-                edges {{
-                    node {{
-                    author {{
+    query listRepos( {queryString} : String!){{
+       rateLimit{{
+        cost
+        remaining
+        resetAt
+       }}
+       search(query: {queryString}, type: REPOSITORY, first:20) {{
+           pageInfo {{
+               endCursor
+               hasNextPage
+            }}
+            repositoryCount
+            nodes {{
+                ... on Repository {{
+                    owner {{
                         login
                     }}
-                    bodyText
+                    name
+                    createdAt
+                    pushedAt
+                    isMirror
+                    diskUsage
+                    primaryLanguage {{
+                        name
                     }}
-                }}
-                }}
-                reviewThreads(first: 100) {{
-                edges {{
-                    node {{
-                    comments(first: {comment_range}) {{
-                        nodes {{
-                        author {{
-                            login
+                    languages {{
+                        totalCount
+                    }}
+                    contributors: mentionableUsers {{
+                        totalCount
+                    }}
+                    watchers {{
+                        totalCount
+                    }}
+                    stargazers {{
+                        totalCount
+                    }}
+                    forks: forkCount
+                    issues {{
+                        totalCount
+                    }}
+                    commits: defaultBranchRef {{
+                        target {{
+                            ... on Commit {{
+                                history {{
+                                    totalCount
+                                }}
+                            }}
                         }}
-                        bodyText
-                        authorAssociation
-                        }}
                     }}
+                    pullRequests {{
+                        totalCount
                     }}
+                    branches: refs(refPrefix: "refs/heads/") {{
+                        totalCount
+                    }}
+                    tags: refs(refPrefix: "refs/tags/") {{
+                        totalCount
+                    }}
+                    releases {{
+                        totalCount
+                    }}
+                    description
                 }}
-                }}
-            }}
             }}
         }}
-        }}'''
+    }}'''
     return query
 
 # Funtion that uses requests.post to make the API call
@@ -111,7 +137,7 @@ db_collection = db[ collection_name ]
 # Loop for executing the query
 for pull_request_index in range( 1, number_of_pull_requests + 1 ):
     # Executes the query
-    query = setup_query( owner_name, repo_name, pull_request_index, comment_range )
+    query = setup_query(  )
     query_data = run_query( query )
     list_of_pull_request_comments = get_comments_from_pull_request( query_data )
     list_of_review_thread_comments = get_comments_from_review_threads( query_data )
@@ -126,7 +152,7 @@ for pull_request_index in range( 1, number_of_pull_requests + 1 ):
     print( "Pull Request - {}".format( pull_request_index ) )
 
     time.sleep(.2)
-    
+
 # Closing Connection
 client.close()
 
