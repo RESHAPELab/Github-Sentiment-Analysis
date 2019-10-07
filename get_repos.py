@@ -8,10 +8,11 @@ import json
 import csv
 import pymongo
 import time
+import datetime
 from config import GITHUB_AUTHORIZATION_KEY, MONGO_USER, MONGO_PASSWORD
 
 # Variables
-headers = {"Authorization": GITHUB_AUTHORIZATION_KEY}
+headers = {"Authorization": "token 1d095120a008e8c6f96ccb1a7ffd0bbdf1c59aa2"}
 owner_name = "astropy"
 repo_name = "astropy"
 number_of_pull_requests = 20
@@ -21,15 +22,16 @@ database_name = repo_name + "_database"
 collection_name = "comments"
 
 # Defines the query to run
-def setup_query(queryString = "is:public archived:false created:<2017-07-15 pushed:>2017-12-15"):
+def setup_query( query_string ):
     query = f'''
-    query listRepos( {queryString} : String!){{
+
+    query {{
        rateLimit{{
         cost
         remaining
         resetAt
        }}
-       search(query: {queryString}, type: REPOSITORY, first:20) {{
+       search(query: {query_string}, type: REPOSITORY, first:2) {{
            pageInfo {{
                endCursor
                hasNextPage
@@ -100,6 +102,20 @@ def run_query(query):
     else:
             raise Exception("Query failed to run by returning code of {}. {}".format(request.status_code, query))
 
+# Builds the query filter string compatible to github
+def query_filter( min_stars, max_stars, last_activity, created ):
+    date_last_act = datetime.datetime.now() - datetime.timedelta( days=last_activity )
+    print(f'{date_last_act:%y-%m-%d}')
+    date_created = datetime.datetime.now() - datetime.timedelta( days=created )
+    print(f'{date_created:%y-%m-%d}')
+    stars = f'{min_stars}..{max_stars}'
+
+    return f'\"is:public archived:false fork:false stars:{stars} pushed:20{date_last_act:%y-%m-%d}..* created:20{date_created:%y-%m-%d}..*\"'
+
+'''
+
+'''
+
 # Function that pulls parents comments from the pull request and saves to dict
 def get_comments_from_pull_request(query_data):
     try:
@@ -130,37 +146,23 @@ def get_comments_from_review_threads(query_data):
 
 
 # Establishing connection to mongoClient
-client = pymongo.MongoClient( mongo_client_string )
-db = client[ database_name ]
-db_collection = db[ collection_name ]
+#client = pymongo.MongoClient( mongo_client_string )
+#db = client[ database_name ]
+#db_collection = db[ collection_name ]
 
-# Loop for executing the query
-for pull_request_index in range( 1, number_of_pull_requests + 1 ):
-    # Executes the query
-    query = setup_query(  )
-    query_data = run_query( query )
-    list_of_pull_request_comments = get_comments_from_pull_request( query_data )
-    list_of_review_thread_comments = get_comments_from_review_threads( query_data )
+min_stars = 0
+max_stars = 10000
+last_activity = 90 # within the last __ days
+created = 364 * 4 # within the last __ days
 
-    # Inserts into database
-    if( list_of_pull_request_comments ):
-        db_collection.insert_one( list_of_pull_request_comments )
-    elif( list_of_review_thread_comments ):
-        db_collection.insert_one( list_of_review_thread_comments )
-    else:
-        print( "Pull Request - Empty" )
-    print( "Pull Request - {}".format( pull_request_index ) )
+# create the query filter and setup the query string
+query_string = query_filter( min_stars, max_stars, last_activity, created )
+print(query_string)
+query = setup_query( query_string )
 
-    time.sleep(.2)
-
-# Closing Connection
-client.close()
-
-# Executes the query
-# query = setup_query("astropy", "astropy", 5, 10)
-# query_data = run_query(query)
-# list_of_pull_request_comments = get_comments_from_pull_request(query_data)
-# list_of_review_thread_comments = get_comments_from_review_threads(query_data)
+# run the query
+query_data = run_query(query)
+print(query_data)
 
 # Adds comments to a MongoDB
 # client = pymongo.MongoClient("mongodb+srv://jek248:SentimentAnalysis@sentiment-analysis-8snlg.mongodb.net/test?retryWrites=true&w=majority")
@@ -169,4 +171,3 @@ client.close()
 # db_collection.insert_one( list_of_pull_request_comments )
 # db_collection.insert_one( list_of_review_thread_comments )
 # client.close()
-
