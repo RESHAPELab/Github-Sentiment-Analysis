@@ -22,7 +22,7 @@ database_name = repo_name + "_database"
 collection_name = "comments"
 
 # Defines the query to run
-def setup_query( query_string ):
+def setup_query( query_string, end_cursor ):
     query = f'''
 
     query {{
@@ -31,7 +31,7 @@ def setup_query( query_string ):
         remaining
         resetAt
        }}
-       search(query: {query_string}, type: REPOSITORY, first:2) {{
+       search(query: {query_string}, type: REPOSITORY, first:2, after:{end_cursor}) {{
            pageInfo {{
                endCursor
                hasNextPage
@@ -75,8 +75,11 @@ def setup_query( query_string ):
                             }}
                         }}
                     }}
-                    pullRequests {{
+                    pullRequests(last:10){{
                         totalCount
+                        nodes {{
+                            createdAt
+                        }}
                     }}
                     branches: refs(refPrefix: "refs/heads/") {{
                         totalCount
@@ -122,7 +125,17 @@ def query_filter( min_stars, max_stars, last_activity, created ):
     return f'\"is:public archived:false fork:false stars:{stars} pushed:20{date_last_act:%y-%m-%d}..* created:20{date_created:%y-%m-%d}..*\"'
 
 # Runs the query and iterates through all pages of repositories
-def find_repos( query, database, db_collection ):
+def find_repos( query_string, database, db_collection ):
+
+    end_cursor = ""
+    hasNextPage = True
+    while( hasNextPage ):
+        query = setup_query( query_string, end_cursor )
+        result = run_query( query )
+        if( result["data"]["search"]["pageInfo"]["hasNextPage"] ):
+            end_cursor = result["data"]["search"]["pageInfo"]["endCursor"]
+        else:
+            hasNextPage = False
     return false #TODO
 
 # Iterates through all repositories found on each page
