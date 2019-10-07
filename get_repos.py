@@ -98,7 +98,7 @@ def run_query(query):
     if request.status_code == 200:
         return request.json()
     else:
-            raise Exception("Query failed to run by returning code of {}. {}".format(request.status_code, query))
+        raise Exception(f'ERROR [{request.status_code}]: Query failed to execute...\nRESPONSE: {request.text}')
 
 # Function that pulls parents comments from the pull request and saves to dict
 def get_comments_from_pull_request(query_data):
@@ -108,7 +108,6 @@ def get_comments_from_pull_request(query_data):
         for edge in comment_edges:
             dict_of_comments["comment"].append( {"author" : edge['node']['author']['login'], "bodyText" : edge['node']['bodyText']} )
             #dict_of_comments.update({"comment" : {"author" : edge['node']['author']['login'], "bodyText" : edge['node']['bodyText']}})
-
     except KeyError:
         dict_of_comments = {}
 

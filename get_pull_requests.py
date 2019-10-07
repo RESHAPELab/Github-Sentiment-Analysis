@@ -66,23 +66,34 @@ def setup_query(owner = "", name = "", pull_request_number = 1, comment_range = 
         }}'''
     return query
 
+def setup_multi_query(list_of_owners=[], list_of_names=[], pull_request_number=[], comment_range=10):
+    '''
+    Takes in a list of owners, names, pull requests numbers, and the range of comments to grab
+    and returns the appropriate list of queries.
+    '''
+
+    list_of_queries = list()
+    for owner, name in zip(list_of_owners, list_of_names):
+        list_of_queries.append(setup_query(owner, name, pull_request_number, comment_range))
+    
+    return list_of_queries
+
 # Funtion that uses requests.post to make the API call
 def run_query(query):
     request = requests.post('https://api.github.com/graphql', json={'query': query}, headers=headers)
     if request.status_code == 200:
         return request.json()
     else:
-            raise Exception("Query failed to run by returning code of {}. {}".format(request.status_code, query))
+        raise Exception(f'ERROR [{request.status_code}]: Query failed to execute...\nRESPONSE: {request.text}')
 
 # Function that pulls parents comments from the pull request and saves to dict
 def get_comments_from_pull_request(query_data):
     try:
         comment_edges = query_data['data']['repository']['pullRequest']['comments']['edges']
-        dict_of_comments = {"comment" : []}
+        dict_of_comments = {"comment": []}
         for edge in comment_edges:
-            dict_of_comments["comment"].append( {"author" : edge['node']['author']['login'], "bodyText" : edge['node']['bodyText']} )
+            dict_of_comments["comment"].append( {"author": edge['node']['author']['login'], "bodyText": edge['node']['bodyText']} )
             #dict_of_comments.update({"comment" : {"author" : edge['node']['author']['login'], "bodyText" : edge['node']['bodyText']}})
-
     except KeyError:
         dict_of_comments = {}
 
@@ -92,16 +103,15 @@ def get_comments_from_pull_request(query_data):
 def get_comments_from_review_threads(query_data):
     try:
         review_nodes = query_data['data']['repository']['pullRequest']['reviewThreads']['edges']
-        dict_of_comments = {"comment" : []}
+        dict_of_comments = {"comment": []}
         for review_node in review_nodes:
             for comment in review_node['node']['comments']['nodes']:
-                dict_of_comments["comment"].append( {"author" : comment['author']['login'], "bodyText" : comment['bodyText']} )
+                dict_of_comments["comment"].append( {"author": comment['author']['login'], "bodyText": comment['bodyText']} )
                 #dict_of_comments.update({"comment" : {"author" : comment['author']['login'], "bodyText" : comment['bodyText']}})
     except KeyError:
         dict_of_comments = {}
 
     return dict_of_comments
-
 
 # Establishing connection to mongoClient
 client = pymongo.MongoClient( mongo_client_string )
@@ -127,8 +137,8 @@ for pull_request_index in range( 1, number_of_pull_requests + 1 ):
 
     time.sleep(.2)
 
-# Closing Connection
-client.close()
+# # Closing Connection
+# client.close()
 
 # Executes the query
 # query = setup_query("astropy", "astropy", 5, 10)
