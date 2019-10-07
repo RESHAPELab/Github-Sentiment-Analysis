@@ -20,6 +20,7 @@ min_stars = 1000
 max_stars = 10000
 last_activity = 90 # within the last __ days
 created = 364 * 4 # within the last __ days
+total_pull_num = 100 # amount of pull requests a repository needs
 
 # Defines the query to run
 def setup_query( query_string, end_cursor ):
@@ -124,7 +125,7 @@ def query_filter( min_stars, max_stars, last_activity, created ):
     return f'is:public archived:false fork:false stars:{stars} pushed:20{date_last_act:%y-%m-%d}..* created:20{date_created:%y-%m-%d}..*'
 
 # Runs the query and iterates through all pages of repositories
-def find_repos( query_string, db_collection ):
+def find_repos( query_string, db_collection, total_pull_num ):
 
     end_cursor = ""
     end_cursor_string = ""
@@ -136,7 +137,7 @@ def find_repos( query_string, db_collection ):
         result = run_query( query )
         print(json.dumps(result, indent=2))
 
-        repo_checker( result, db_collection )
+        repo_checker( result, db_collection, total_pull_num )
 
         # if there is a next page, update the endcursor string and continue loop
         if( result["data"]["search"]["pageInfo"]["hasNextPage"] ):
@@ -149,25 +150,30 @@ def find_repos( query_string, db_collection ):
 
 # Iterates through all repositories found on each page
 # saves valid repositories into a database
-def repo_checker( query_data, db_collection ):
+def repo_checker( query_data, db_collection, total_pull_num ):
 
     repository_nodes = query_data["data"]["search"]["nodes"]
     dict_of_repositories = {"repository" : []}
     for node in repository_nodes:
-        dict_of_repositories["repository"].append( {"name" : node["name"],
-                                                    "owner" : node["owner"]["login"],
-                                                    "contributers" : node["contributors"]["totalCount"],
-                                                    "stars" : node["stargazers"]["totalCount"],
-                                                    "forks" : node["forks"],
-                                                    "commits" : node["commits"]["target"]["history"]["totalCount"],
-                                                    "pullRequests" : node["pullRequests"]["totalCount"]} )
+        if( is_repo_valid( node, total_pull_num ) ):
+            dict_of_repositories["repository"].append( {"name" : node["name"],
+                                                        "owner" : node["owner"]["login"],
+                                                        "contributers" : node["contributors"]["totalCount"],
+                                                        "stars" : node["stargazers"]["totalCount"],
+                                                        "forks" : node["forks"],
+                                                        "commits" : node["commits"]["target"]["history"]["totalCount"],
+                                                        "pullRequests" : node["pullRequests"]["totalCount"]} )
 
     db_collection.insert_one( dict_of_repositories )
 
-# checks that a repository is valid based off of parameters
+# checks that a repository is valid
+# a repo is valid if it has more pull requests than the param
+# TODO: more requirments?
 # returns a boolean
-def is_repo_valid( ):
-    return false #TODO
+def is_repo_valid( node, total_pull_num ):
+    if( node["pullRequests"]["totalCount"] > total_pull_num ):
+        return True
+    return False
 
 # create the query filter and setup the query string
 query_string = query_filter( min_stars, max_stars, last_activity, created )
@@ -179,7 +185,7 @@ database = client[ database_name ]
 db_collection = database[ collection_name ]
 
 # run the query
-find_repos( query_string, db_collection )
+find_repos( query_string, db_collection, total_pull_num )
 print( "did i get here" )
 
 # Adds comments to a MongoDB
