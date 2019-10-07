@@ -12,7 +12,7 @@ import datetime
 from config import GITHUB_AUTHORIZATION_KEY, MONGO_USER, MONGO_PASSWORD
 
 # Variables
-headers = {"Authorization": "token 1d095120a008e8c6f96ccb1a7ffd0bbdf1c59aa2"}
+headers = {"Authorization": "GITHUB_AUTHORIZATION_KEY"}
 owner_name = "astropy"
 repo_name = "astropy"
 number_of_pull_requests = 20
@@ -24,14 +24,13 @@ collection_name = "comments"
 # Defines the query to run
 def setup_query( query_string, end_cursor ):
     query = f'''
-
     query {{
        rateLimit{{
         cost
         remaining
         resetAt
        }}
-       search(query: {query_string}, type: REPOSITORY, first:2, after:{end_cursor}) {{
+       search(query: "{query_string}", type: REPOSITORY, first:2 {end_cursor}) {{
            pageInfo {{
                endCursor
                hasNextPage
@@ -122,21 +121,27 @@ def query_filter( min_stars, max_stars, last_activity, created ):
     print(f'{date_created:%y-%m-%d}')
     stars = f'{min_stars}..{max_stars}'
 
-    return f'\"is:public archived:false fork:false stars:{stars} pushed:20{date_last_act:%y-%m-%d}..* created:20{date_created:%y-%m-%d}..*\"'
+    return f'is:public archived:false fork:false stars:{stars} pushed:20{date_last_act:%y-%m-%d}..* created:20{date_created:%y-%m-%d}..*'
 
 # Runs the query and iterates through all pages of repositories
 def find_repos( query_string, database, db_collection ):
 
     end_cursor = ""
+    end_cursor_string = ""
     hasNextPage = True
-    while( hasNextPage ):
-        query = setup_query( query_string, end_cursor )
+    index = 0
+    
+    while( hasNextPage and index <= 4 ):
+        query = setup_query( query_string, end_cursor_string )
         result = run_query( query )
+        print(json.dumps(result, indent=2))
+        index += 1
+        
         if( result["data"]["search"]["pageInfo"]["hasNextPage"] ):
             end_cursor = result["data"]["search"]["pageInfo"]["endCursor"]
+            end_cursor_string = f', after:"{end_cursor}"'
         else:
             hasNextPage = False
-    return false #TODO
 
 # Iterates through all repositories found on each page
 # saves valid repositories into a database
@@ -148,26 +153,23 @@ def repo_checker( query_data, database, db_collection ):
 def is_repo_valid( ):
     return false #TODO
 
-def main():
+min_stars = 1000
+max_stars = 10000
+last_activity = 90 # within the last __ days
+created = 364 * 4 # within the last __ days
 
-    min_stars = 0
-    max_stars = 10000
-    last_activity = 90 # within the last __ days
-    created = 364 * 4 # within the last __ days
+# create the query filter and setup the query string
+query_string = query_filter( min_stars, max_stars, last_activity, created )
+print( query_string )
 
+# Establishing connection to mongoClient
+client = pymongo.MongoClient( mongo_client_string )
+database = client[ database_name ]
+db_collection = database[ collection_name ]
 
-    # create the query filter and setup the query string
-    query_string = query_filter( min_stars, max_stars, last_activity, created )
-    print(query_string)
-    query = setup_query( query_string )
-
-    # Establishing connection to mongoClient
-    #client = pymongo.MongoClient( mongo_client_string )
-    #db = client[ database_name ]
-    #db_collection = db[ collection_name ]
-
-    # run the query
-    find_repos( query, database, db_collection )
+# run the query
+find_repos( query_string, database, db_collection )
+print( "did i get here" )
 
 # Adds comments to a MongoDB
 # client = pymongo.MongoClient("mongodb+srv://jek248:SentimentAnalysis@sentiment-analysis-8snlg.mongodb.net/test?retryWrites=true&w=majority")
