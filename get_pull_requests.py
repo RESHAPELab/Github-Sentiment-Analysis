@@ -21,49 +21,81 @@ database_name = repo_name + "_database"
 collection_name = "comments"
 
 # Defines the query to run
-def setup_query(owner = "", name = "", pull_request_number = 1, comment_range = 10):
+def setup_query(search_query=""):
+    '''
+    Searches GitHub for repositories and gets the pull request comments and review thread comments
+    TODO: Need to figure out pagination
+    '''
     query = f'''
     query {{
-        repository(owner: {owner}, name: {name}) {{
-            pullRequest: issueOrPullRequest(number: {pull_request_number}) {{
-            __typename
-            ... on PullRequest {{
-                title
-                number
-                closed
-                author {{
-                    login
+        search(query: {search_query}, type: REPOSITORY, first: 10) {{
+            pageInfo {{
+            endCursor
+            hasNextPage
+            }}
+            repositoryCount
+            nodes {{
+            ... on Repository {{
+                owner {{
+                login
+                __typename
                 }}
-                bodyText
-                comments(first: {comment_range}) {{
-                edges {{
-                    node {{
+                name
+                createdAt
+                pushedAt
+                isMirror
+                stargazers {{
+                totalCount
+                }}
+                issues {{
+                totalCount
+                }}
+                pullRequests(first: 10) {{
+                totalCount
+                nodes {{
+                    title
+                    createdAt
+                    number
+                    closed
                     author {{
-                        login
+                    login
+                    __typename
                     }}
-                    bodyText
-                    }}
-                }}
-                }}
-                reviewThreads(first: 100) {{
-                edges {{
-                    node {{
-                    comments(first: {comment_range}) {{
-                        nodes {{
+                    comments(first: 10) {{
+                    edges {{
+                        node {{
                         author {{
                             login
+                            __typename
                         }}
                         bodyText
-                        authorAssociation
+                        }}
+                    }}
+                    }}
+                    reviewThreads(first: 10) {{
+                    edges {{
+                        node {{
+                        comments(first: 10) {{
+                            nodes{{
+                            author {{
+                                login
+                                __typename
+                            }}
+                            bodyText
+                            authorAssociation
+                            }}
+                        }}
                         }}
                     }}
                     }}
                 }}
                 }}
+                description
             }}
             }}
         }}
-        }}'''
+    }}
+    '''
     return query
 
 def setup_multi_query(list_of_owners=[], list_of_names=[], pull_request_number=[], comment_range=10):
@@ -80,6 +112,9 @@ def setup_multi_query(list_of_owners=[], list_of_names=[], pull_request_number=[
 
 # Funtion that uses requests.post to make the API call
 def run_query(query):
+    '''
+    Runs the given query
+    '''
     request = requests.post('https://api.github.com/graphql', json={'query': query}, headers=headers)
     if request.status_code == 200:
         return request.json()

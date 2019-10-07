@@ -1,0 +1,68 @@
+query {
+  search(query: "is:public archived:false created:<2018-01-01 comments:>0", type: REPOSITORY, first: 20) {
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+    repositoryCount
+    nodes {
+      ... on Repository {
+        owner {
+          login
+          __typename
+        }
+        name
+        createdAt
+        pushedAt
+        isMirror
+        stargazers {
+          totalCount
+        }
+        issues {
+          totalCount
+        }
+        pullRequests(first: 10) {
+          totalCount
+          nodes {
+            title
+            createdAt
+            number
+            closed
+            author {
+              login
+              __typename
+            }
+            comments(first: 10) {
+              edges {
+                node {
+                  author{
+                    login
+                    __typename
+                  }
+                  bodyText
+                }
+              }
+            }
+            reviewThreads(first: 10) {
+              edges {
+                node {
+                  comments(first: 10) {
+                    nodes {
+                      author {
+                        login
+                        __typename
+                      }
+                      bodyText
+                      authorAssociation
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        description
+      }
+    }
+  }
+}
