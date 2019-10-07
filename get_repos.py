@@ -94,6 +94,15 @@ def setup_query( query_string ):
     }}'''
     return query
 
+'''
+--- Workflow ---
+    I. Create query string and build query
+    II. run query, iterating through all pages of repos:
+        i. iterate through all repositories on each page:
+            I. add specific repository to database if it matches specific parameters
+    III. Pull comments from each repository in repo_database and save to a new database
+'''
+
 # Funtion that uses requests.post to make the API call
 def run_query(query):
     request = requests.post('https://api.github.com/graphql', json={'query': query}, headers=headers)
@@ -112,57 +121,40 @@ def query_filter( min_stars, max_stars, last_activity, created ):
 
     return f'\"is:public archived:false fork:false stars:{stars} pushed:20{date_last_act:%y-%m-%d}..* created:20{date_created:%y-%m-%d}..*\"'
 
-'''
+# Runs the query and iterates through all pages of repositories
+def find_repos( query, database, db_collection ):
+    return false #TODO
 
-'''
+# Iterates through all repositories found on each page
+# saves valid repositories into a database
+def repo_checker( query_data, database, db_collection ):
+    return false #TODO
 
-# Function that pulls parents comments from the pull request and saves to dict
-def get_comments_from_pull_request(query_data):
-    try:
-        comment_edges = query_data['data']['repository']['pullRequest']['comments']['edges']
-        dict_of_comments = {"comment" : []}
-        for edge in comment_edges:
-            dict_of_comments["comment"].append( {"author" : edge['node']['author']['login'], "bodyText" : edge['node']['bodyText']} )
-            #dict_of_comments.update({"comment" : {"author" : edge['node']['author']['login'], "bodyText" : edge['node']['bodyText']}})
+# checks that a repository is valid based off of parameters
+# returns a boolean
+def is_repo_valid( ):
+    return false #TODO
 
-    except KeyError:
-        dict_of_comments = {}
+def main():
 
-    return dict_of_comments
-
-# Function that pulls all reveiw comments from the pull request and saves to dict
-def get_comments_from_review_threads(query_data):
-    try:
-        review_nodes = query_data['data']['repository']['pullRequest']['reviewThreads']['edges']
-        dict_of_comments = {"comment" : []}
-        for review_node in review_nodes:
-            for comment in review_node['node']['comments']['nodes']:
-                dict_of_comments["comment"].append( {"author" : comment['author']['login'], "bodyText" : comment['bodyText']} )
-                #dict_of_comments.update({"comment" : {"author" : comment['author']['login'], "bodyText" : comment['bodyText']}})
-    except KeyError:
-        dict_of_comments = {}
-
-    return dict_of_comments
+    min_stars = 0
+    max_stars = 10000
+    last_activity = 90 # within the last __ days
+    created = 364 * 4 # within the last __ days
 
 
-# Establishing connection to mongoClient
-#client = pymongo.MongoClient( mongo_client_string )
-#db = client[ database_name ]
-#db_collection = db[ collection_name ]
+    # create the query filter and setup the query string
+    query_string = query_filter( min_stars, max_stars, last_activity, created )
+    print(query_string)
+    query = setup_query( query_string )
 
-min_stars = 0
-max_stars = 10000
-last_activity = 90 # within the last __ days
-created = 364 * 4 # within the last __ days
+    # Establishing connection to mongoClient
+    #client = pymongo.MongoClient( mongo_client_string )
+    #db = client[ database_name ]
+    #db_collection = db[ collection_name ]
 
-# create the query filter and setup the query string
-query_string = query_filter( min_stars, max_stars, last_activity, created )
-print(query_string)
-query = setup_query( query_string )
-
-# run the query
-query_data = run_query(query)
-print(query_data)
+    # run the query
+    find_repos( query, database, db_collection )
 
 # Adds comments to a MongoDB
 # client = pymongo.MongoClient("mongodb+srv://jek248:SentimentAnalysis@sentiment-analysis-8snlg.mongodb.net/test?retryWrites=true&w=majority")
