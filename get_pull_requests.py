@@ -28,38 +28,38 @@ def setup_query(search_query=""):
     '''
     query = f'''
     query {{
-        search(query: {search_query}, type: REPOSITORY, first: 10) {{
+        search(query: "{search_query}", type: REPOSITORY, first: 10) {{
             pageInfo {{
-            endCursor
-            hasNextPage
+                endCursor
+                hasNextPage
             }}
             repositoryCount
             nodes {{
             ... on Repository {{
                 owner {{
-                login
-                __typename
+                    login
+                    __typename
                 }}
                 name
                 createdAt
                 pushedAt
                 isMirror
                 stargazers {{
-                totalCount
+                    totalCount
                 }}
                 issues {{
-                totalCount
+                    totalCount
                 }}
                 pullRequests(first: 10) {{
-                totalCount
+                    totalCount
                 nodes {{
                     title
                     createdAt
                     number
                     closed
                     author {{
-                    login
-                    __typename
+                        login
+                        __typename
                     }}
                     comments(first: 10) {{
                     edges {{
@@ -112,9 +112,6 @@ def setup_multi_query(list_of_owners=[], list_of_names=[], pull_request_number=[
 
 # Funtion that uses requests.post to make the API call
 def run_query(query):
-    '''
-    Runs the given query
-    '''
     request = requests.post('https://api.github.com/graphql', json={'query': query}, headers=headers)
     if request.status_code == 200:
         return request.json()
@@ -148,29 +145,34 @@ def get_comments_from_review_threads(query_data):
 
     return dict_of_comments
 
+
+query = setup_query("is:public archived:false created:>2018-01-01 comments:>0")
+query_data = run_query(query)
+print(json.dumps(query_data, indent=2))
+
 # Establishing connection to mongoClient
-client = pymongo.MongoClient( mongo_client_string )
-db = client[ database_name ]
-db_collection = db[ collection_name ]
+# client = pymongo.MongoClient( mongo_client_string )
+# db = client[ database_name ]
+# db_collection = db[ collection_name ]
 
-# Loop for executing the query
-for pull_request_index in range( 1, number_of_pull_requests + 1 ):
-    # Executes the query
-    query = setup_query( owner_name, repo_name, pull_request_index, comment_range )
-    query_data = run_query( query )
-    list_of_pull_request_comments = get_comments_from_pull_request( query_data )
-    list_of_review_thread_comments = get_comments_from_review_threads( query_data )
+# # Loop for executing the query
+# for pull_request_index in range( 1, number_of_pull_requests + 1 ):
+#     # Executes the query
+#     query = setup_query( owner_name, repo_name, pull_request_index, comment_range )
+#     query_data = run_query( query )
+#     list_of_pull_request_comments = get_comments_from_pull_request( query_data )
+#     list_of_review_thread_comments = get_comments_from_review_threads( query_data )
 
-    # Inserts into database
-    if( list_of_pull_request_comments ):
-        db_collection.insert_one( list_of_pull_request_comments )
-    elif( list_of_review_thread_comments ):
-        db_collection.insert_one( list_of_review_thread_comments )
-    else:
-        print( "Pull Request - Empty" )
-    print( "Pull Request - {}".format( pull_request_index ) )
+#     # Inserts into database
+#     if( list_of_pull_request_comments ):
+#         db_collection.insert_one( list_of_pull_request_comments )
+#     elif( list_of_review_thread_comments ):
+#         db_collection.insert_one( list_of_review_thread_comments )
+#     else:
+#         print( "Pull Request - Empty" )
+#     print( "Pull Request - {}".format( pull_request_index ) )
 
-    time.sleep(.2)
+#     time.sleep(.2)
 
 # # Closing Connection
 # client.close()

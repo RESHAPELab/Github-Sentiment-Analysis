@@ -1,5 +1,5 @@
 query {
-  search(query: "is:public archived:false created:<2018-01-01 comments:>0", type: REPOSITORY, first: 20) {
+  search(query: "is:public archived:false created:>2018-01-01 comments:>0", type: REPOSITORY, first: 20) {
     pageInfo {
       endCursor
       hasNextPage
@@ -13,12 +13,8 @@ query {
         }
         name
         createdAt
-        pushedAt
         isMirror
         stargazers {
-          totalCount
-        }
-        issues {
           totalCount
         }
         pullRequests(first: 10) {
