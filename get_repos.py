@@ -1,8 +1,10 @@
 '''
 Filename: get_repos.py
 Author(s): Joshua Kruse and Champ Foronda
-Description: Script that runs a query on pull requests in a repository and writes them into a MongoDatabase
+Description: Script that runs a query on repositories on GitHub and writes them into a MongoDatabase
 '''
+
+# imports
 import requests
 import json
 import csv
@@ -12,7 +14,7 @@ import datetime
 from config import GITHUB_AUTHORIZATION_KEY, MONGO_USER, MONGO_PASSWORD
 
 # Variables
-headers = {"Authorization": "token "}
+headers = {"Authorization": "token 417de6ac434799be7b52c028e02c33927dd2c611"}
 mongo_client_string = "mongodb+srv://" + MONGO_USER + ":" + MONGO_PASSWORD + "@sentiment-analysis-8snlg.mongodb.net/test?retryWrites=true&w=majority"
 database_name = "repository_database"
 collection_name = "comments"
@@ -117,9 +119,7 @@ def run_query(query):
 # Builds the query filter string compatible to github
 def query_filter( min_stars, max_stars, last_activity, created ):
     date_last_act = datetime.datetime.now() - datetime.timedelta( days=last_activity )
-    print(f'{date_last_act:%y-%m-%d}')
     date_created = datetime.datetime.now() - datetime.timedelta( days=created )
-    print(f'{date_created:%y-%m-%d}')
     stars = f'{min_stars}..{max_stars}'
 
     return f'is:public archived:false fork:false stars:{stars} pushed:20{date_last_act:%y-%m-%d}..* created:20{date_created:%y-%m-%d}..*'
@@ -135,7 +135,6 @@ def find_repos( query_string, db_collection, total_pull_num ):
     while( hasNextPage and index <= 1 ):
         query = setup_query( query_string, end_cursor_string )
         result = run_query( query )
-        print(json.dumps(result, indent=2))
 
         repo_checker( result, db_collection, total_pull_num )
 
@@ -154,6 +153,8 @@ def repo_checker( query_data, db_collection, total_pull_num ):
 
     repository_nodes = query_data["data"]["search"]["nodes"]
     dict_of_repositories = {"repository" : []}
+
+    index = 0
     for node in repository_nodes:
         if( is_repo_valid( node, total_pull_num ) ):
             dict_of_repositories["repository"].append( {"name" : node["name"],
@@ -163,6 +164,8 @@ def repo_checker( query_data, db_collection, total_pull_num ):
                                                         "forks" : node["forks"],
                                                         "commits" : node["commits"]["target"]["history"]["totalCount"],
                                                         "pullRequests" : node["pullRequests"]["totalCount"]} )
+            print( "Repository: " + str(index) )
+            index += 1
 
     db_collection.insert_one( dict_of_repositories )
 
@@ -177,7 +180,6 @@ def is_repo_valid( node, total_pull_num ):
 
 # create the query filter and setup the query string
 query_string = query_filter( min_stars, max_stars, last_activity, created )
-print( query_string )
 
 # Establishing connection to mongoClient
 client = pymongo.MongoClient( mongo_client_string )
@@ -186,7 +188,6 @@ db_collection = database[ collection_name ]
 
 # run the query
 find_repos( query_string, db_collection, total_pull_num )
-print( "did i get here" )
 
 # Adds comments to a MongoDB
 # client = pymongo.MongoClient("mongodb+srv://jek248:SentimentAnalysis@sentiment-analysis-8snlg.mongodb.net/test?retryWrites=true&w=majority")
