@@ -1,35 +1,39 @@
 '''
 Filename: get_repos.py
 Author(s): Joshua Kruse and Champ Foronda
-Description: Script that runs a query on pull requests in a repository and writes them into a MongoDatabase
+Description: Script that runs a query on repositories on GitHub and writes them into a MongoDatabase
 '''
+
+# imports
 import requests
 import json
 import csv
 import pymongo
 import time
+import datetime
 from config import GITHUB_AUTHORIZATION_KEY, MONGO_USER, MONGO_PASSWORD
 
 # Variables
-headers = {"Authorization": GITHUB_AUTHORIZATION_KEY}
-owner_name = "astropy"
-repo_name = "astropy"
-number_of_pull_requests = 20
-comment_range = 100
+headers = {"Authorization": "token 417de6ac434799be7b52c028e02c33927dd2c611"}
 mongo_client_string = "mongodb+srv://" + MONGO_USER + ":" + MONGO_PASSWORD + "@sentiment-analysis-8snlg.mongodb.net/test?retryWrites=true&w=majority"
-database_name = repo_name + "_database"
+database_name = "repository_database"
 collection_name = "comments"
+min_stars = 1000
+max_stars = 10000
+last_activity = 90 # within the last __ days
+created = 364 * 4 # within the last __ days
+total_pull_num = 100 # amount of pull requests a repository needs
 
 # Defines the query to run
-def setup_query(queryString = "is:public archived:false created:<2017-07-15 pushed:>2017-12-15"):
+def setup_query( query_string, end_cursor ):
     query = f'''
-    query listRepos( {queryString} : String!){{
+    query {{
        rateLimit{{
         cost
         remaining
         resetAt
        }}
-       search(query: {queryString}, type: REPOSITORY, first:20) {{
+       search(query: "{query_string}", type: REPOSITORY, first:10 {end_cursor}) {{
            pageInfo {{
                endCursor
                hasNextPage
@@ -73,8 +77,11 @@ def setup_query(queryString = "is:public archived:false created:<2017-07-15 push
                             }}
                         }}
                     }}
-                    pullRequests {{
+                    pullRequests(last:10){{
                         totalCount
+                        nodes {{
+                            createdAt
+                        }}
                     }}
                     branches: refs(refPrefix: "refs/heads/") {{
                         totalCount
@@ -92,6 +99,15 @@ def setup_query(queryString = "is:public archived:false created:<2017-07-15 push
     }}'''
     return query
 
+'''
+--- Workflow ---
+    I. Create query string and build query
+    II. run query, iterating through all pages of repos:
+        i. iterate through all repositories on each page:
+            I. add specific repository to database if it matches specific parameters
+    III. Pull comments from each repository in repo_database and save to a new database
+'''
+
 # Funtion that uses requests.post to make the API call
 def run_query(query):
     request = requests.post('https://api.github.com/graphql', json={'query': query}, headers=headers)
@@ -100,67 +116,78 @@ def run_query(query):
     else:
             raise Exception("Query failed to run by returning code of {}. {}".format(request.status_code, query))
 
-# Function that pulls parents comments from the pull request and saves to dict
-def get_comments_from_pull_request(query_data):
-    try:
-        comment_edges = query_data['data']['repository']['pullRequest']['comments']['edges']
-        dict_of_comments = {"comment" : []}
-        for edge in comment_edges:
-            dict_of_comments["comment"].append( {"author" : edge['node']['author']['login'], "bodyText" : edge['node']['bodyText']} )
-            #dict_of_comments.update({"comment" : {"author" : edge['node']['author']['login'], "bodyText" : edge['node']['bodyText']}})
+# Builds the query filter string compatible to github
+def query_filter( min_stars, max_stars, last_activity, created ):
+    date_last_act = datetime.datetime.now() - datetime.timedelta( days=last_activity )
+    date_created = datetime.datetime.now() - datetime.timedelta( days=created )
+    stars = f'{min_stars}..{max_stars}'
 
-    except KeyError:
-        dict_of_comments = {}
+    return f'is:public archived:false fork:false stars:{stars} pushed:20{date_last_act:%y-%m-%d}..* created:20{date_created:%y-%m-%d}..*'
 
-    return dict_of_comments
+# Runs the query and iterates through all pages of repositories
+def find_repos( query_string, db_collection, total_pull_num ):
 
-# Function that pulls all reveiw comments from the pull request and saves to dict
-def get_comments_from_review_threads(query_data):
-    try:
-        review_nodes = query_data['data']['repository']['pullRequest']['reviewThreads']['edges']
-        dict_of_comments = {"comment" : []}
-        for review_node in review_nodes:
-            for comment in review_node['node']['comments']['nodes']:
-                dict_of_comments["comment"].append( {"author" : comment['author']['login'], "bodyText" : comment['bodyText']} )
-                #dict_of_comments.update({"comment" : {"author" : comment['author']['login'], "bodyText" : comment['bodyText']}})
-    except KeyError:
-        dict_of_comments = {}
+    end_cursor = ""
+    end_cursor_string = ""
+    hasNextPage = True
+    index = 0
+    
+    while( hasNextPage and index <= 1 ):
+        query = setup_query( query_string, end_cursor_string )
+        result = run_query( query )
 
-    return dict_of_comments
+        repo_checker( result, db_collection, total_pull_num )
 
+        # if there is a next page, update the endcursor string and continue loop
+        if( result["data"]["search"]["pageInfo"]["hasNextPage"] ):
+            end_cursor = result["data"]["search"]["pageInfo"]["endCursor"]
+            end_cursor_string = f', after:"{end_cursor}"'
+        else:
+            hasNextPage = False
+
+        index += 1
+
+# Iterates through all repositories found on each page
+# saves valid repositories into a database
+def repo_checker( query_data, db_collection, total_pull_num ):
+
+    repository_nodes = query_data["data"]["search"]["nodes"]
+    dict_of_repositories = {"repository" : []}
+
+    index = 0
+    for node in repository_nodes:
+        if( is_repo_valid( node, total_pull_num ) ):
+            dict_of_repositories["repository"].append( {"name" : node["name"],
+                                                        "owner" : node["owner"]["login"],
+                                                        "contributers" : node["contributors"]["totalCount"],
+                                                        "stars" : node["stargazers"]["totalCount"],
+                                                        "forks" : node["forks"],
+                                                        "commits" : node["commits"]["target"]["history"]["totalCount"],
+                                                        "pullRequests" : node["pullRequests"]["totalCount"]} )
+            print( "Repository: " + str(index) )
+            index += 1
+
+    db_collection.insert_one( dict_of_repositories )
+
+# checks that a repository is valid
+# a repo is valid if it has more pull requests than the param
+# TODO: more requirments?
+# returns a boolean
+def is_repo_valid( node, total_pull_num ):
+    if( node["pullRequests"]["totalCount"] > total_pull_num ):
+        return True
+    return False
+
+# create the query filter and setup the query string
+query_string = query_filter( min_stars, max_stars, last_activity, created )
 
 # Establishing connection to mongoClient
 client = pymongo.MongoClient( mongo_client_string )
-db = client[ database_name ]
-db_collection = db[ collection_name ]
+database = client[ database_name ]
+db_collection = database[ collection_name ]
 
-# Loop for executing the query
-for pull_request_index in range( 1, number_of_pull_requests + 1 ):
-    # Executes the query
-    query = setup_query(  )
-    query_data = run_query( query )
-    list_of_pull_request_comments = get_comments_from_pull_request( query_data )
-    list_of_review_thread_comments = get_comments_from_review_threads( query_data )
-
-    # Inserts into database
-    if( list_of_pull_request_comments ):
-        db_collection.insert_one( list_of_pull_request_comments )
-    elif( list_of_review_thread_comments ):
-        db_collection.insert_one( list_of_review_thread_comments )
-    else:
-        print( "Pull Request - Empty" )
-    print( "Pull Request - {}".format( pull_request_index ) )
-
-    time.sleep(.2)
-
-# Closing Connection
-client.close()
-
-# Executes the query
-# query = setup_query("astropy", "astropy", 5, 10)
-# query_data = run_query(query)
-# list_of_pull_request_comments = get_comments_from_pull_request(query_data)
-# list_of_review_thread_comments = get_comments_from_review_threads(query_data)
+# run the query
+find_repos( query_string, db_collection, total_pull_num )
 
 # Adds comments to a MongoDB
 # client = pymongo.MongoClient("mongodb+srv://jek248:SentimentAnalysis@sentiment-analysis-8snlg.mongodb.net/test?retryWrites=true&w=majority")
@@ -169,4 +196,3 @@ client.close()
 # db_collection.insert_one( list_of_pull_request_comments )
 # db_collection.insert_one( list_of_review_thread_comments )
 # client.close()
-
