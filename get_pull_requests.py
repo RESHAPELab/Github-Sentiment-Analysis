@@ -1,7 +1,7 @@
 '''
-Filename: run_query.py
+Filename: get_pull_requests.py
 Author(s): Joshua Kruse and Champ Foronda
-Description: Script that runs a query on pull requests in a repository and writes them into a CSV file
+Description: Script that runs a query on pull requests in a repository and writes them into a MongoDatabase
 '''
 import requests
 import json
@@ -14,7 +14,7 @@ from config import GITHUB_AUTHORIZATION_KEY, MONGO_USER, MONGO_PASSWORD
 headers = {"Authorization": GITHUB_AUTHORIZATION_KEY}
 owner_name = "astropy"
 repo_name = "astropy"
-number_of_pull_requests = 100
+number_of_pull_requests = 20
 comment_range = 100
 mongo_client_string = "mongodb+srv://" + MONGO_USER + ":" + MONGO_PASSWORD + "@sentiment-analysis-8snlg.mongodb.net/test?retryWrites=true&w=majority"
 database_name = repo_name + "_database"
@@ -32,7 +32,7 @@ def setup_query(owner = "", name = "", pull_request_number = 1, comment_range = 
                 number
                 closed
                 author {{
-                    login 
+                    login
                 }}
                 bodyText
                 comments(first: {comment_range}) {{
@@ -78,9 +78,11 @@ def run_query(query):
 def get_comments_from_pull_request(query_data):
     try:
         comment_edges = query_data['data']['repository']['pullRequest']['comments']['edges']
-        dict_of_comments = dict()
+        dict_of_comments = {"comment" : []}
         for edge in comment_edges:
-            dict_of_comments.update({edge['node']['author']['login'] : edge['node']['bodyText']})
+            dict_of_comments["comment"].append( {"author" : edge['node']['author']['login'], "bodyText" : edge['node']['bodyText']} )
+            #dict_of_comments.update({"comment" : {"author" : edge['node']['author']['login'], "bodyText" : edge['node']['bodyText']}})
+
     except KeyError:
         dict_of_comments = {}
 
@@ -90,10 +92,11 @@ def get_comments_from_pull_request(query_data):
 def get_comments_from_review_threads(query_data):
     try:
         review_nodes = query_data['data']['repository']['pullRequest']['reviewThreads']['edges']
-        dict_of_comments = dict()
+        dict_of_comments = {"comment" : []}
         for review_node in review_nodes:
             for comment in review_node['node']['comments']['nodes']:
-                dict_of_comments.update({comment['author']['login'] : comment['bodyText']})
+                dict_of_comments["comment"].append( {"author" : comment['author']['login'], "bodyText" : comment['bodyText']} )
+                #dict_of_comments.update({"comment" : {"author" : comment['author']['login'], "bodyText" : comment['bodyText']}})
     except KeyError:
         dict_of_comments = {}
 
@@ -123,7 +126,7 @@ for pull_request_index in range( 1, number_of_pull_requests + 1 ):
     print( "Pull Request - {}".format( pull_request_index ) )
 
     time.sleep(.2)
-    
+
 # Closing Connection
 client.close()
 
