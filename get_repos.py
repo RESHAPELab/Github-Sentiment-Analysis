@@ -114,7 +114,7 @@ def run_query(query):
     if request.status_code == 200:
         return request.json()
     else:
-            raise Exception("Query failed to run by returning code of {}. {}".format(request.status_code, query))
+        raise Exception(f'ERROR [{request.status_code}]: Query failed to execute...\nRESPONSE: {request.text}')
 
 # Builds the query filter string compatible to github
 def query_filter( min_stars, max_stars, last_activity, created ):
