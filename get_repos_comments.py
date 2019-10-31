@@ -14,18 +14,18 @@ import datetime
 from config import GITHUB_AUTHORIZATION_KEY, MONGO_USER, MONGO_PASSWORD
 
 # Variables
-headers = {"Authorization": "token 5082a27709b387074fbcc97d778b9943724b6c58"}
+headers = {"Authorization": "token "}
 mongo_client_string = "mongodb+srv://" + MONGO_USER + ":" + MONGO_PASSWORD + "@sentiment-analysis-8snlg.mongodb.net/test?retryWrites=true&w=majority"
-min_stars = 0
-max_stars = 10
+min_stars = 100
+max_stars = 10000
 last_activity = 90 # within the last __ days
 created = 364 * 4 # withinthe last __ days
-total_pull_num = 0 # amount of pull requests a repository needs
-number_of_pull_requests = 10
+total_pull_num = 100 # amount of pull requests a repository needs
 repo_database_name = "repositories"
 repo_collection_name = "collect_mnst" + str(min_stars) + "_mxst" + str(max_stars) + "_lsact" + str(last_activity) + "_crtd" + str(created) + "_nmpll" + str(total_pull_num)
 pull_database_name = "comments"
 pull_collection_name = "default_collection"
+now = datetime.datetime.now()
 
 # Runs the query and iterates through all pages of repositories
 def find_repos( ):
@@ -117,9 +117,6 @@ def is_repo_valid( node, total_pull_num ):
 # Saves all comments on pull requests in a given repository to a database
 # Takes in only the owner of a repository and the name
 def get_comments( repo_owner, repo_name, client ):
-    
-    pull_database = client[ pull_database_name ]
-    db_pull_collection = pull_database[ repo_owner + "__" + repo_name ]
    
     end_cursor = ""
     end_cursor_string = ""
@@ -135,8 +132,8 @@ def get_comments( repo_owner, repo_name, client ):
         pull_request_nodes = query_data['data']['repository']['pullRequests']['nodes']
         
         for node in pull_request_nodes:
-            get_pull_comments( node, db_pull_collection )
-            get_review_comments( node, db_pull_collection )
+            get_pull_comments( node, client )
+            get_review_comments( node, client )
 
         # if there is a next page, update the endcursor string and continue loop
         if( query_data["data"]["repository"]["pullRequests"]["pageInfo"]["hasNextPage"] ):
@@ -145,50 +142,108 @@ def get_comments( repo_owner, repo_name, client ):
         else:
             hasNextPage = False
 
+        print("Pull Request Page: " + str(index) )
         index += 1
         time.sleep(1)
 
 # function that get the comments from a specific pull request
-def get_pull_comments( node, collection):
+def get_pull_comments( node, client ):
+    
+    dt_string = now.strftime("%d:%m:%Y_%H:%M:%S")
+    database = client[ pull_database_name + dt_string ]
+    
+    member_collection = database[ "MEMBER" ]
+    owner_collection = database[ "OWNER" ]
+    collaborator_collection = database[ "COLLABORATOR" ]
+    contributer_collection = database[ "CONTRIBUTOR" ]
+    first_contributer_collection = database[ "FIRST_TIME_CONTRIBUTOR" ]
+    firsttimer_collection = database[ "FIRST_TIMER" ]
+    none_collection = database[ "NONE" ]
+    all_collection = database[ "ALL" ]
+    
     list_of_comments = []
-    try:
-        comment_edges = node['comments']['edges']
 
-        index = 0
-        for edge in comment_edges:
-            bodyText = edge['node']['bodyText'].replace( "\n", "" )
-            list_of_comments.append( {'author' : edge['node']['author']['login'],
-                                          'bodyText' : bodyText } )
+    comment_edges = node['comments']['edges']
 
-            print( "Comment: " + str( index ) )
+    index = 0
+    for edge in comment_edges:
+        bodyText = edge['node']['bodyText'].replace( "\n", "" )
+        new_comment = {'author' : edge['node']['author']['login'],
+                       'bodyText' : bodyText,
+                       'authorAssociation' : edge['node']['authorAssociation'] }
 
-            index += 1
-                
-    except KeyError:
-        print("Is an Issue")
+        list_of_comments.append( new_comment )
+
+        if( new_comment['authorAssociation'] == "MEMBER" ): member_collection.insert_one( new_comment )
+        elif( new_comment['authorAssociation'] == "OWNER" ): owner_collection.insert_one( new_comment )
+        elif( new_comment['authorAssociation'] == "COLLABORATOR" ): collaborator_collection.insert_one( new_comment )
+        elif( new_comment['authorAssociation'] == "FIRST_TIME_CONTRIBUTOR" ): first_contributor_collection.insert_one( new_comment )
+        elif( new_comment['authorAssociation'] == "FIRST_TIMER" ): first_timer_collection.insert_one( new_comment )
+        elif( new_comment['authorAssociation'] == "NONE" ): none_collection.insert_one( new_comment )
+
+        print("comment")
+            
+        index += 1
 
     if( list_of_comments ):
-        collection.insert_many( list_of_comments )
+        all_collection.insert_many( list_of_comments )
 
 # function that gets the review comments from a specific pull request
-def get_review_comments( node, collection ):
+def get_review_comments( node, client ):
+    
+    dt_string = now.strftime("%d:%m:%Y_%H:%M:%S")
+    database = client[ pull_database_name + dt_string ]
+    
+    member_collection = database[ "MEMBER" ]
+    owner_collection = database[ "OWNER" ]
+    collaborator_collection = database[ "COLLABORATOR" ]
+    contributer_collection = database[ "CONTRIBUTOR" ]
+    first_contributer_collection = database[ "FIRST_TIME_CONTRIBUTOR" ]
+    firsttimer_collection = database[ "FIRST_TIMER" ]
+    none_collection = database[ "NONE" ]
+    all_collection = database[ "ALL" ]
+    
     list_of_review_comments = []
-    try:
-        review_nodes = node['reviewThreads']['edges']
 
-        index = 0
-        for review_node in review_nodes:
-            for comment in review_node['node']['comments']['nodes']:
-                bodyText = edge['node']['bodyText'].replace( "\n", "" )
-                list_of_review_comments.append( {'author' : comment['author']['login'],
-                                                     'bodyText' : bodyText } )
-                print( "Comment: " + str( index ) )
-                index += 1
-    except KeyError:
-        print("Is an Issue")
+    review_nodes = node['reviewThreads']['edges']
+
+    index = 0
+    for review_node in review_nodes:
+        for comment in review_node['node']['comments']['nodes']:
+            bodyText = comment['bodyText'].replace( "\n", "" )
+            new_comment = {'author' : comment['author']['login'],
+                           'bodyText' : bodyText,
+                           'authorAssociation' : comment['authorAssociation'] }
+                
+
+            list_of_review_comments.append( new_comment )
+
+            if( new_comment['authorAssociation'] == "MEMBER" ): member_collection.insert_one( new_comment )
+            elif( new_comment['authorAssociation'] == "OWNER" ): owner_collection.insert_one( new_comment )
+            elif( new_comment['authorAssociation'] == "COLLABORATOR" ): collaborator_collection.insert_one( new_comment )
+            elif( new_comment['authorAssociation'] == "FIRST_TIME_CONTRIBUTOR" ): first_contributor_collection.insert_one( new_comment )
+            elif( new_comment['authorAssociation'] == "FIRST_TIMER" ): first_timer_collection.insert_one( new_comment )
+            elif( new_comment['authorAssociation'] == "NONE" ): none_collection.insert_one( new_comment )
+
+            print("review comment")
+                
+            index += 1
                         
     if( list_of_review_comments ):
-        collection.insert_many( list_of_review_comments )
+        all_collection.insert_many( list_of_review_comments )
+
+# function that adds comments to a database based on the author association
+def add_to_db( comments, client ):
+    database = client[ pull_database_name + dt_string ]
+    dt_string = now.strftime("%d/%m/%Y_%H:%M:%S")
+    
+    member_collection = repo_database[ "MEMBER" ]
+    owner_collection = repo_database[ "OWNER" ]
+    collaborator_collection = repo_database[ "COLLABORATOR" ]
+    contributer_collection = repo_database[ "CONTRIBUTOR" ]
+    first_contributer_collection = repo_database[ "FIRST_TIME_CONTRIBUTOR" ]
+    firsttimer_collection = repo_database[ "FIRST_TIMER" ]
+    none_collection = repo_database[ "FIRST_TIMER" ]
 
 # Defines the query to run
 def setup_repo_query( query_string, end_cursor ):
@@ -292,6 +347,7 @@ def setup_pull_query(owner = "", name = "", endcursor = ""):
               author {{
                 login
               }}
+              authorAssociation
               bodyText
             }}
           }}
