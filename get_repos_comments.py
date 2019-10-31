@@ -156,8 +156,9 @@ def get_pull_comments( node, collection):
 
         index = 0
         for edge in comment_edges:
+            bodyText = edge['node']['bodyText'].replace( "\n", "" )
             list_of_comments.append( {'author' : edge['node']['author']['login'],
-                                          'bodyText' : edge['node']['bodyText'] } )
+                                          'bodyText' : bodyText } )
 
             print( "Comment: " + str( index ) )
 
@@ -178,8 +179,9 @@ def get_review_comments( node, collection ):
         index = 0
         for review_node in review_nodes:
             for comment in review_node['node']['comments']['nodes']:
+                bodyText = edge['node']['bodyText'].replace( "\n", "" )
                 list_of_review_comments.append( {'author' : comment['author']['login'],
-                                                     'bodyText' : comment['bodyText'] } )
+                                                     'bodyText' : bodyText } )
                 print( "Comment: " + str( index ) )
                 index += 1
     except KeyError:
