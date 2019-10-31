@@ -17,7 +17,7 @@ from config import GITHUB_AUTHORIZATION_KEY, MONGO_USER, MONGO_PASSWORD
 headers = {"Authorization": "token 2997183101a4b7362f1b9bafc1f9216cc859c601"}
 mongo_client_string = "mongodb+srv://" + MONGO_USER + ":" + MONGO_PASSWORD + "@sentiment-analysis-8snlg.mongodb.net/test?retryWrites=true&w=majority"
 min_stars = 100
-max_stars = 10000
+max_stars = 1000
 last_activity = 90 # within the last __ days
 created = 364 * 4 # withinthe last __ days
 total_pull_num = 100 # amount of pull requests a repository needs
@@ -57,7 +57,7 @@ def find_repos( ):
             hasNextPage = False
 
         index += 1
-        time.sleep(1)
+        time.sleep(.5)
 
 # Builds the query filter string compatible to github
 def query_filter( min_stars, max_stars, last_activity, created ):
@@ -130,10 +130,13 @@ def get_comments( repo_owner, repo_name, client ):
         print(json.dumps(query_data, indent=2))
 
         pull_request_nodes = query_data['data']['repository']['pullRequests']['nodes']
-        
+
+        index = 0
         for node in pull_request_nodes:
             get_pull_comments( node, client )
             get_review_comments( node, client )
+            print("Pull Request: " + str(index) )
+            index += 1
 
         # if there is a next page, update the endcursor string and continue loop
         if( query_data["data"]["repository"]["pullRequests"]["pageInfo"]["hasNextPage"] ):
@@ -141,10 +144,8 @@ def get_comments( repo_owner, repo_name, client ):
             end_cursor_string = f', after:"{end_cursor}"'
         else:
             hasNextPage = False
-
-        print("Pull Request Page: " + str(index) )
         index += 1
-        time.sleep(1)
+        time.sleep(.5)
 
 # function that get the comments from a specific pull request
 def get_pull_comments( node, client ):
