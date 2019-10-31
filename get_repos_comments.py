@@ -27,16 +27,6 @@ repo_collection_name = "collect_mnst" + str(min_stars) + "_mxst" + str(max_stars
 pull_database_name = "comments"
 pull_collection_name = "default_collection"
 
-
-'''
---- Workflow ---
-    I. Create query string and build query
-    II. run query, iterating through all pages of repos:
-        i. iterate through all repositories on each page:
-            I. add specific repository to database if it matches specific parameters
-    III. Pull comments from each repository in repo_database and save to a new database
-'''
-
 # Runs the query and iterates through all pages of repositories
 def find_repos( ):
 
@@ -127,53 +117,76 @@ def is_repo_valid( node, total_pull_num ):
 # Saves all comments on pull requests in a given repository to a database
 # Takes in only the owner of a repository and the name
 def get_comments( repo_owner, repo_name, client ):
-
+    
     pull_database = client[ pull_database_name ]
     db_pull_collection = pull_database[ repo_owner + "__" + repo_name ]
-
-    # loops through every pull request made on a repository
-    for pull_request_index in range( 1, number_of_pull_requests + 1 ):
-        
-        query = setup_pull_query( repo_owner, repo_name, 1, 100 )
+   
+    end_cursor = ""
+    end_cursor_string = ""
+    hasNextPage = True
+    index = 0
+    
+    while( hasNextPage and index < 10):
+        query = setup_pull_query( repo_owner, repo_name, end_cursor_string)
         query_data = run_query( query )
 
-        # Gets the pull request comments
-        list_of_comments = []
-        try:
-            comment_edges = query_data['data']['repository']['pullRequest']['comments']['edges']
+        print(json.dumps(query_data, indent=2))
 
-            index = 0
-            for edge in comment_edges:
-                list_of_comments.append( {'author' : edge['node']['author']['login'],
-                                              'bodyText' : edge['node']['bodyText'] } )
+        pull_request_nodes = query_data['data']['repository']['pullRequests']['nodes']
+        
+        for node in pull_request_nodes:
+            get_pull_comments( node, db_pull_collection )
+            get_review_comments( node, db_pull_collection )
 
-                print( "Comment: " + str( index ) )
+        # if there is a next page, update the endcursor string and continue loop
+        if( query_data["data"]["repository"]["pullRequests"]["pageInfo"]["hasNextPage"] ):
+            end_cursor = query_data["data"]["repository"]["pullRequests"]["pageInfo"]["endCursor"]
+            end_cursor_string = f', after:"{end_cursor}"'
+        else:
+            hasNextPage = False
 
-                index += 1
+        index += 1
+        time.sleep(1)
+
+# function that get the comments from a specific pull request
+def get_pull_comments( node, collection):
+    list_of_comments = []
+    try:
+        comment_edges = node['comments']['edges']
+
+        index = 0
+        for edge in comment_edges:
+            list_of_comments.append( {'author' : edge['node']['author']['login'],
+                                          'bodyText' : edge['node']['bodyText'] } )
+
+            print( "Comment: " + str( index ) )
+
+            index += 1
                 
-        except KeyError:
-            print("Is an Issue")
+    except KeyError:
+        print("Is an Issue")
 
-        if( list_of_comments ):
-            db_pull_collection.insert_many( list_of_comments )
+    if( list_of_comments ):
+        collection.insert_many( list_of_comments )
 
-        # Gets the pull request review comments
-        list_of_review_comments = []
-        try:
-            review_nodes = query_data['data']['repository']['pullRequest']['reviewThreads']['edges']
+# function that gets the review comments from a specific pull request
+def get_review_comments( node, collection ):
+    list_of_review_comments = []
+    try:
+        review_nodes = node['reviewThreads']['edges']
 
-            index = 0
-            for review_node in review_nodes:
-                for comment in review_node['node']['comments']['nodes']:
-                    list_of_review_comments.append( {'author' : comment['author']['login'],
+        index = 0
+        for review_node in review_nodes:
+            for comment in review_node['node']['comments']['nodes']:
+                list_of_review_comments.append( {'author' : comment['author']['login'],
                                                      'bodyText' : comment['bodyText'] } )
-                    print( "Comment: " + str( index ) )
-                    index += 1
-        except KeyError:
-            print("Is an Issue")
+                print( "Comment: " + str( index ) )
+                index += 1
+    except KeyError:
+        print("Is an Issue")
                         
-        if( list_of_review_comments ):
-            db_pull_collection.insert_many( list_of_review_comments )
+    if( list_of_review_comments ):
+        collection.insert_many( list_of_review_comments )
 
 # Defines the query to run
 def setup_repo_query( query_string, end_cursor ):
@@ -251,49 +264,55 @@ def setup_repo_query( query_string, end_cursor ):
     return query
 
 # Defines the query to run
-def setup_pull_query(owner = "", name = "", pull_request_number = 1, comment_range = 10):
+def setup_pull_query(owner = "", name = "", endcursor = ""):
     query = f'''
     query {{
-        repository(owner: "{owner}", name: "{name}") {{
-            pullRequest: issueOrPullRequest(number: {pull_request_number}) {{
-            __typename
-            ... on PullRequest {{
-                title
-                number
-                closed
-                author {{
-                    login
-                }}
-                bodyText
-                comments(first: {comment_range}) {{
-                edges {{
-                    node {{
-                    author {{
-                        login
-                    }}
-                    bodyText
-                    }}
-                }}
-                }}
-                reviewThreads(first: 100) {{
-                edges {{
-                    node {{
-                    comments(first: {comment_range}) {{
-                        nodes {{
-                        author {{
-                            login
-                        }}
-                        bodyText
-                        authorAssociation
-                        }}
-                    }}
-                    }}
-                }}
-                }}
-            }}
-            }}
+  repository (owner:"{owner}", name:"{name}") {{
+    name
+    pullRequests (first:25 {endcursor})
+    {{
+      pageInfo {{
+        endCursor
+        hasNextPage
+      }}
+      nodes {{
+        title
+        number
+        closed
+        author {{
+          login
         }}
-        }}'''
+        authorAssociation
+        bodyText
+        comments(first:100) {{
+          edges {{
+            node {{
+              author {{
+                login
+              }}
+              bodyText
+            }}
+          }}
+        }}
+        reviewThreads(first:100) {{
+          edges {{
+            node {{
+              comments(first:100) {{
+                nodes {{
+                  author {{
+                    login
+                  }}
+                  authorAssociation
+                  bodyText
+                }}
+              }}
+            }}
+          }}
+        }}
+      }}
+    }}
+  }}
+}}'''
     return query
 
 # run the query
