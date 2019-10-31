@@ -14,7 +14,7 @@ import datetime
 from config import GITHUB_AUTHORIZATION_KEY, MONGO_USER, MONGO_PASSWORD
 
 # Variables
-headers = {"Authorization": "token "}
+headers = {"Authorization": "token 2997183101a4b7362f1b9bafc1f9216cc859c601"}
 mongo_client_string = "mongodb+srv://" + MONGO_USER + ":" + MONGO_PASSWORD + "@sentiment-analysis-8snlg.mongodb.net/test?retryWrites=true&w=majority"
 min_stars = 100
 max_stars = 10000
@@ -123,7 +123,7 @@ def get_comments( repo_owner, repo_name, client ):
     hasNextPage = True
     index = 0
     
-    while( hasNextPage and index < 10):
+    while( hasNextPage and index < 4):
         query = setup_pull_query( repo_owner, repo_name, end_cursor_string)
         query_data = run_query( query )
 
@@ -155,35 +155,39 @@ def get_pull_comments( node, client ):
     member_collection = database[ "MEMBER" ]
     owner_collection = database[ "OWNER" ]
     collaborator_collection = database[ "COLLABORATOR" ]
-    contributer_collection = database[ "CONTRIBUTOR" ]
-    first_contributer_collection = database[ "FIRST_TIME_CONTRIBUTOR" ]
+    contributor_collection = database[ "CONTRIBUTOR" ]
+    first_contributor_collection = database[ "FIRST_TIME_CONTRIBUTOR" ]
     firsttimer_collection = database[ "FIRST_TIMER" ]
     none_collection = database[ "NONE" ]
     all_collection = database[ "ALL" ]
     
     list_of_comments = []
 
-    comment_edges = node['comments']['edges']
+    try:
+        comment_edges = node['comments']['edges']
 
-    index = 0
-    for edge in comment_edges:
-        bodyText = edge['node']['bodyText'].replace( "\n", "" )
-        new_comment = {'author' : edge['node']['author']['login'],
-                       'bodyText' : bodyText,
-                       'authorAssociation' : edge['node']['authorAssociation'] }
+        index = 0
+        for edge in comment_edges:
+            bodyText = edge['node']['bodyText'].replace( "\n", "" )
+            new_comment = {'author' : edge['node']['author']['login'],
+                           'bodyText' : bodyText,
+                           'authorAssociation' : edge['node']['authorAssociation'] }
 
-        list_of_comments.append( new_comment )
+            list_of_comments.append( new_comment )
 
-        if( new_comment['authorAssociation'] == "MEMBER" ): member_collection.insert_one( new_comment )
-        elif( new_comment['authorAssociation'] == "OWNER" ): owner_collection.insert_one( new_comment )
-        elif( new_comment['authorAssociation'] == "COLLABORATOR" ): collaborator_collection.insert_one( new_comment )
-        elif( new_comment['authorAssociation'] == "FIRST_TIME_CONTRIBUTOR" ): first_contributor_collection.insert_one( new_comment )
-        elif( new_comment['authorAssociation'] == "FIRST_TIMER" ): first_timer_collection.insert_one( new_comment )
-        elif( new_comment['authorAssociation'] == "NONE" ): none_collection.insert_one( new_comment )
+            if( new_comment['authorAssociation'] == "MEMBER" ): member_collection.insert_one( new_comment )
+            elif( new_comment['authorAssociation'] == "OWNER" ): owner_collection.insert_one( new_comment )
+            elif( new_comment['authorAssociation'] == "COLLABORATOR" ): collaborator_collection.insert_one( new_comment )
+            elif( new_comment['authorAssociation'] == "CONTRIBUTOR" ): contributor_collection.insert_one( new_comment )
+            elif( new_comment['authorAssociation'] == "FIRST_TIME_CONTRIBUTOR" ): first_contributor_collection.insert_one( new_comment )
+            elif( new_comment['authorAssociation'] == "FIRST_TIMER" ): first_timer_collection.insert_one( new_comment )
+            elif( new_comment['authorAssociation'] == "NONE" ): none_collection.insert_one( new_comment )
 
-        print("comment")
-            
-        index += 1
+            print("comment")
+                
+            index += 1
+    except TypeError:
+        print("type error")
 
     if( list_of_comments ):
         all_collection.insert_many( list_of_comments )
@@ -197,8 +201,8 @@ def get_review_comments( node, client ):
     member_collection = database[ "MEMBER" ]
     owner_collection = database[ "OWNER" ]
     collaborator_collection = database[ "COLLABORATOR" ]
-    contributer_collection = database[ "CONTRIBUTOR" ]
-    first_contributer_collection = database[ "FIRST_TIME_CONTRIBUTOR" ]
+    contributor_collection = database[ "CONTRIBUTOR" ]
+    first_contributor_collection = database[ "FIRST_TIME_CONTRIBUTOR" ]
     firsttimer_collection = database[ "FIRST_TIMER" ]
     none_collection = database[ "NONE" ]
     all_collection = database[ "ALL" ]
@@ -207,27 +211,31 @@ def get_review_comments( node, client ):
 
     review_nodes = node['reviewThreads']['edges']
 
-    index = 0
-    for review_node in review_nodes:
-        for comment in review_node['node']['comments']['nodes']:
-            bodyText = comment['bodyText'].replace( "\n", "" )
-            new_comment = {'author' : comment['author']['login'],
-                           'bodyText' : bodyText,
-                           'authorAssociation' : comment['authorAssociation'] }
-                
+    try:
+        index = 0
+        for review_node in review_nodes:
+            for comment in review_node['node']['comments']['nodes']:
+                bodyText = comment['bodyText'].replace( "\n", "" )
+                new_comment = {'author' : comment['author']['login'],
+                               'bodyText' : bodyText,
+                               'authorAssociation' : comment['authorAssociation'] }
+                    
 
-            list_of_review_comments.append( new_comment )
+                list_of_review_comments.append( new_comment )
 
-            if( new_comment['authorAssociation'] == "MEMBER" ): member_collection.insert_one( new_comment )
-            elif( new_comment['authorAssociation'] == "OWNER" ): owner_collection.insert_one( new_comment )
-            elif( new_comment['authorAssociation'] == "COLLABORATOR" ): collaborator_collection.insert_one( new_comment )
-            elif( new_comment['authorAssociation'] == "FIRST_TIME_CONTRIBUTOR" ): first_contributor_collection.insert_one( new_comment )
-            elif( new_comment['authorAssociation'] == "FIRST_TIMER" ): first_timer_collection.insert_one( new_comment )
-            elif( new_comment['authorAssociation'] == "NONE" ): none_collection.insert_one( new_comment )
+                if( new_comment['authorAssociation'] == "MEMBER" ): member_collection.insert_one( new_comment )
+                elif( new_comment['authorAssociation'] == "OWNER" ): owner_collection.insert_one( new_comment )
+                elif( new_comment['authorAssociation'] == "COLLABORATOR" ): collaborator_collection.insert_one( new_comment )
+                elif( new_comment['authorAssociation'] == "CONTRIBUTOR" ): contributor_collection.insert_one( new_comment )
+                elif( new_comment['authorAssociation'] == "FIRST_TIME_CONTRIBUTOR" ): first_contributor_collection.insert_one( new_comment )
+                elif( new_comment['authorAssociation'] == "FIRST_TIMER" ): first_timer_collection.insert_one( new_comment )
+                elif( new_comment['authorAssociation'] == "NONE" ): none_collection.insert_one( new_comment )
 
-            print("review comment")
-                
-            index += 1
+                print("review comment")
+                    
+                index += 1
+    except TypeError:
+        print("type error")
                         
     if( list_of_review_comments ):
         all_collection.insert_many( list_of_review_comments )
