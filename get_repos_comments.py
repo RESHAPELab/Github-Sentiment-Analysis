@@ -169,7 +169,9 @@ def get_pull_comments( node, client ):
 
         index = 0
         for edge in comment_edges:
-            bodyText = edge['node']['bodyText'].replace( "\n", "" )
+            bodyText = edge['node']['bodyText']
+            bodyText = bodyText.replace( "\n", " " )
+            bodyText = bodyText..replace( ",", " " )
             new_comment = {'author' : edge['node']['author']['login'],
                            'bodyText' : bodyText,
                            'authorAssociation' : edge['node']['authorAssociation'] }
@@ -216,7 +218,9 @@ def get_review_comments( node, client ):
         index = 0
         for review_node in review_nodes:
             for comment in review_node['node']['comments']['nodes']:
-                bodyText = comment['bodyText'].replace( "\n", "" )
+                bodyText = comment['bodyText']
+                bodyText = bodyText.replace( "\n", " " )
+                bodyText = bodyText..replace( ",", " " )
                 new_comment = {'author' : comment['author']['login'],
                                'bodyText' : bodyText,
                                'authorAssociation' : comment['authorAssociation'] }
