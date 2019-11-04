@@ -55,6 +55,9 @@ class GithubScraper:
         """
         return self.__MONGO_PASSWORD
 
+    def get_mongo_client_string(self):
+        return f"mongodb+srv://{self.get_mongo_username()}:{self.get_mongo_password()}@sentiment-analysis-8snlg.mongodb.net/test?retryWrites=true&w=majority"
+
     def run_query(self, query):
         """
         Sends a request to the GraphQL Endpoint based on a given query
@@ -75,8 +78,8 @@ class GithubScraper:
             Raises an exception if the query failed to run/if the HTTP_OK_RESPONSE was not received
         
         """
-        request = requests.post(GITHUB_GRAPHQL_ENDPOINT, json={'query': query}, headers=self.__HEADERS)
-        if request.status_code == HTTP_OK_RESPONSE:
-            return request.json
+        request = requests.post(self.GITHUB_GRAPHQL_ENDPOINT, json={'query': query}, headers=self.__HEADERS)
+        if request.status_code == self.HTTP_OK_RESPONSE:
+            return request.json()
         else:
             raise Exception(f'ERROR [{request.status_code}]: Query failed to run...\n{query}')

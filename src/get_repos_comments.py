@@ -11,7 +11,7 @@ import csv
 import pymongo
 import time
 import datetime
-from config import GITHUB_AUTHORIZATION_KEY, MONGO_USER, MONGO_PASSWORD
+from Config import GITHUB_AUTHORIZATION_KEY, MONGO_USER, MONGO_PASSWORD
 
 # Variables
 headers = {"Authorization": "token 2997183101a4b7362f1b9bafc1f9216cc859c601"}

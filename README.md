@@ -10,11 +10,11 @@ These instructions will get you a copy of the project up and running on your loc
 ### Prerequisites
 
 ```
-python
+python 3.7.4
 ```
 Install
 ```
-pip install requests, pymongo
+pip install -r requirements.txt
 ```
 
 ### get_pull_requests.py
@@ -33,4 +33,3 @@ This script will iterate through and save all repositories with given constraint
 ## Acknowledgments
 
 * **Igor Steinmacher, PHD.** - *Advisor* [Profile](https://www.igor.pro.br/)
-

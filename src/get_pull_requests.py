@@ -8,7 +8,7 @@ import json
 import csv
 import pymongo
 import time
-from config import GITHUB_AUTHORIZATION_KEY, MONGO_USER, MONGO_PASSWORD
+from Config import GITHUB_AUTHORIZATION_KEY, MONGO_USER, MONGO_PASSWORD
 
 # Variables
 headers = {"Authorization": GITHUB_AUTHORIZATION_KEY}

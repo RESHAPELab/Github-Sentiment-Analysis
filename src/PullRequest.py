@@ -1,4 +1,5 @@
 import requests
+from GithubScraper import GithubScraper
 
 class PullRequest(GithubScraper):
     def __init__(self, github_auth_key="", mongo_username="", mongo_password=""):
@@ -36,51 +37,50 @@ class PullRequest(GithubScraper):
         -------
         json
             Query that will be used with the GraphQL API
+
         """
         query = f"""
         query {{
             repository(owner: {owner}, name: {name}) {{
                 pullRequest: issueOrPullRequest(number: {pull_request_number}) {{
-                    __typename
-                    ... onPullRequest {{
-                        title
-                        number
-                        closed
+                __typename
+                ... on PullRequest {{
+                    title
+                    number
+                    closed
+                    author {{
+                        login
+                    }}
+                    bodyText
+                    comments(first: {comment_range}) {{
+                    edges {{
+                        node {{
                         author {{
                             login
                         }}
                         bodyText
-                        comments(first: {comment_range}) {{
-                            edges {{
-                                node {{
-                                    author {{
-                                        login
-                                    }}
-                                    bodyText
-                                    authorAssociation
-                                }}
-                            }}
-                        }}
-                        reviewThreads(first: 100) {{
-                            edges {{
-                                node {{
-                                    comments(first: {comment_range}) {{
-                                        nodes {{
-                                            author {{
-                                                login
-                                            }}
-                                            bodyText
-                                            authorAssociation
-                                        }}
-                                    }}
-                                }}
-                            }}
                         }}
                     }}
+                    }}
+                    reviewThreads(first: 100) {{
+                    edges {{
+                        node {{
+                        comments(first: {comment_range}) {{
+                            nodes {{
+                            author {{
+                                login
+                            }}
+                            bodyText
+                            authorAssociation
+                            }}
+                        }}
+                        }}
+                    }}
+                    }}
+                }}
                 }}
             }}
-        }}
-        """
+            }}"""
 
         return query
 
@@ -104,6 +104,7 @@ class PullRequest(GithubScraper):
             Raises an error if the query data is invalid/None
         KeyError
             Raises a KeyError if the query data did not have any comments in it
+            
         """
         if query_data is None:
             raise Exception(f"ERROR: Invalid query data\n{query_data}")
@@ -139,6 +140,7 @@ class PullRequest(GithubScraper):
             Raises an error if the query data is invalid/None
         KeyError
             Raises a KeyError if the query data did not have any comments in it
+
         """
         if query_data is None:
             raise Exception(f"ERROR: Invalid query data\n{query_data}")
