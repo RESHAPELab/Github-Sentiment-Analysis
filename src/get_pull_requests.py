@@ -16,7 +16,7 @@ owner_name = "astropy"
 repo_name = "astropy"
 number_of_pull_requests = 20
 comment_range = 100
-mongo_client_string = "mongodb+srv://" + MONGO_USER + ":" + MONGO_PASSWORD + "@sentiment-analysis-8snlg.mongodb.net/test?retryWrites=true&w=majority"
+mongo_client_string = "mongodb+srv://" + MONGO_USER + ":" + MONGO_PASSWORD + "@sentiment-analysis-8snlg.mongodb.net/test?retryWrites=true&w=majority&ssl=true&ssl_cert_reqs=CERT_NONE"
 database_name = repo_name + "_database"
 collection_name = "comments"
 
@@ -145,10 +145,11 @@ def get_comments_from_review_threads(query_data):
 
     return dict_of_comments
 
+# query = setup_query("is:public archived:false created:>2018-01-01 comments:>0")
+# query_data = run_query(query)
+# print(json.dumps(query_data, indent=2))
 
-query = setup_query("is:public archived:false created:>2018-01-01 comments:>0")
-query_data = run_query(query)
-print(json.dumps(query_data, indent=2))
+client = pymongo.MongoClient(mongo_client_string)
 
 # Establishing connection to mongoClient
 # client = pymongo.MongoClient( mongo_client_string )
