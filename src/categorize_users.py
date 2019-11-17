@@ -1,6 +1,7 @@
 import requests
-from pymongo import MongoClient
 import json
+from pymongo import MongoClient
+from timeit import default_timer as timer
 from Config import GITHUB_AUTHORIZATION_KEY, MONGO_CLIENT_STRING
 
 GITHUB_GRAPHQL_ENDPOINT = "https://api.github.com/graphql"
@@ -38,7 +39,7 @@ def setup_count_total_pr_query(pr_author: str, end_cursor: str="") -> str:
     query {{
     user(login: "{pr_author}") {{
         login
-        pullRequests(first: 100 {end_cursor}) {{
+        pullRequests(first: 100{end_cursor}) {{
         pageInfo {{
             endCursor
             hasNextPage
@@ -109,7 +110,8 @@ def get_data_from_repos_in_db(client: MongoClient) -> dict:
             print(f"SUCCESS: Gathered {len(pull_request_data[name_with_owner])}/{total_count} from {name_with_owner}")
         else:
             print(f"ERROR: Could not gather all PRs. Gathered only {len(list_of_query_data)}/{total_count}\n")
-    
+
+        # Inserts all the PRs in MongoDB 
         database = client["AllPRsByRepository"]
         collections = database[name_with_owner]
         collections.insert_many(pull_request_data[name_with_owner])
@@ -208,6 +210,9 @@ def main() -> None:
     #         print(f'Adding: {repo_owner}/{repo_name} into database')
     #         info.insert_many(list_pr_author_dict)
 
-
 if __name__ == "__main__":
+    print("Running script...")
+    start_time = timer()
     main()
+    end_time = timer()
+    print(f"Script completed in: {start_time - end_time}")
