@@ -71,10 +71,12 @@ def get_data_from_repos_in_db(client: MongoClient) -> dict:
     collection_names = repo_db.list_collection_names()
 
     # Create a query for each repo
-    # for name in collection_names:
     collection = repo_db["collect_mnst1000_mxst10000_lsact90_crtd1456_nmpll100"]
-    cursor = collection.find(timeout=False)
-    for document in cursor:
+
+    # Grabs all the documents in the cursor to avoid a cursor timeout
+    records_in_collection = [ document for document in collection.find()]
+
+    for document in records_in_collection:
         # Variables that assist with collecting data
         end_cursor = ""
         end_cursor_string = ""
