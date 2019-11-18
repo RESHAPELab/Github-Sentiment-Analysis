@@ -149,30 +149,31 @@ def collect_author_info(client: MongoClient) -> None:
                         user_query = setup_user_query(author_login, end_cursor_string)
                         user_data = run_query(user_query)
 
-                        pull_requests = user_data["data"]["user"]["pullRequests"]["nodes"]
+                        if user_data["data"]["user"] is not None and user_data["data"]["user"]["pullRequests"] is not None:
+                            pull_requests = user_data["data"]["user"]["pullRequests"]["nodes"]
 
-                        # Counts through all the pull requests
-                        if pull_requests is not None:
-                            for pull_request in pull_requests:
-                                if pull_request["baseRepository"]["nameWithOwner"] == collection_name:
-                                    repo_pr_count += 1
-                                    author_association = pull_request["authorAssociation"]
+                            # Counts through all the pull requests
+                            if pull_requests is not None:
+                                for pull_request in pull_requests:
+                                    if pull_request["baseRepository"]["nameWithOwner"] == collection_name:
+                                        repo_pr_count += 1
+                                        author_association = pull_request["authorAssociation"]
 
-                        # Paginates
-                        has_next_page = user_data["data"]["user"]["pullRequests"]["pageInfo"]["hasNextPage"]
-                        if has_next_page:
-                            end_cursor = user_data["data"]["user"]["pullRequests"]["pageInfo"]["endCursor"]
-                            end_cursor_string = f', after:"{end_cursor}"'
-                        else:
-                            total_pr_count = user_data["data"]["user"]["pullRequests"]["totalCount"]
-                            author_info.append({
-                                "author": author_login,
-                                "association": author_association,
-                                "total_for_repo": repo_pr_count,
-                                "total_overall": total_pr_count
-                            })
+                            # Paginates
+                            has_next_page = user_data["data"]["user"]["pullRequests"]["pageInfo"]["hasNextPage"]
+                            if has_next_page:
+                                end_cursor = user_data["data"]["user"]["pullRequests"]["pageInfo"]["endCursor"]
+                                end_cursor_string = f', after:"{end_cursor}"'
+                            else:
+                                total_pr_count = user_data["data"]["user"]["pullRequests"]["totalCount"]
+                                author_info.append({
+                                    "author": author_login,
+                                    "association": author_association,
+                                    "total_for_repo": repo_pr_count,
+                                    "total_overall": total_pr_count
+                                })
                 
-                    print(f"[WORKING] {author_login} contributed {repo_pr_count}/{total_pr_count} pull requests to: {collection_name}\n")
+                    print(f"[WORKING] {author_login} contributed {repo_pr_count}/{total_pr_count} pull requests to: {collection_name}\n") 
 
         # Inserts author info into MongoDB
         author_info_db = client["AUTHOR_INFO_BY_REPO"]
@@ -211,48 +212,6 @@ def main() -> None:
         collect_author_info(client)
     else:
         print("[WORKING] Author information already parsed, categorizing users...")
-
-    
-    # print("Parsing query data...")
-    # for query in queries:
-    #     dict_of_repo_authors_data = dict()
-    #     list_pr_author_dict = list()
-    #     # Gathers the pull request from each PR author in Repository
-    #     repo_query_data = run_query(query)
-    #     repo_owner = get_repo_owner(repo_query_data)
-    #     repo_name = get_repo_name(repo_query_data)
-
-    #     repo_prs_data = parse_list_of_prs(repo_query_data)
-    #     length_of_repo_prs_data = int(len(repo_prs_data) / 4)
-    #     print(f"Gathering author info from PRs in: {repo_owner}/{repo_name}")
-    #     for index in range(0, length_of_repo_prs_data):
-    #         pr_author = get_pr_author(repo_prs_data[index])
-    #         pr_number = get_pr_number(repo_prs_data[index])
-            
-    #         # Gathers important from each pull request
-    #         pr_author_query = setup_count_total_pr_query(pr_author)
-    #         pr_author_data = run_query(pr_author_query)
-    #         pr_author_total_count = get_author_pr_count(pr_author_data, f'{repo_owner}/{repo_name}')
-    #         pr_author_association = get_author_association(pr_author_data, f'{repo_owner}/{repo_name}')
-
-    #         list_pr_author_dict.append(
-    #             {
-    #                 "author": pr_author,
-    #                 "pr_number": pr_number,
-    #                 "association": pr_author_association, 
-    #                 "repo_total": pr_author_total_count[0],
-    #                 "overall_total": pr_author_total_count[1]
-    #             })
-
-    #     dict_of_repo_authors_data[f'{repo_owner}/{repo_name}'] = list_pr_author_dict
-
-
-    #     database = client["PRAuthorInfoByRepo"]
-    #     info = database[f'{repo_owner}/{repo_name}']
-
-    #     if list_pr_author_dict:
-    #         print(f'Adding: {repo_owner}/{repo_name} into database')
-    #         info.insert_many(list_pr_author_dict)
 
 if __name__ == "__main__":
     print("[STARTING] Running script...\n")
