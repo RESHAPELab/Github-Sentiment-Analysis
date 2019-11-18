@@ -34,7 +34,7 @@ def setup_repo_query(repo_owner: str, repo_name: str, end_cursor: str = "") -> s
     """
     return query
 
-def setup_count_total_pr_query(pr_author: str, end_cursor: str="") -> str:
+def setup_user_query(pr_author: str, end_cursor: str="") -> str:
     query = f"""
     query {{
     user(login: "{pr_author}") {{
@@ -47,6 +47,7 @@ def setup_count_total_pr_query(pr_author: str, end_cursor: str="") -> str:
         totalCount
         nodes {{
             number
+            closed
             baseRepository {{
             nameWithOwner
             }}
@@ -66,18 +67,18 @@ def run_query(query: str) -> json:
     else:
         raise Exception(f'ERROR [{request.status_code}]: Query failed to execute:\nRESPONSE: {request.text}')
 
-def get_data_from_repos_in_db(client: MongoClient) -> dict:
+def collect_prs_from_repos_in_db(client: MongoClient) -> None:
     # Gather collection names frmo repositories database
     repo_db = client["repositories"]
-    collection_names = repo_db.list_collection_names()
+    # collection_names = repo_db.list_collection_names()
 
     # Create a query for each repo
     collection = repo_db["collect_mnst1000_mxst10000_lsact90_crtd1456_nmpll100"]
 
     # Grabs all the documents in the cursor to avoid a cursor timeout
-    records_in_collection = [ document for document in collection.find()]
+    documents_in_collection = [document for document in collection.find()]
 
-    for document in records_in_collection:
+    for document in documents_in_collection:
         # Variables that assist with collecting data
         end_cursor = ""
         end_cursor_string = ""
@@ -89,7 +90,7 @@ def get_data_from_repos_in_db(client: MongoClient) -> dict:
         repo_owner = document["owner"]
         name_with_owner = f"{repo_owner}/{repo_name}"
         pull_request_data[name_with_owner] = list()
-        print(f"\nGathering PRs from: {repo_owner}/{repo_name}")
+        print(f"[WORKING] Gathering PRs from: {repo_owner}/{repo_name}")
 
         # Iterates through all the valid pull requests
         while has_next_page:
@@ -107,33 +108,76 @@ def get_data_from_repos_in_db(client: MongoClient) -> dict:
 
         # If we collected the PRs insert it into MongoDB
         if total_count == len(pull_request_data[name_with_owner]):
-            print(f"SUCCESS: Gathered {len(pull_request_data[name_with_owner])}/{total_count} from {name_with_owner}")
+            print(f"[WORKING][SUCCESS] Gathered {len(pull_request_data[name_with_owner])}/{total_count} from {name_with_owner}\n")
         else:
-            print(f"ERROR: Could not gather all PRs. Gathered only {len(list_of_query_data)}/{total_count}\n")
+            print(f"[WORKING][ERROR] Could not gather all PRs. Gathered only {len(list_of_query_data)}/{total_count}\n")
 
         # Inserts all the PRs in MongoDB 
-        database = client["AllPRsByRepository"]
+        database = client["ALL_PRS_BY_REPO"]
         collections = database[name_with_owner]
         collections.insert_many(pull_request_data[name_with_owner])
-    
-def parse_list_of_prs(query_data: json) -> list:
-    pull_requests = query_data["data"]["repository"]["pullRequests"]["nodes"]
-    valid_pull_requests = list()
-    for pull_request in pull_requests:
-        if pull_request["authorAssociation"] in VALID_AUTHOR_ASSOCIATIONS:
-            valid_pull_requests.append(pull_request)
 
-    return valid_pull_requests
+def collect_author_info(client: MongoClient) -> None:
+    database = client["ALL_PRS_BY_REPO"]
+    collection_names = database.list_collection_names()
 
-def get_name_with_owner(query_data: json) -> str:
-    return query_data["data"]["repository"]["nameWithOwner"]
+    # Iterates through each repo
+    for collection_name in collection_names:
+        collection = database[collection_name]
+        mined_authors = set()
+        author_info = list()
 
-def get_pr_author(query_data: json) -> list:
-    return query_data["author"]["login"]
+        # Grabs all PRs and stores in a list to avoid cursor timeout
+        documents_in_collection = [document for document in collection.find({})]
+        for document in documents_in_collection:
+            author = document["author"]
 
-def get_pr_number(user_pr_data: json) -> int:
-    if user_pr_data is not None:
-        return user_pr_data["number"]
+            if author is not None:
+                author_login = author["login"]
+                repo_pr_count = 0
+
+                # Assists with pagination
+                end_cursor = ""
+                end_cursor_string = ""
+                has_next_page = True
+
+                if author_login not in mined_authors: 
+                    print(f"[WORKING] Collecting {author_login}'s author info for: {collection_name}...")
+                    mined_authors.add(author_login)
+                    while has_next_page:
+                        # Use author login to query user
+                        user_query = setup_user_query(author_login, end_cursor_string)
+                        user_data = run_query(user_query)
+
+                        pull_requests = user_data["data"]["user"]["pullRequests"]["nodes"]
+
+                        # Counts through all the pull requests
+                        if pull_requests is not None:
+                            for pull_request in pull_requests:
+                                if pull_request["baseRepository"]["nameWithOwner"] == collection_name:
+                                    repo_pr_count += 1
+                                    author_association = pull_request["authorAssociation"]
+
+                        # Paginates
+                        has_next_page = user_data["data"]["user"]["pullRequests"]["pageInfo"]["hasNextPage"]
+                        if has_next_page:
+                            end_cursor = user_data["data"]["user"]["pullRequests"]["pageInfo"]["endCursor"]
+                            end_cursor_string = f', after:"{end_cursor}"'
+                        else:
+                            total_pr_count = user_data["data"]["user"]["pullRequests"]["totalCount"]
+                            author_info.append({
+                                "author": author_login,
+                                "association": author_association,
+                                "total_for_repo": repo_pr_count,
+                                "total_overall": total_pr_count
+                            })
+                
+                    print(f"[WORKING] {author_login} contributed {repo_pr_count}/{total_pr_count} pull requests to: {collection_name}\n")
+
+        # Inserts author info into MongoDB
+        author_info_db = client["AUTHOR_INFO_BY_REPO"]
+        collections = author_info_db[collection_name]
+        collections.insert_many(author_info)
 
 def get_author_pr_count(query_data: json, repo: str) -> list:
     user_prs = query_data["data"]["user"]["pullRequests"]
@@ -149,26 +193,26 @@ def get_author_pr_count(query_data: json, repo: str) -> list:
 
     return [prs_created, user_totals]
 
-def get_author_association(query_data: json, repo: str) -> str:
-    user_nodes = query_data["data"]["user"]["pullRequests"]["nodes"]
-
-    for node in user_nodes:
-       if node["baseRepository"]["nameWithOwner"] == repo:
-           return node["authorAssociation"]
-
-def get_repo_owner(query_data: json) -> str:
-    return get_name_with_owner(query_data).split("/")[0]
-
-def get_repo_name(query_data: json) -> str:
-    return get_name_with_owner(query_data).split("/")[1]
-
 def main() -> None:    
     # Create queries from repo databse
     client = MongoClient(MONGO_CLIENT_STRING)
+    ALL_PRS_BY_REPO = client["ALL_PRS_BY_REPO"]
+    AUTHOR_INFO_BY_REPO = client["AUTHOR_INFO_BY_REPO"]
     
-    # Gather's all the PRs for each Repo in the database
-    get_data_from_repos_in_db(client)
+    # If database is empty gather's all the PRs for each Repo in the database
+    if len(ALL_PRS_BY_REPO.list_collection_names()) == 0:
+        print("[WORKING] Collection is empty...\n[WORKING] Collecting all pull requests...")
+        collect_prs_from_repos_in_db(client)
+    else:
+        print("[WORKING] Pull requests already mined, gathering author information...")
 
+    if len(AUTHOR_INFO_BY_REPO.list_collection_names()) == 0:
+        print("[WORKING] AUTHOR_INFO_BY_REPO Collection is empty...\n[WORKING] Collecting author information from pull requests\n")
+        collect_author_info(client)
+    else:
+        print("[WORKING] Author information already parsed, categorizing users...")
+
+    
     # print("Parsing query data...")
     # for query in queries:
     #     dict_of_repo_authors_data = dict()
@@ -211,8 +255,8 @@ def main() -> None:
     #         info.insert_many(list_pr_author_dict)
 
 if __name__ == "__main__":
-    print("Running script...")
+    print("[STARTING] Running script...\n")
     start_time = timer()
     main()
     end_time = timer()
-    print(f"Script completed in: {start_time - end_time}")
+    print("\n[DONE] Script completed in: %4.3fs" % (end_time - start_time))
