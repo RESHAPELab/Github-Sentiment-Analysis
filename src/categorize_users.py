@@ -7,7 +7,6 @@ from Config import GITHUB_AUTHORIZATION_KEY, MONGO_CLIENT_STRING
 GITHUB_GRAPHQL_ENDPOINT = "https://api.github.com/graphql"
 HTTP_OK_RESPONSE = 200
 HEADERS = {"Authorization": GITHUB_AUTHORIZATION_KEY}
-VALID_AUTHOR_ASSOCIATIONS = ["OWNER", "MEMBER", "COLLABORATOR", "CONTRIBUTER", "NONE"]
 
 def setup_repo_query(repo_owner: str, repo_name: str, end_cursor: str = "") -> str:
     query = f"""
@@ -60,7 +59,9 @@ def setup_user_query(pr_author: str, end_cursor: str="") -> str:
     return query
 
 def run_query(query: str) -> json:
-    request = requests.post(GITHUB_GRAPHQL_ENDPOINT, json={"query": query},
+    # Created session to avoid timeout errors
+    session = requests.Session()
+    request = session.post(GITHUB_GRAPHQL_ENDPOINT, json={"query": query},
                             headers=HEADERS)
     if request.status_code == HTTP_OK_RESPONSE:
         return request.json()
@@ -172,6 +173,8 @@ def collect_author_info(client: MongoClient) -> None:
                                     "total_for_repo": repo_pr_count,
                                     "total_overall": total_pr_count
                                 })
+                        else:
+                            has_next_page = False
                 
                     print(f"[WORKING] {author_login} contributed {repo_pr_count}/{total_pr_count} pull requests to: {collection_name}\n") 
 
