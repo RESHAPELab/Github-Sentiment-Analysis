@@ -119,12 +119,17 @@ def collect_prs_from_repos_in_db(client: MongoClient) -> None:
         collections.insert_many(pull_request_data[name_with_owner])
 
 def collect_author_info(client: MongoClient) -> None:
-    database = client["ALL_PRS_BY_REPO"]
-    collection_names = database.list_collection_names()
+    prs_by_repo_database = client["ALL_PRS_BY_REPO"]
+    collection_names = prs_by_repo_database.list_collection_names()
+
+    author_info_db = client["AUTHOR_INFO_BY_REPO"]
+    collections_already_mined = author_info_db.list_collection_names()
+
+    collection_names.remove(collections_already_mined)
 
     # Iterates through each repo
     for collection_name in collection_names:
-        collection = database[collection_name]
+        collection = prs_by_repo_database[collection_name]
         mined_authors = set()
         author_info = list()
 
@@ -146,10 +151,11 @@ def collect_author_info(client: MongoClient) -> None:
                     print(f"[WORKING] Collecting {author_login}'s author info for: {collection_name}...")
                     mined_authors.add(author_login)
                     while has_next_page:
-                        # Use author login to query user
+                        # Collects user data based on author_login
                         user_query = setup_user_query(author_login, end_cursor_string)
                         user_data = run_query(user_query)
 
+                        # Checks if there is a valid user
                         if user_data["data"]["user"] is not None and user_data["data"]["user"]["pullRequests"] is not None:
                             pull_requests = user_data["data"]["user"]["pullRequests"]["nodes"]
 
@@ -173,29 +179,16 @@ def collect_author_info(client: MongoClient) -> None:
                                     "total_for_repo": repo_pr_count,
                                     "total_overall": total_pr_count
                                 })
+                                print(f'[WORKING] Finished collecting info from {author_login}')
                         else:
+                            print(f'[WORKING] {author_login} is not a valid user')
                             has_next_page = False
                 
                     print(f"[WORKING] {author_login} contributed {repo_pr_count}/{total_pr_count} pull requests to: {collection_name}\n") 
 
         # Inserts author info into MongoDB
-        author_info_db = client["AUTHOR_INFO_BY_REPO"]
         collections = author_info_db[collection_name]
         collections.insert_many(author_info)
-
-def get_author_pr_count(query_data: json, repo: str) -> list:
-    user_prs = query_data["data"]["user"]["pullRequests"]
-    prs_created = 0
-    user_totals = user_prs["totalCount"]
-    if user_prs["nodes"] is not None:
-        repo_nodes = user_prs["nodes"]
-
-        # Count each pull request contributed too
-        for node in repo_nodes:
-            if node["baseRepository"]["nameWithOwner"] == repo:
-                prs_created += 1
-
-    return [prs_created, user_totals]
 
 def main() -> None:    
     # Create queries from repo databse
@@ -205,13 +198,14 @@ def main() -> None:
     
     # If database is empty gather's all the PRs for each Repo in the database
     if len(ALL_PRS_BY_REPO.list_collection_names()) == 0:
-        print("[WORKING] Collection is empty...\n[WORKING] Collecting all pull requests...")
+        print("[WORKING] ALL_PRS_BY_REPO collection is empty...\n[WORKING] Collecting all pull requests...")
         collect_prs_from_repos_in_db(client)
     else:
         print("[WORKING] Pull requests already mined, gathering author information...")
 
-    if len(AUTHOR_INFO_BY_REPO.list_collection_names()) == 0:
-        print("[WORKING] AUTHOR_INFO_BY_REPO Collection is empty...\n[WORKING] Collecting author information from pull requests\n")
+    # If we haven't collected all the author info for each repo
+    if len(AUTHOR_INFO_BY_REPO.list_collection_names()) < len(ALL_PRS_BY_REPO.list_collection_names()):
+        print("[WORKING] AUTHOR_INFO_BY_REPO collection is empty/incomplete...\n[WORKING] Collecting author information from pull requests\n")
         collect_author_info(client)
     else:
         print("[WORKING] Author information already parsed, categorizing users...")
