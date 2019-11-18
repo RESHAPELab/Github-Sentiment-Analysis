@@ -63,10 +63,11 @@ def run_query(query: str) -> json:
     session = requests.Session()
     request = session.post(GITHUB_GRAPHQL_ENDPOINT, json={"query": query},
                             headers=HEADERS)
+
     if request.status_code == HTTP_OK_RESPONSE:
         return request.json()
     else:
-        raise Exception(f'ERROR [{request.status_code}]: Query failed to execute:\nRESPONSE: {request.text}')
+        raise Exception(f'ERROR [{request.status_code}]: Query failed to execute: {query}\nRESPONSE: {request.text}')
 
 def collect_prs_from_repos_in_db(client: MongoClient) -> None:
     # Gather collection names frmo repositories database
@@ -125,7 +126,9 @@ def collect_author_info(client: MongoClient) -> None:
     author_info_db = client["AUTHOR_INFO_BY_REPO"]
     collections_already_mined = author_info_db.list_collection_names()
 
-    collection_names.remove(collections_already_mined)
+    # Remove the repositories already mined
+    for collection in collections_already_mined:
+        collection_names.remove(collection)
 
     # Iterates through each repo
     for collection_name in collection_names:
@@ -141,6 +144,7 @@ def collect_author_info(client: MongoClient) -> None:
             if author is not None:
                 author_login = author["login"]
                 repo_pr_count = 0
+                page_counter = 1
 
                 # Assists with pagination
                 end_cursor = ""
@@ -155,8 +159,10 @@ def collect_author_info(client: MongoClient) -> None:
                         user_query = setup_user_query(author_login, end_cursor_string)
                         user_data = run_query(user_query)
 
+                        is_valid_user_data = user_data["data"] is not None and user_data["data"]["user"] is not None and user_data["data"]["user"]["pullRequests"] is not None
+
                         # Checks if there is a valid user
-                        if user_data["data"]["user"] is not None and user_data["data"]["user"]["pullRequests"] is not None:
+                        if is_valid_user_data:
                             pull_requests = user_data["data"]["user"]["pullRequests"]["nodes"]
 
                             # Counts through all the pull requests
@@ -171,6 +177,10 @@ def collect_author_info(client: MongoClient) -> None:
                             if has_next_page:
                                 end_cursor = user_data["data"]["user"]["pullRequests"]["pageInfo"]["endCursor"]
                                 end_cursor_string = f', after:"{end_cursor}"'
+                                
+                                number_of_pages = int(user_data["data"]["user"]["pullRequests"]["totalCount"] / 100)
+                                print(f"[WORKING] Currently scraping through page {page_counter}/{number_of_pages}")
+                                page_counter += 1
                             else:
                                 total_pr_count = user_data["data"]["user"]["pullRequests"]["totalCount"]
                                 author_info.append({
@@ -179,7 +189,6 @@ def collect_author_info(client: MongoClient) -> None:
                                     "total_for_repo": repo_pr_count,
                                     "total_overall": total_pr_count
                                 })
-                                print(f'[WORKING] Finished collecting info from {author_login}')
                         else:
                             print(f'[WORKING] {author_login} is not a valid user')
                             has_next_page = False
