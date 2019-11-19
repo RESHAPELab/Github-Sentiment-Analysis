@@ -37,21 +37,8 @@ def setup_user_query(pr_author: str, end_cursor: str="") -> str:
     query = f"""
     query {{
     user(login: "{pr_author}") {{
-        login
-        pullRequests(first: 100{end_cursor}) {{
-        pageInfo {{
-            endCursor
-            hasNextPage
-        }}
-        totalCount
-        nodes {{
-            number
-            closed
-            baseRepository {{
-            nameWithOwner
-            }}
-            authorAssociation
-        }}
+        pullRequests(first: 1{end_cursor}) {{
+            totalCount
         }}
     }}
     }}
@@ -60,14 +47,11 @@ def setup_user_query(pr_author: str, end_cursor: str="") -> str:
 
 def run_query(query: str) -> json:
     # Created session to avoid timeout errors
-    session = requests.Session()
-    request = session.post(GITHUB_GRAPHQL_ENDPOINT, json={"query": query},
-                            headers=HEADERS)
-
-    if request.status_code == HTTP_OK_RESPONSE:
-        return request.json()
-    else:
-        raise Exception(f'ERROR [{request.status_code}]: Query failed to execute: {query}\nRESPONSE: {request.text}')
+    with requests.Session().post(GITHUB_GRAPHQL_ENDPOINT, json={"query":query}, headers=HEADERS) as response:
+        if response.status_code == HTTP_OK_RESPONSE:
+            return response.json()
+        # else:
+        #     raise Exception(f'ERROR [{response.status_code}]: Query failed to execute: {query}\nRESPONSE: {response.text}')
 
 def collect_prs_from_repos_in_db(client: MongoClient) -> None:
     # Gather collection names frmo repositories database
@@ -120,9 +104,11 @@ def collect_prs_from_repos_in_db(client: MongoClient) -> None:
         collections.insert_many(pull_request_data[name_with_owner])
 
 def collect_author_info(client: MongoClient) -> None:
+    # Gets all the repositories's pull request's
     prs_by_repo_database = client["ALL_PRS_BY_REPO"]
     collection_names = prs_by_repo_database.list_collection_names()
 
+    # Gets all the repositories already mined
     author_info_db = client["AUTHOR_INFO_BY_REPO"]
     collections_already_mined = author_info_db.list_collection_names()
 
@@ -138,62 +124,39 @@ def collect_author_info(client: MongoClient) -> None:
 
         # Grabs all PRs and stores in a list to avoid cursor timeout
         documents_in_collection = [document for document in collection.find({})]
+
         for document in documents_in_collection:
             author = document["author"]
+            author_association = document["authorAssociation"]
 
+            # If the author exists/is not a ghost usere
             if author is not None:
                 author_login = author["login"]
-                repo_pr_count = 0
-                page_counter = 1
 
-                # Assists with pagination
-                end_cursor = ""
-                end_cursor_string = ""
-                has_next_page = True
-
-                if author_login not in mined_authors: 
-                    print(f"[WORKING] Collecting {author_login}'s author info for: {collection_name}...")
+                if author_login not in mined_authors:
+                    print(f"[WORKING] Collection {author_login}'s author info for: {collection_name}...")
                     mined_authors.add(author_login)
-                    while has_next_page:
-                        # Collects user data based on author_login
-                        user_query = setup_user_query(author_login, end_cursor_string)
-                        user_data = run_query(user_query)
 
-                        is_valid_user_data = user_data["data"] is not None and user_data["data"]["user"] is not None and user_data["data"]["user"]["pullRequests"] is not None
+                    # Grabs the total amount of pull requests for the repository
+                    search_query = {"author": {"login": f"{author_login}"}}
+                    pull_requests_by_user = [pull_request for pull_request in collection.find(search_query)]
 
-                        # Checks if there is a valid user
-                        if is_valid_user_data:
-                            pull_requests = user_data["data"]["user"]["pullRequests"]["nodes"]
+                    repo_pr_count = len(pull_requests_by_user)
+                    # Gets the total amount of PRs for each user
+                    user_query = setup_user_query(author_login)
+                    user_data = run_query(user_query)
 
-                            # Counts through all the pull requests
-                            if pull_requests is not None:
-                                for pull_request in pull_requests:
-                                    if pull_request["baseRepository"]["nameWithOwner"] == collection_name:
-                                        repo_pr_count += 1
-                                        author_association = pull_request["authorAssociation"]
+                    # Checks if it is a valid user
+                    if user_data is not None and user_data["data"] is not None and user_data["data"]["user"] and user_data["data"]["user"]["pullRequests"] is not None:
+                        total_pr_count = user_data["data"]["user"]["pullRequests"]["totalCount"]
 
-                            # Paginates
-                            has_next_page = user_data["data"]["user"]["pullRequests"]["pageInfo"]["hasNextPage"]
-                            if has_next_page:
-                                end_cursor = user_data["data"]["user"]["pullRequests"]["pageInfo"]["endCursor"]
-                                end_cursor_string = f', after:"{end_cursor}"'
-                                
-                                number_of_pages = int(user_data["data"]["user"]["pullRequests"]["totalCount"] / 100)
-                                print(f"[WORKING] Currently scraping through page {page_counter}/{number_of_pages}")
-                                page_counter += 1
-                            else:
-                                total_pr_count = user_data["data"]["user"]["pullRequests"]["totalCount"]
-                                author_info.append({
-                                    "author": author_login,
-                                    "association": author_association,
-                                    "total_for_repo": repo_pr_count,
-                                    "total_overall": total_pr_count
-                                })
-                        else:
-                            print(f'[WORKING] {author_login} is not a valid user')
-                            has_next_page = False
-                
-                    print(f"[WORKING] {author_login} contributed {repo_pr_count}/{total_pr_count} pull requests to: {collection_name}\n") 
+                        print(f"[WORKING] {author_login} contributed {repo_pr_count}/{total_pr_count} pull requests to: {collection_name}\n")
+                        author_info.append({
+                                "author": author_login,
+                                "association": author_association,
+                                "total_for_repo": repo_pr_count,
+                                "total_overall": total_pr_count
+                            })
 
         # Inserts author info into MongoDB
         collections = author_info_db[collection_name]
