@@ -134,7 +134,7 @@ def collect_author_info(client: MongoClient) -> None:
                 author_login = author["login"]
 
                 if author_login not in mined_authors:
-                    print(f"[WORKING] Collection {author_login}'s author info for: {collection_name}...")
+                    print(f"[WORKING] Collecting {author_login}'s author info for: {collection_name}...")
                     mined_authors.add(author_login)
 
                     # Grabs the total amount of pull requests for the repository
@@ -146,17 +146,21 @@ def collect_author_info(client: MongoClient) -> None:
                     user_query = setup_user_query(author_login)
                     user_data = run_query(user_query)
 
-                    # Checks if it is a valid user
-                    if user_data is not None and user_data["data"] is not None and user_data["data"]["user"] and user_data["data"]["user"]["pullRequests"] is not None:
-                        total_pr_count = user_data["data"]["user"]["pullRequests"]["totalCount"]
+                    # Gather's the total PR count from user_data
+                    try:
+                        # Checks if it is a valid user
+                        if user_data is not None and user_data["data"] is not None and user_data["data"]["user"] is not None and user_data["data"]["user"]["pullRequests"] is not None:
+                            total_pr_count = user_data["data"]["user"]["pullRequests"]["totalCount"]
 
-                        print(f"[WORKING] {author_login} contributed {repo_pr_count}/{total_pr_count} pull requests to: {collection_name}\n")
-                        author_info.append({
-                                "author": author_login,
-                                "association": author_association,
-                                "total_for_repo": repo_pr_count,
-                                "total_overall": total_pr_count
-                            })
+                            print(f"[WORKING] {author_login} contributed {repo_pr_count}/{total_pr_count} pull requests to: {collection_name}\n")
+                            author_info.append({
+                                    "author": author_login,
+                                    "association": author_association,
+                                    "total_for_repo": repo_pr_count,
+                                    "total_overall": total_pr_count
+                                })
+                    except KeyError:
+                        print(user_data)
 
         # Inserts author info into MongoDB
         collections = author_info_db[collection_name]
