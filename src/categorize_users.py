@@ -1,11 +1,13 @@
 import requests
 import json
+import time
 from pymongo import MongoClient
 from timeit import default_timer as timer
 from Config import GITHUB_AUTHORIZATION_KEY, MONGO_CLIENT_STRING
 
 GITHUB_GRAPHQL_ENDPOINT = "https://api.github.com/graphql"
 HTTP_OK_RESPONSE = 200
+DAY_IN_SECONDS = 86400
 HEADERS = {"Authorization": GITHUB_AUTHORIZATION_KEY}
 
 def setup_repo_query(repo_owner: str, repo_name: str, end_cursor: str = "") -> str:
@@ -129,7 +131,7 @@ def collect_author_info(client: MongoClient) -> None:
             author = document["author"]
             author_association = document["authorAssociation"]
 
-            # If the author exists/is not a ghost usere
+            # If the author exists/is not a ghost user
             if author is not None:
                 author_login = author["login"]
 
@@ -140,15 +142,15 @@ def collect_author_info(client: MongoClient) -> None:
                     # Grabs the total amount of pull requests for the repository
                     search_query = {"author": {"login": f"{author_login}"}}
                     pull_requests_by_user = [pull_request for pull_request in collection.find(search_query)]
-
                     repo_pr_count = len(pull_requests_by_user)
+
                     # Gets the total amount of PRs for each user
                     user_query = setup_user_query(author_login)
                     user_data = run_query(user_query)
 
                     # Gather's the total PR count from user_data
                     try:
-                        # Checks if it is a valid user
+                        # Checks if user data is valid
                         if user_data is not None and user_data["data"] is not None and user_data["data"]["user"] is not None and user_data["data"]["user"]["pullRequests"] is not None:
                             total_pr_count = user_data["data"]["user"]["pullRequests"]["totalCount"]
 
@@ -160,7 +162,10 @@ def collect_author_info(client: MongoClient) -> None:
                                     "total_overall": total_pr_count
                                 })
                     except KeyError:
-                        print(user_data)
+                        # Error handling for RATE_LIMIT_EXCEEDED for GitHub GraphQL API
+                        print(f"[WORKING] {user_data['errors']}")
+                        time.sleep(DAY_IN_SECONDS)
+                        
 
         # Inserts author info into MongoDB
         collections = author_info_db[collection_name]
