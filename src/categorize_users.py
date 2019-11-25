@@ -8,6 +8,7 @@ from Config import GITHUB_AUTHORIZATION_KEY, MONGO_CLIENT_STRING
 GITHUB_GRAPHQL_ENDPOINT = "https://api.github.com/graphql"
 HTTP_OK_RESPONSE = 200
 DAY_IN_SECONDS = 86400
+HOUR_IN_SECONDS = 3600
 HEADERS = {"Authorization": GITHUB_AUTHORIZATION_KEY}
 
 def setup_repo_query(repo_owner: str, repo_name: str, end_cursor: str = "") -> str:
@@ -105,6 +106,21 @@ def collect_prs_from_repos_in_db(client: MongoClient) -> None:
         collections = database[name_with_owner]
         collections.insert_many(pull_request_data[name_with_owner])
 
+def categorize_users(client: MongoClient, periphery_max=10, core_max=100) -> None:
+    print(f"[WORKING] Categorizing users...\n[WORKING] Max PRs for Periphery: {periphery_max}\n[WORKING] Max PRs for Core: {core_max}")
+
+    print(f"[WORKING] Categorizing core...")
+    categorize_core(client, core_max)
+
+    print(f"[WORKING] Categorizing peripheries...")
+    categorize_periphery(client, periphery_max)
+
+def categorize_core(client:MongoClient, core_max=100) -> None:
+    pass
+
+def categorize_periphery(client: MongoClient, periphery_max=10) -> None:
+    pass
+
 def collect_author_info(client: MongoClient) -> None:
     # Gets all the repositories's pull request's
     prs_by_repo_database = client["ALL_PRS_BY_REPO"]
@@ -163,8 +179,8 @@ def collect_author_info(client: MongoClient) -> None:
                                 })
                     except KeyError:
                         # Error handling for RATE_LIMIT_EXCEEDED for GitHub GraphQL API
-                        print(f"[WORKING] {user_data['errors']}")
-                        time.sleep(DAY_IN_SECONDS)
+                        print(f"[WORKING] {user_data['errors'][0]['type']}: {user_data['errors'][0]['message']}, sleeping for {HOUR_IN_SECONDS} seconds...")
+                        time.sleep(HOUR_IN_SECONDS)
                         
 
         # Inserts author info into MongoDB
@@ -182,14 +198,17 @@ def main() -> None:
         print("[WORKING] ALL_PRS_BY_REPO collection is empty...\n[WORKING] Collecting all pull requests...")
         collect_prs_from_repos_in_db(client)
     else:
-        print("[WORKING] Pull requests already mined, gathering author information...")
+        print("[WORKING] Pull requests already mined, gathering author information...\n")
 
     # If we haven't collected all the author info for each repo
     if len(AUTHOR_INFO_BY_REPO.list_collection_names()) < len(ALL_PRS_BY_REPO.list_collection_names()):
         print("[WORKING] AUTHOR_INFO_BY_REPO collection is empty/incomplete...\n[WORKING] Collecting author information from pull requests\n")
         collect_author_info(client)
     else:
-        print("[WORKING] Author information already parsed, categorizing users...")
+        print("[WORKING] Author information already parsed, categorizing users...\n")
+
+    # Categorizing Users
+    categorize_users(client)
 
 if __name__ == "__main__":
     print("[STARTING] Running script...\n")
