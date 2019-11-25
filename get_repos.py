@@ -14,15 +14,15 @@ import datetime
 from config import GITHUB_AUTHORIZATION_KEY, MONGO_USER, MONGO_PASSWORD
 
 # Variables
-headers = {"Authorization": "token 417de6ac434799be7b52c028e02c33927dd2c611"}
+headers = {"Authorization": "token 8236a34a73dc4b44c6b969a20cda40c87459cc51"}
 mongo_client_string = "mongodb+srv://" + MONGO_USER + ":" + MONGO_PASSWORD + "@sentiment-analysis-8snlg.mongodb.net/test?retryWrites=true&w=majority"
-database_name = "repository_database"
-collection_name = "comments"
-min_stars = 1000
-max_stars = 10000
+min_stars = 0
+max_stars = 10
 last_activity = 90 # within the last __ days
-created = 364 * 4 # within the last __ days
-total_pull_num = 100 # amount of pull requests a repository needs
+created = 364 * 4 # withinthe last __ days
+total_pull_num = 0 # amount of pull requests a repository needs
+database_name = "repositories"
+collection_name = "collect_mnst" + str(min_stars) + "_mxst" + str(max_stars) + "_lsact" + str(last_activity) + "_crtd" + str(created) + "_nmpll" + str(total_pull_num)
 
 # Defines the query to run
 def setup_query( query_string, end_cursor ):
@@ -33,7 +33,7 @@ def setup_query( query_string, end_cursor ):
         remaining
         resetAt
        }}
-       search(query: "{query_string}", type: REPOSITORY, first:10 {end_cursor}) {{
+       search(query: "{query_string}", type: REPOSITORY, first:50 {end_cursor}) {{
            pageInfo {{
                endCursor
                hasNextPage
@@ -132,7 +132,7 @@ def find_repos( query_string, db_collection, total_pull_num ):
     hasNextPage = True
     index = 0
     
-    while( hasNextPage and index <= 1 ):
+    while( hasNextPage ):
         query = setup_query( query_string, end_cursor_string )
         result = run_query( query )
 
@@ -146,6 +146,7 @@ def find_repos( query_string, db_collection, total_pull_num ):
             hasNextPage = False
 
         index += 1
+        time.sleep(1)
 
 # Iterates through all repositories found on each page
 # saves valid repositories into a database
@@ -153,11 +154,13 @@ def repo_checker( query_data, db_collection, total_pull_num ):
 
     repository_nodes = query_data["data"]["search"]["nodes"]
     dict_of_repositories = {"repository" : []}
+    list_of_repositories = []
 
     index = 0
     for node in repository_nodes:
         if( is_repo_valid( node, total_pull_num ) ):
-            dict_of_repositories["repository"].append( {"name" : node["name"],
+            
+            list_of_repositories.append( {"name" : node["name"],
                                                         "owner" : node["owner"]["login"],
                                                         "contributers" : node["contributors"]["totalCount"],
                                                         "stars" : node["stargazers"]["totalCount"],
@@ -167,7 +170,7 @@ def repo_checker( query_data, db_collection, total_pull_num ):
             print( "Repository: " + str(index) )
             index += 1
 
-    db_collection.insert_one( dict_of_repositories )
+    db_collection.insert_many( list_of_repositories )
 
 # checks that a repository is valid
 # a repo is valid if it has more pull requests than the param
