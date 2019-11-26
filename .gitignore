@@ -1,6 +1,6 @@
-config.json
 *.swp
-config.py
+src/Config.py
+.txt
 env/
 __pycache__
 .vscode
