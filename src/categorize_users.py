@@ -3,8 +3,9 @@ import json
 import time
 from pymongo import MongoClient
 from timeit import default_timer as timer
-from Config import GITHUB_AUTHORIZATION_KEY, MONGO_CLIENT_STRING
 
+MONGO_CLIENT_STRING = "mongodb+srv://jek248:SentimentAnalysis@sentiment-analysis-8snlg.mongodb.net/test?retryWrites=true&w=majority"
+GITHUB_AUTHORIZATION_KEY = "token cada15847aab7e8a14fdc38216c5e618e89ed708"
 GITHUB_GRAPHQL_ENDPOINT = "https://api.github.com/graphql"
 HTTP_OK_RESPONSE = 200
 DAY_IN_SECONDS = 86400
@@ -53,8 +54,8 @@ def run_query(query: str) -> json:
     with requests.Session().post(GITHUB_GRAPHQL_ENDPOINT, json={"query":query}, headers=HEADERS) as response:
         if response.status_code == HTTP_OK_RESPONSE:
             return response.json()
-        # else:
-        #     raise Exception(f'ERROR [{response.status_code}]: Query failed to execute: {query}\nRESPONSE: {response.text}')
+        #else:
+        #raise Exception(f'ERROR [{response.status_code}]: Query failed to execute: {query}\nRESPONSE: {response.text}')
 
 def collect_prs_from_repos_in_db(client: MongoClient) -> None:
     # Gather collection names frmo repositories database
@@ -127,12 +128,13 @@ def collect_author_info(client: MongoClient) -> None:
     collection_names = prs_by_repo_database.list_collection_names()
 
     # Gets all the repositories already mined
-    author_info_db = client["AUTHOR_INFO_BY_REPO"]
+    author_info_db = client["AUTHOR_INFO_BY_REPO_2"]
     collections_already_mined = author_info_db.list_collection_names()
 
     # Remove the repositories already mined
     for collection in collections_already_mined:
         collection_names.remove(collection)
+        
 
     # Iterates through each repo
     for collection_name in collection_names:
@@ -146,6 +148,7 @@ def collect_author_info(client: MongoClient) -> None:
         for document in documents_in_collection:
             author = document["author"]
             author_association = document["authorAssociation"]
+            body_text = document["bodyText"]
 
             # If the author exists/is not a ghost user
             if author is not None:
@@ -166,7 +169,7 @@ def collect_author_info(client: MongoClient) -> None:
 
                     # Gather's the total PR count from user_data
                     try:
-                        # Checks if user data is valid
+                        # Checks if user data is valiFd
                         if user_data is not None and user_data["data"] is not None and user_data["data"]["user"] is not None and user_data["data"]["user"]["pullRequests"] is not None:
                             total_pr_count = user_data["data"]["user"]["pullRequests"]["totalCount"]
 
@@ -175,8 +178,10 @@ def collect_author_info(client: MongoClient) -> None:
                                     "author": author_login,
                                     "association": author_association,
                                     "total_for_repo": repo_pr_count,
-                                    "total_overall": total_pr_count
+                                    "total_overall": total_pr_count,
+                                    "bodyText" : body_text
                                 })
+                        else: print("AUTHOR IS NOT VALID")
                     except KeyError:
                         # Error handling for RATE_LIMIT_EXCEEDED for GitHub GraphQL API
                         print(f"[WORKING] {user_data['errors'][0]['type']}: {user_data['errors'][0]['message']}, sleeping for {HOUR_IN_SECONDS} seconds...")
@@ -191,7 +196,7 @@ def main() -> None:
     # Create queries from repo databse
     client = MongoClient(MONGO_CLIENT_STRING)
     ALL_PRS_BY_REPO = client["ALL_PRS_BY_REPO"]
-    AUTHOR_INFO_BY_REPO = client["AUTHOR_INFO_BY_REPO"]
+    AUTHOR_INFO_BY_REPO = client["AUTHOR_INFO_BY_REPO_2"]
     
     # If database is empty gather's all the PRs for each Repo in the database
     if len(ALL_PRS_BY_REPO.list_collection_names()) == 0:

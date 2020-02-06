@@ -118,40 +118,22 @@ def is_repo_valid( node, total_pull_num ):
 # Takes in only the owner of a repository and the name
 def get_comments( repo_owner, repo_name, client ):
    
-    end_cursor = ""
-    end_cursor_string = ""
-    hasNextPage = True
-    index = 0
-    
-    while( hasNextPage and index < 4):
         query = setup_pull_query( repo_owner, repo_name, end_cursor_string)
         query_data = run_query( query )
 
         print(json.dumps(query_data, indent=2))
 
-        pull_request_nodes = query_data['data']['repository']['pullRequests']['nodes']
+        pull_request = query_data['data']['repository']['pullRequest']
 
-        index = 0
-        for node in pull_request_nodes:
-            get_pull_comments( node, client )
-            get_review_comments( node, client )
-            print("Pull Request: " + str(index) )
-            index += 1
+        get_pull_comments( pull_request, client )
+        get_review_comments( pull_request, client )
 
-        # if there is a next page, update the endcursor string and continue loop
-        if( query_data["data"]["repository"]["pullRequests"]["pageInfo"]["hasNextPage"] ):
-            end_cursor = query_data["data"]["repository"]["pullRequests"]["pageInfo"]["endCursor"]
-            end_cursor_string = f', after:"{end_cursor}"'
-        else:
-            hasNextPage = False
-        index += 1
         time.sleep(.5)
 
 # function that get the comments from a specific pull request
-def get_pull_comments( node, client ):
+def get_pull_comments( pull_request ):
     
-    dt_string = now.strftime("%d:%m:%Y_%H:%M:%S")
-    database = client[ pull_database_name + dt_string ]
+    database = client[ "TESTINGDB" ]
     
     member_collection = database[ "MEMBER" ]
     owner_collection = database[ "OWNER" ]
@@ -165,13 +147,13 @@ def get_pull_comments( node, client ):
     list_of_comments = []
 
     try:
-        comment_edges = node['comments']['edges']
+        comment_edges = pull_request['comments']['edges']
 
         index = 0
         for edge in comment_edges:
             bodyText = edge['node']['bodyText']
             bodyText = bodyText.replace( "\n", " " )
-            bodyText = bodyText..replace( ",", " " )
+            bodyText = bodyText.replace( ",", " " )
             new_comment = {'author' : edge['node']['author']['login'],
                            'bodyText' : bodyText,
                            'authorAssociation' : edge['node']['authorAssociation'] }
@@ -220,7 +202,7 @@ def get_review_comments( node, client ):
             for comment in review_node['node']['comments']['nodes']:
                 bodyText = comment['bodyText']
                 bodyText = bodyText.replace( "\n", " " )
-                bodyText = bodyText..replace( ",", " " )
+                bodyText = bodyText.replace( ",", " " )
                 new_comment = {'author' : comment['author']['login'],
                                'bodyText' : bodyText,
                                'authorAssociation' : comment['authorAssociation'] }
