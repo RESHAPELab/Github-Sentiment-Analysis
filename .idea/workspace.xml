@@ -1,11 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="972830e1-d816-4dc8-94c4-0c93f85c9b6a" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/.ipynb_checkpoints/mine_pr_data-checkpoint.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/src/.ipynb_checkpoints/mine_pr_data-checkpoint.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/databases/github_data.db" beforeDir="false" afterPath="$PROJECT_DIR$/src/databases/github_data.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/mine_pr_data.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/src/mine_pr_data.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/mine_repo_data.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/src/mine_repo_data.ipynb" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1XjaqlmAG474F0qelV6GYAc0F2o" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../CS_499_DL/K_Fold_Cross_Validation" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="972830e1-d816-4dc8-94c4-0c93f85c9b6a" name="Default Changelist" comment="" />
+      <created>1581714291315</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1581714291315</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="2483" y="115" key="CommitChangelistDialog2" timestamp="1582154806189">
+      <screen x="1920" y="0" width="1920" height="1040" />
+    </state>
+    <state x="2483" y="115" key="CommitChangelistDialog2/0.0.1920.1040/1920.0.1920.1040@1920.0.1920.1040" timestamp="1582154806189" />
+    <state x="563" y="115" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1581562217906" />
+    <state x="740" y="276" key="FileChooserDialogImpl" timestamp="1582158803650">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="740" y="276" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1582158803650" />
+    <state x="552" y="254" key="Vcs.Push.Dialog.v2" timestamp="1581562286833">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="552" y="254" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1581562286833" />
+    <state x="656" y="345" key="com.intellij.ide.util.TipDialog" timestamp="1582158787757">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="2576" y="345" key="com.intellij.ide.util.TipDialog/0.0.1920.1040/1920.0.1920.1040@1920.0.1920.1040" timestamp="1582154787327" />
+    <state x="656" y="345" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1582158787757" />
   </component>
 </project>
