@@ -1,0 +1,27 @@
+query {
+  repository(owner: astropy, name: astropy) {
+    pullRequest: issueOrPullRequest(number:19) {
+      __typename
+      ... on PullRequest {
+        reviewThreads(first: 100) {
+          edges {
+            node {
+              comments(first: 10) {
+                nodes {
+                  pullRequestReview {
+                    id
+                  }
+                  author {
+                    login
+                  }
+                  bodyText
+                  authorAssociation
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

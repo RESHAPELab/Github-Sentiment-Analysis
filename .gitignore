@@ -1,0 +1,10 @@
+*.swp
+.idea/
+src/Config.py
+.txt
+env/
+__pycache__
+.vscode
+*.csv
+query.graphql.webarchive
+*.db
