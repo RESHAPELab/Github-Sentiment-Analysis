@@ -7,3 +7,4 @@ __pycache__
 .vscode
 *.csv
 query.graphql.webarchive
+.DS_Store
