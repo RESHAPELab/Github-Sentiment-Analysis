@@ -1,0 +1,3269 @@
+bodyText
+"I'm a bit stuck here... Why is key prefixed with . anyways? And is there a perf hit for doing obj['key'] instead of obj.key? I've pushed what I had locally, would love some guidance on how to fix it."
+"감사합니다 ^_^"
+"@StarpTech that's a valid use case to discuss, maybe we should provide an option when building (then we can expose that option in fastify). Would you like to send a PR?"
+"This is the primary reason that UX week misses the mark and must be removed imo.
+If a student focuses on learning a particular stack, they cannot focus on their users needs.
+If students are told that the primary objective for the week is to try out a new stack, then the whole week feels utterly contrived - a hurdle, preventing them from actually beginning to learn the technologies that they want to learn."
+"Suggested change
+        
+          
+        
+      
+    
+    
+      
+          
+            
+            それからコンポーネントを新たな props で再レンダリングし、レンダリングされた次の要素を取得します：
+          
+          
+            
+            それからコンポーネントを新たな props で再レンダーし、レンダーされた次の要素を取得します："
+"no need to define a one line function here - just put the check inline (all the other code uses client)"
+"@alodahl do you want me to add any more information?"
+"@dependabot-bot rebase"
+"This pull request is automatically deployed with Now.
+To access deployments, click Details below or on the icon next to each push."
+"This pull request is being automatically deployed with ZEIT Now (learn more).
+To see the status of your deployment, click below or on the icon next to each commit.
+🔍 Inspect: https://zeit.co/opencollective/opencollective-frontend/nmudpprjby
+🌍 Preview: In Progress"
+"if(!lgFile), do not use '=='"
+"Yeah so as I mentioned in the comments we don't actually need these anymore due to the dummyValues but I think it's pretty clear so I left them."
+"Hi Alina,
+
+I am so sorry to respond you comment late!
+
+Best,
+
+Cadence Chen
+…
+On Wed, Jan 29, 2020 at 12:13 PM Alina L. ***@***.***> wrote:
+ Oh sorry!i thought maybe you were too busy, so I fixed it.
+
+ —
+ You are receiving this because you were mentioned.
+ Reply to this email directly, view it on GitHub
+ <#1139?email_source=notifications&email_token=AKDLZCUAQOVQ4Z2N5J72SD3RAHPPDA5CNFSM4KHIOXCKYY3PNVWWK3TUL52HS4DFVREXG43VMVBW63LNMVXHJKTDN5WW2ZLOORPWSZGOEKISTMI#issuecomment-579938737>,
+ or unsubscribe
+ <https://github.com/notifications/unsubscribe-auth/AKDLZCQ5R2BSWHU2MCV2W63RAHPPDANCNFSM4KHIOXCA>
+ ."
+"The company will keep track of that because the visa is linking to the Company."
+"Thanks for the PR!"
+"zu e8f771b
+https://youtu.be/SFKWenwSAvM"
+"Good point. Adding."
+"Please don’t use ’ here, instead use ' I think. @roschaefer"
+"s/most of you/most of us/ ?
+Otherwise, together with I, might be perceived as a little bit.. well, alienating.
+What do you think?"
+"@ericelliott, would it be better to use server.get instead of server.use?
+I am thinking that if we apply server.use to the resulting handler function, then the resulting handler would prematurely render before the remaining middleware has been applied to the req, res objects. This would only be a problem if global middleware for some reason is declared after this server.use statement, so its more of an edge case.
+So maybe this?
+server.get('/profile', createHandler({
+  requiresFeature: 'profile',
+  handler: (req, res) => {
+    return app.render(req, res, '/profile', req.query)
+  }
+));
+But I could be missing something, a reason why you used server.use on purpose?"
+"Tested against simple scenarios with BridgeBot WebSockets and NamedPipes, then tested with DirectLine Speech, all passed."
+"This pull request is automatically deployed with Now.
+To access deployments, click Details below or on the icon next to each push."
+Remove?
+"Coverage remained the same at 100.0% when pulling b1b307a on greenkeeper/typescript-eslint-parser-7.0.0 into ade74cb on master."
+"[note]
+用語集に追加の必要あり？"
+"Going ahead and merging. @briangonzalez if we didn't want this, feel free to revert!"
+"Pull Request Test Coverage Report for Build 176
+
+0 of 0   changed or added relevant lines in 0 files are covered.
+No unchanged relevant lines lost coverage.
+Overall coverage remained the same at 100.0%
+
+
+
+
+
+Totals
+
+
+
+
+
+Change from base Build 173:
+0.0%
+
+
+Covered Lines:
+43
+
+
+Relevant Lines:
+43
+
+
+
+
+💛  - Coveralls"
+"Published this in eslint-plugin-flowtype-errors@next 🎉 Please test this out and let me know if it works for you"
+"Absolutely, will fix it."
+"This section is not clear to me at all. I’m not sure it’s necessary. It seems better to just ask learners to solve the problem with your pseudo code in the challenge section."
+"Thanks for merging it!
+Apologies for the late response, had a lot on my plate the last few days.
+I've also spotted a bug in my implementation. Will make another pull request right away with a fix!"
+"@sakshee-19  This error is because surge pr link is not present in recaptcha auth domain list and thus it is throwing error. The issue is regarding the responsiveness and not functioning of signup form ."
+"@sungjine456 성진아 땡큐땡큐!"
+"This pull request is automatically deployed with Now.
+To access deployments, click Details below or on the icon next to each push."
+"As is, this captures the built in console.log mechanism AND the common custom loggers.
+I will have to see if this option can be changed after the telemetry collection system is initialized..."
+"I'm really curious to see this all work! I really like the refactor! and hope it behaves the same.
+This is where I'm kicking myself for not adding cypress tests, so that we could make sure it still does.
+Anyways, I'll manually test it!"
+"Two reviewers approved. All good! 👍"
+"I'm going to go ahead and merge in this change set because we have other PR's and I'm already going to have to resolve a few merge conflicts. I'll hold off on publishing the M3 bits yet."
+"This pull request is automatically deployed with Now.
+To access deployments, click Details below or on the icon next to each push."
+"Hi Alina, was able to fix the error, still working on the file. Hope to finish before the end of the day :)"
+"This should probably be match.length === 0? Even empty arrays are truthy so this condition is never hit."
+"This pull request is automatically deployed with Now.
+To access deployments, click Details below or on the icon next to each push."
+"Updated to catch all tab completion exceptions"
+"This pull request is automatically deployed with Now.
+To access deployments, click Details below or on the icon next to each push."
+"Pull Request Test Coverage Report for Build 1150
+
+112 of 139   (80.58%)  changed or added relevant lines in 3 files are covered.
+No unchanged relevant lines lost coverage.
+Overall coverage decreased (-0.003%) to 68.279%
+
+
+
+
+
+Changes Missing Coverage
+Covered Lines
+Changed/Added Lines
+%
+
+
+
+
+libraries/botframework-config/src/botConfiguration.ts
+102
+129
+79.07%
+
+
+
+
+
+
+
+Totals
+
+
+
+
+
+Change from base Build 1136:
+-0.003%
+
+
+Covered Lines:
+2154
+
+
+Relevant Lines:
+2978
+
+
+
+
+💛  - Coveralls"
+"Pull Request Test Coverage Report for Build 1024
+
+0 of 0   changed or added relevant lines in 0 files are covered.
+2 unchanged lines in 1 file lost coverage.
+Overall coverage increased (+1.2%) to 67.797%
+
+
+
+
+
+Files with Coverage Reduction
+New Missed Lines
+%
+
+
+
+
+libraries/botframework-config/src/botConfiguration.ts
+2
+87.39%
+
+
+
+
+
+
+
+Totals
+
+
+
+
+
+Change from base Build 1014:
+1.2%
+
+
+Covered Lines:
+2049
+
+
+Relevant Lines:
+2849
+
+
+
+
+💛  - Coveralls"
+"fixes #854"
+"Suggested change
+        
+          
+        
+      
+    
+    
+      
+          
+            
+            ### Contoh: Penggunaan AJAX yang ditentukan ke *state* lokal {#example-using-ajax-results-to-set-local-state}
+          
+          
+            
+            ### Contoh: Menggunakan hasil AJAX untuk mengisi *state* lokal {#example-using-ajax-results-to-set-local-state}
+          
+      
+    
+    
+  
+
+What do you think? 😄"
+"@znarf Pls, I need you to review this PR"
+"Codecov Report
+
+❗️ No coverage uploaded for pull request base (master@90107cf). Click here to learn what that means.
+The diff coverage is n/a."
+"Codecov Report
+
+❗️ No coverage uploaded for pull request base (master@6bd6bd1). Click here to learn what that means.
+The diff coverage is n/a.
+
+
+@@            Coverage Diff            @@
+##             master    #3387   +/-   ##
+=========================================
+  Coverage          ?   70.93%           
+=========================================
+  Files             ?      416           
+  Lines             ?     9707           
+  Branches          ?     1925           
+=========================================
+  Hits              ?     6886           
+  Misses            ?     2412           
+  Partials          ?      409
+
+Continue to review full report at Codecov.
+
+Legend - Click here to learn more
+Δ = absolute <relative> (impact), ø = not affected, ? = missing data
+Powered by Codecov. Last update 6bd6bd1...3271781. Read the comment docs."
+"I have closed those PRs that were invalid for this issue."
+"Pull Request Test Coverage Report for Build 2239
+
+0 of 0   changed or added relevant lines in 0 files are covered.
+2 unchanged lines in 1 file lost coverage.
+Overall coverage decreased (-0.06%) to 82.098%
+
+
+
+
+
+Files with Coverage Reduction
+New Missed Lines
+%
+
+
+
+
+libraries/botframework-config/src/botConfigurationBase.ts
+2
+85.59%
+
+
+
+
+
+
+
+Totals
+
+
+
+
+
+Change from base Build 2217:
+-0.06%
+
+
+Covered Lines:
+2633
+
+
+Relevant Lines:
+3088
+
+
+
+
+💛  - Coveralls"
+"This pull request is automatically deployed with Now.
+To access deployments, click Details below or on the icon next to each push."
+"This pull request is automatically deployed with Now.
+To access deployments, click Details below or on the icon next to each push."
+"Let's start with an example HOC that logs component props to the console:の訳がなかったので足しました。
+  
+    
+      
+        Suggested change
+        
+          
+        
+      
+    
+    
+      
+          
+            
+            このテクニックは [高階コンポーネント](/docs/higher-order-components.html)（HOC としても知られています）においても特に便利です。
+          
+          
+            
+            このテクニックは [高階コンポーネント](/docs/higher-order-components.html)（HOC としても知られています）においても特に便利です。コンポーネントの props をコンソールにログ出力する HOC を例として考えてみましょう。"
+"This pull request is automatically deployed with Now.
+To access deployments, click Details below or on the icon next to each push."
+"@roschaefer language to locale change"
+"@koba04 この原文ファイルは、他と違って文の途中でも積極的に改行しているようなので、合わせるのは困難そうです…"
+"@kundan I have checked this file even and it is fine in this file too. It looks like the subpoint of the link."
+"Test summary
+ 61  •  0  •  0 •  0
+
+Run details
+
+
+
+
+
+
+
+
+
+Project
+Human-Connection
+
+
+Status
+Passed
+
+
+Commit
+11989ed
+
+
+Started
+Feb 11, 2020 4:40 AM
+
+
+Ended
+Feb 11, 2020 4:55 AM
+
+
+Duration
+14:59 💡
+
+
+OS
+Linux Ubuntu Linux - 16.04
+
+
+Browser
+Electron 78 
+
+
+
+View run in Cypress Dashboard ➡️
+
+This comment has been generated by cypress-bot as a result of this project's GitHub integration settings. You can manage this integration in this project's settings in the Cypress Dashboard"
+"Or is it still under active development? I was under impression that you are almost finishing..."
+"@alodahl Hey! I am sorry to say I have not made different branches for 2 different issues. Can you help me with fixing it. Can I make PR again making different branches."
+"@diegohaz Made changes according to your review and added incremental commits to merge the other two branches. Feel free to check and tell me if there are any problems"
+"レビューありがとうございます！
+サジェスト通りでコミットしました"
+"cool, sounds good!
+:)
+thanx!"
+"... yang didesain untuk memungkinkan dan mendorong penulisan tes yang menggunakan komponen seperti pengguna.
+... yang didesain untuk memungkinkan dan mendorong penulisan tes yang akan menggunakan komponen anda selayaknya seorang pengguna sebenarnya
+What do you think?"
+"Suggested change
+        
+          
+        
+      
+    
+    
+      
+          
+            
+            DOM にこのコンポーネントがマウントされている場合、このメソッドは対応するネイティブブラウザの DOM 要素を返します。このメソッドはフォームフィールドの値や DOM の大きさを計測するのに便利です。**ほとんどのケースにおいて、DOM ノードに ref をアタッチすることが可能であり、`findDOMNode` の使用を避けることができます。**
+          
+          
+            
+            DOM にこのコンポーネントがマウントされている場合、このメソッドは対応するネイティブブラウザの DOM 要素を返します。このメソッドはフォームフィールドの値や DOM の大きさを計測するのに便利です。**ほとんどのケースにおいて、DOM ノードに ref をアタッチすることで `findDOMNode` の使用を避けることができます。**"
+"Found it! Our babel-config was invalid, docs say:
+{
+  ""plugins"": [""babel-plugin-styled-components""]
+}
+And we have:
+{
+  ""plugins"": [""styled-components""]
+}
+This change fixes our problem.
+Changing the PR to fix the issue instead."
+"@znarf Could you update the README with usage instructions?"
+"Please use // $FlowExpectedError: and explain why we are supressing flow"
+"Pull Request Test Coverage Report for Build 531
+
+0 of 0   changed or added relevant lines in 0 files are covered.
+No unchanged relevant lines lost coverage.
+Overall coverage remained the same at 73.596%
+
+
+
+
+
+Totals
+
+
+
+
+
+Change from base Build 528:
+0.0%
+
+
+Covered Lines:
+1823
+
+
+Relevant Lines:
+2362
+
+
+
+
+💛  - Coveralls"
+"Pull Request Test Coverage Report for Build 89659
+
+0 of 0   changed or added relevant lines in 0 files are covered.
+No unchanged relevant lines lost coverage.
+Overall coverage remained the same at 85.859%
+
+
+
+
+
+Totals
+
+
+
+
+
+Change from base Build 89655:
+0.0%
+
+
+Covered Lines:
+7818
+
+
+Relevant Lines:
+8780
+
+
+
+
+💛  - Coveralls"
+"@ulfgebhardt as discussed in the last sprint planning, this feature is ""implemented"" in the alpha. It's just implemented in another way: You get a notification if
+
+one of your followed users writes a post
+sb. commented on your post
+sb. mentions you
+
+We have currently case 3 implemented. We will not implement case 1. Instead, there will be a filter where you can see only posts of your followed users. This is part of the release, because it's a supported feature of the alpha and following users would be very pointless if you cannot make use of it."
+"also not directly related to this, but it might be worth to consider rendering in a loop (map), to not have long block of multiple StarsCheckbox"
+"Please move this up to line 35 so it doesnt look optional.
+I think that's it!  Thanks for fixing this up!"
+"Deploy preview for idreactjs ready!
+Built with commit e6bca6d
+https://deploy-preview-157--idreactjs.netlify.com"
+"Pull Request Test Coverage Report for Build #2180
+
+11 of 11   (100.0%)  changed or added relevant lines in 1 file are covered.
+No unchanged relevant lines lost coverage.
+Overall coverage increased (+0.04%) to 87.702%
+
+
+
+
+
+Totals
+
+
+
+
+
+Change from base Build #2179:
+0.04%
+
+
+Covered Lines:
+3207
+
+
+Relevant Lines:
+3513
+
+
+
+
+💛  - Coveralls"
+"@alodahl  am I done with this issue?"
+"Good catch. Fixed it!"
+"Just a note for the future"
+"Could you please hard-code the entire expectedParams here?"
+"This seems like a thing for CONTRIBUTING.md (along with the greenkeeper mention)"
+"What sort of glitchiness?"
+"Codecov Report
+
+❗️ No coverage uploaded for pull request base (master@1ec26cc). Click here to learn what that means.
+The diff coverage is n/a."
+"in another words, Both MapView & HotelSwipeList (and some of their descendants) rely on MapScreenHotel fragment => there is no single FragmentContainer component => it's still useful to define it as fragment for flow checking => requires @relay(mask: false)"
+"This feels moot as they're already marked as optional in the interface itself, and VSCode doesn't actually use this information."
+"Hi @fjcalzado, I mean for example:
+
+Add the following content to averageService.js:
+
+./averageService.js
+export function ....
+...."
+"Codecov Report
+
+Merging #61 into master will not change coverage.
+The diff coverage is n/a.
+
+
+@@          Coverage Diff          @@
+##           master    #61   +/-   ##
+=====================================
+  Coverage     100%   100%           
+=====================================
+  Files           2      2           
+  Lines          45     45           
+  Branches       11     11           
+=====================================
+  Hits           45     45"
+"We don't really have anything about TDD and some of the students have been asking me about what agile is and what a sprint is.
+How about:
+
+What is the traditional software development life cycle? What is the difference between waterfall and agile?
+How does the general software development life cycle differ from the TDD cycle?"
+"余計な改行があるため前の行と結合してください"
+"please move these from mmedina's repo to techtonica's"
+"@Betree Good call!"
+"Using only will make it harder to add other tests to this file later. Does either test or test.serial work?"
+"@Betree Had to resolve a conflict and then run prettier also. Should be good now."
+"There is no above code anymore"
+"It will create a conflict with getMe from facebook. You can just import * as githubService from '../github' and use githubService.getMe instead. We need to do this to the facebook import too."
+"nice one!"
+"All CLA requirements met."
+ok
+"Nice consolidation... I should have noticed a few things in my original review. My bad"
+"Released in 0.8.2"
+"again... why are we deleting ""lib"" ?"
+"@koba04 いえいえ！もとはといえば、私の誤訳や間際らしい文章がすべての原因ですので、落ち度は私にあります。申し訳ありませんでした。🙇
+お二人方には本当に丁寧にレビューをしていただき、感無量です！
+もしまだ修正点やおかしな文章がありましたら、またその他お手伝いできることがあれば何でも致しますので、ぜひお気軽にお申し付けください！"
+"Suggested change
+        
+          
+        
+      
+    
+    
+      
+          
+            
+            私たちはあなたのプルリクエストに新しい機能に応じたユニットテストが含まれることを期待します。これによって将来に渡ってコードが壊れていないことを担保します。
+          
+          
+            
+            ただしプルリクエストにあなたの新機能に応じたユニットテストを含めることは必須です。これによって将来あなたのコードを壊してしまわないことが担保されます。"
+"@sohilpandya Have a look at day 2 in the schedule. JWT is there... is that what you mean?"
+""
+"Your Render PR Server URL is https://oc-styleguide-pr-3534.onrender.com.
+Follow its progress at https://dashboard.render.com/static/srv-bp51e9g8atn0r94s5mm0."
+"Suggested change
+        
+          
+        
+      
+    
+    
+      
+          
+            
+            Perhatikan bahwa kita mengoper `[]` sebagai sebuah *dependency array* untuk `useCallback`. Ini memastikan bahwa *ref callback* tidak berubah di antara *render* ulang, serta agar React tidak akan memanggilkan tanpa sebab.
+          
+          
+            
+            Perhatikan bahwa kita mengoper `[]` sebagai sebuah *dependency array* untuk `useCallback`. Ini memastikan bahwa *ref callback* tidak berubah di antara *render* ulang, serta agar React tidak akan memanggilnya tanpa sebab."
+"Ok, applied changes Steven requested in review.
+Now blocked by #727 issue. Mr. Gum requests that we fix the linting before we merge the PR to ensure the order of methods in the QnAMaker class is clean"
+"Test summary
+ 50  •  0  •  0 •  0
+
+Run details
+
+
+
+
+
+
+
+
+
+Project
+Human-Connection
+
+
+Status
+Passed
+
+
+Commit
+8c15f19
+
+
+Started
+Dec 19, 2019 6:23 AM
+
+
+Ended
+Dec 19, 2019 6:35 AM
+
+
+Duration
+11:28 💡
+
+
+OS
+Linux Ubuntu Linux - 16.04
+
+
+Browser
+Chromium 79 
+
+
+
+View run in Cypress Dashboard ➡️
+
+This comment has been generated by cypress-bot as a result of this project's GitHub integration settings. You can manage this integration in this project's settings in the Cypress Dashboard"
+"I prefer choose one for all the project, I don't care witch one."
+"Hmm, I think loanwords in the header doesn't have to be italicized mas @arfianadam 😄"
+"love this section! Though, I have to read it a few times, and practice doing it to get more natural with it.
+The fact that you have a page that uses a feature, which uses a component, which uses a feature and it's components is new to me hehehe"
+"Cool, this was still just a wip not ready for review, but sense you read it already what did you think? Does it seem simple enough to follow and understand how to use from the example?"
+"Please add proper indentation to it."
+"@alodahl do I need to provide the link as well or just mention the credits?"
+"Sure, makes sense, I will do it for the next ones 👍"
+"You can name the function as isObject also."
+"@mattwr18 adding one more css class is no problem at all. If that solves all our problems, I would be interested in why the class fixes the flaky test.. 🤔  Do you have an explanation?"
+"This pull request is automatically deployed with Now.
+To access deployments, click Details below or on the icon next to each push."
+"Shouldn't review things when I'm half asleep 😆
+Should be a map instead of forEach in this case, Can leave it as it is now - i'll do it while cleaning up all the utility functions 👍"
+"For the notes we can use "">""
+
+Note down: this time...
+
+Is a special character from markdown"
+"More importantly, it's not obvious whether the result should be really just one commit or let's say 3 for example..."
+"🎉 This PR is included in version 7.7.0 🎉
+The release is available on:
+
+npm package (@latest dist-tag)
+GitHub release
+
+Your semantic-release bot 📦🚀"
+Done.
+"Suggested change
+        
+          
+        
+      
+    
+    
+      
+          
+            
+            `React.Children` はデータ構造が非公開の `this.props.children` を扱うためのユーティリティを提供します。
+          
+          
+            
+            `React.Children` はデータ構造が不明瞭な `this.props.children` を扱うためのユーティリティを提供します。"
+"Test summary
+ 50  •  0  •  0 •  0
+
+Run details
+
+
+
+
+
+
+
+
+
+Project
+Human-Connection
+
+
+Status
+Passed
+
+
+Commit
+747aebd
+
+
+Started
+Dec 18, 2019 12:58 PM
+
+
+Ended
+Dec 18, 2019 1:11 PM
+
+
+Duration
+13:04 💡
+
+
+OS
+Linux Ubuntu Linux - 16.04
+
+
+Browser
+Chromium 79 
+
+
+
+View run in Cypress Dashboard ➡️
+
+This comment has been generated by cypress-bot as a result of this project's GitHub integration settings. You can manage this integration in this project's settings in the Cypress Dashboard"
+"@mariobehling Please merge!"
+"Readme is cleaned up with the comments above.
+
+I agree that sc-custom will solve most issue with edge cases, and to be honest major versions are just as cheap as minor or patch versions so it's not worth shipping a worse API for that reason.
+This is good to go I think, great work!"
+"oh ok, sorry @Tirokk heheh"
+"// Catatan: sangatlah penting untuk mengatasi error disini
+// alih-alih menggunakan blok catch() sehingga kita tidak menenggelamkan
+// exception dari bug yang sebenarnya terjadi di komponen
+
+What do you think? 😄"
+"Okay, will have a look from now."
+"wow.... give me a moment..."
+"This pull request is automatically deployed with Now.
+To access deployments, click Details below or on the icon next to each push."
+"@alodahl I have added the changes that you have requested."
+"🎉 This PR is included in version 2.1.1 🎉
+The release is available on GitHub release
+Your semantic-release bot 📦🚀"
+"Released as 3.1.0. Thank you @shanecav !!"
+"Maybe we should add those scripts to travis and appveyor so they only run in CI
+Here's what webpack does:
+https://github.com/webpack/webpack/blob/ba31ced75669350aa5203b2fdda125efbe294455/appveyor.yml#L25-L26
+https://github.com/webpack/webpack/blob/bb8e28bfb4ed33939328af94ea1d641ff38df6f1/circle.yml#L15
+https://github.com/webpack/webpack/blob/bfcc5942bbd2f1384692fa5dfcdfc1756c95b12d/ci/travis-install.sh#L4"
+"How to setup should be in this document, but since is a go library, I consider that doesn't need any documentation"
+"Added a 2nd commit fixing Nacho's role and Alejandro's surname"
+"This pull request is being automatically deployed with ZEIT Now (learn more).
+To see the status of your deployment, click below or on the icon next to each commit.
+🔍 Inspect: https://zeit.co/opencollective/opencollective-frontend/bhxilbhrrc
+✅ Preview: In Progress"
+"@stevengum Can you review + merge this in today?"
+"don't include attributes key if all attributes are undefined"
+"This pull request is automatically deployed with Now.
+To access deployments, click Details below or on the icon next to each push."
+"Not sure whether to use the reviewer feature (which doesn't show up in the PR list making it harder to immediately see the status of the PRs) or stick to assignment..."
+"Edit: my bad!"
+"@HipsterBrown Can you check again?"
+"elemen React merupakan objek biasa, dan mudah dibuat tidak perlu koma."
+"I do not want to leave it like this @roschaefer, which is why I said ☝️ I am not happy with it, but I spent a couple hours last night and could not seem to get it working, and there are no examples of creating any nodes passing in additional information.
+We have a few where we assign an author, but that does not require passing in any additional info as we can access the user id with the context.
+When I try to modify the resolver, I run into the issues stated ☝️"
+"Hi @femtotrader sorry for the late response (1yr+ 😂 ) I have merged both PRs."
+"Invest more time..."
+"This pull request is automatically deployed with Now.
+To access deployments, click Details below or on the icon next to each push."
+"Sorry short notice, but can someone please merge this in the next four minutes please @des-des @jsms90 @eliascodes 🕙"
+"And a margin below the save button"
+"Only custom form elements for <ds-form>"
+"What I mean is: not in this one instance, but if we did this everywhere, then we would be consuming more memory than necessary."
+"Test summary
+ 66  •  0  •  0 •  0
+
+Run details
+
+
+
+
+
+
+
+
+
+Project
+Human-Connection
+
+
+Status
+Passed
+
+
+Commit
+517666b
+
+
+Started
+Feb 19, 2020 1:52 PM
+
+
+Ended
+Feb 19, 2020 2:07 PM
+
+
+Duration
+14:22 💡
+
+
+OS
+Linux Ubuntu Linux - 16.04
+
+
+Browser
+Electron 78 
+
+
+
+View run in Cypress Dashboard ➡️
+
+This comment has been generated by cypress-bot as a result of this project's GitHub integration settings. You can manage this integration in this project's settings in the Cypress Dashboard"
+"Noted. We need to update the Rollup docs as this is a copy/paste/modify from them. I'll see about doing that this week."
+"@jaroslav-kubicek I have nothing to say other than good job... 👍
+@VaclavSir Thanks for your reviews... 🙂"
+"Pull Request Test Coverage Report for Build 105693
+
+8 of 10   (80.0%)  changed or added relevant lines in 2 files are covered.
+No unchanged relevant lines lost coverage.
+Overall coverage decreased (-0.0004%) to 83.87%
+
+
+
+
+
+Changes Missing Coverage
+Covered Lines
+Changed/Added Lines
+%
+
+
+
+
+libraries/botbuilder-core/src/activityHandlerBase.ts
+4
+6
+66.67%
+
+
+
+
+
+
+
+Totals
+
+
+
+
+
+Change from base Build 105533:
+-0.0004%
+
+
+Covered Lines:
+8706
+
+
+Relevant Lines:
+10039
+
+
+
+
+💛  - Coveralls"
+"Fixes #113 - removed custom server from signup page."
+"This pull request is automatically deployed with Now.
+To access deployments, click Details below or on the icon next to each push."
+"I disabled the hooks rules warning, but it's working fine."
+"See my note on other file. Though this is Nazareth's schedule so I assume they will do what is appropriate for them."
+"@alodahl I have done the changes that you asked for. Kindly review it."
+"While this wouldn't be available in TypeScript, in JavaScript you can evaluate the value of qnaWithOptions._options to verify that the options were successfully passed in. The feedback on the previous test is applicable to here as well."
+"This pull request is automatically deployed with Now.
+To access deployments, click Details below or on the icon next to each push."
+"@mattlub See the comments in the issue
+Again, I would advise setting up a hangouts with @alexis-l8, given that this material is unlikely to be updated in time for FACN2 to be long enough"
+"oh, this looks very good! @mattwr18 well done!
+Just one question out of curiosity: What let you implement the custom GraphQL query CommentByPost instead of using
+query($id: ID!) {  
+  Post(id: $id) {
+    comments { ... }
+  }
+}
+
+
+I commented about that ☝️
+""... I had difficulty requesting the Post by its slug, with just the comments, since it returns the same key Post."""
+"This pull request is automatically deployed with Now.
+To access deployments, click Details below or on the icon next to each push."
+"This pull request is automatically deployed with Now.
+To access deployments, click Details below or on the icon next to each push."
+"We don't know, so they are protected once more!"
+"check the history package docs. they're short. basically u do: const history = createMemoryHistory() and now u have the object, and then once u pass it to RFR, u no longer worry about it.
+I think the answer ur looking for is this:
+when using persist, u will already have a history, and so it might break RFR which needs a separate history object to start. in short, and unfortunately, it's sounding like we must finish hydrating from persist, then grab the previous history and put it into the external history object which RFR will continue to use under the hood.
+this may require some more work under the hood to automate this unfortunately. at least for Native. Cuz here's the thing: web likely worked cuz there is no history.entries array, as the browser doesn't maintain it for u (or u would have access to other people's history). So that's why people got it to work on web. But on native, we are making use of the history so u can back out of ur entire history.entries. In which case we have the problem i just described. It's solveable, tho likely not supported yet.
+I'd build this without persist until the end. I need help by the way. If u wanna add it sooner than later I can make it painless. Otherwise, it's just a little while longer until the RN revisit as you know.
+But thanks to bringing this to my attention. This is a problem i gotta solve. I used to use redux-storage, but when i built RFR didnt use storage (which is similar to persist). So i wasnt aware of these problems.
+
+to implement this, we basically need RFR to wait internally until persist is loaded (perhaps by listening directly to its dispatch actions). Then when we receive it, we push the entries on to the internal secondary memory history object we sync to.
+Lastly, in userland, we need a way to signal when we're doing deep linking and when we're not. If we are doing deep-linking, we should just clear the history entries in both persist/redux + the memory history, and just start fresh. It doesnt need to be that way though. That's probably just what's most commonly expected. It could also just function like any other new route visited: it's pushed on the end of the history entries array."
+"Since there is huge backlog for testing, we will be merging PRs once those are tested and closed."
+"This pull request is automatically deployed with Now.
+To access deployments, click Details below or on the icon next to each push."
+"So, I am testing this amazing new feature right now (love it! 💚) and have to say it feels very smooth – it's great that you managed to fit the cropping tool into the size of the create-post-card! 😍
+But there's an issue we probably still need to think about... When I crop an image like this:
+
+Here's what I see on the post page:
+
+While I would of course expect to see the image just as I cropped it.
+I think right now we have hard-coded a max-height for images because we wanted to avoid suuuperlong images that would force you to scroll down three screens to reach the post content. And I still think we should limit the height of images somewhat to avoid that exact problem, although we could probably give quite a bit more flexibility.
+Does the cropping tool allow us to restrict the aspect ratio to a certain range? That would be ideal because we have a fixed width and could then limit the height implicitly by only allowing certain aspect ratios – thus getting rid of the need for a max-height."
+"s/in a large/for a large"
+"Right, it actually worked, my eyes missed the change in the card icon. 😄"
+"Suggested change
+        
+          
+        
+      
+    
+    
+      
+          
+            
+            > `findDOMNode` adalah sebuah cara yang digunakan untuk mengakses *DOM node* pokok. Pada umumnya, penggunaan cara ini tidak disarankan sebab menembus abstraksi komponen. [Sudah tidak berlaku dalam `StrictMode`.](/docs/strict-mode.html#warning-about-deprecated-finddomnode-usage)
+          
+          
+            
+            > `findDOMNode` adalah sebuah cara kasar yang digunakan untuk mengakses *DOM node* pada komponen. Pada banyak kasus, penggunaan cara ini tidak disarankan karena dapat merusak abstraksi komponen. [Sudah tidak berlaku dalam `StrictMode`.](/docs/strict-mode.html#warning-about-deprecated-finddomnode-usage)
+          
+      
+    
+    
+  
+
+What do you think?"
+"Perfect, looks good to me. :)"
+"This PR has been verified. The gauge team will be looking into this soon.
+/cc @getgauge/core"
+"I just renamed it to blocked, which could stand for isOrWasBlocked ... didn't really love any of the names I could come up with to describe it.."
+"안그래도 추가하려고 링크 찾고 있었는데! ㅎㅎ 매우 감사합니다!"
+"This whole logic can be implemented without using emailError, passwordError and validForm state variables. That would make this whole component more concise and elegant. Please make it happen."
+"Pull Request Test Coverage Report for Build #2183
+
+8 of 8   (100.0%)  changed or added relevant lines in 1 file are covered.
+No unchanged relevant lines lost coverage.
+Overall coverage increased (+0.7%) to 88.302%
+
+
+
+
+
+Totals
+
+
+
+
+
+Change from base Build #2182:
+0.7%
+
+
+Covered Lines:
+3234
+
+
+Relevant Lines:
+3520
+
+
+
+
+💛  - Coveralls"
+"Can you please help me implemnent this:
+function urlExists(url, headers, cb) {
+  request({ url: url, headers: headers, method: 'HEAD' }, function(err, res) {
+    if (err) {
+      return cb(null, false);
+    }
+    cb(null, /4\d\d/.test(res.statusCode) === false);
+  });
+}
+
+with node-fetch?"
+"I like your formatting better, I will update the C# version to match."
+"I think game can be translated to either permainan or gim. gim is a valid translation for video game
+https://kbbi.kemdikbud.go.id/entri/gim"
+"Is it by design and will be used later
+
+Yes, when I navigate to AppleWalletScreen I will use the selectedSegment that way, I don't need to pass any parameters, or do any queries on that screen."
+"Middleware [](start = 50, length = 10)
+
+Again... This will need to be updated to use the M2 version of middleware"
+"I guess I'm thinking of the week schedule more as something that is used by the students. If they're going back to the week schedule to remind themselves of what was done in each of these sections of the day, they only need to be pointed to the worksheets, not to the mentor/facilitator notes."
+"Needs to be merged quickly as precourse has already been given to FAC11. 👍"
+"🎉"
+"@WilcoFiers I am looking for this cool feature. Would you let me know when this change would be released? I just want to know rough release plan. Thanks for building this awesome project!"
+"Suggested change
+        
+          
+        
+      
+    
+    
+      
+          
+            
+            Jika nanti kita mengubah bidang Fahrenheit menjadi 212, state pada `Calculator` akan menjadi:
+          
+          
+            
+            Jika nanti kita mengubah kolom Fahrenheit menjadi 212, state pada `Calculator` akan menjadi:"
+"AND -> and or &"
+"Suggested change
+        
+          
+        
+      
+    
+    
+      
+          
+            
+            * 🔴 Jangan panggil Hooks di dalam fungsi yang dilewatkan pada `useMemo`, `useReducer`, atau `useEffect`.
+          
+          
+            
+            * 🔴 Jangan panggil Hooks di dalam fungsi yang dioper ke `useMemo`, `useReducer`, atau `useEffect`.
+          
+      
+    
+    
+  
+
+As per the glossary, ""pass"" -> ""oper""."
+"I don't understand how Stripe is related here"
+"null [](start = 36, length = 4)
+
+null is evil in JS and we've tried to avoid its use in the SDK.  use undefined instead or you can just say condition?: string, #Resolved"
+"This pull request is being automatically deployed with ZEIT Now (learn more).
+To see the status of your deployment, click below or on the icon next to each commit.
+🔍 Inspect: https://zeit.co/opencollective/opencollective-frontend/bsiuxkregj
+🌍 Preview: In Progress"
+"This pull request is automatically deployed with Now.
+To access deployments, click Details below or on the icon next to each push."
+"Should the VP of Product (or someone from Product) be part of this one?"
+"anda -> Anda"
+"This pull request is automatically deployed with Now.
+To access deployments, click Details below or on the icon next to each push."
+"Yeah, they support addEventListener in general, but not for the MediaQueryList, unfortunately.
+Here's a relevant issue: microsoft/TypeScript#32210
+BTW, the best way to see the browser support for these particular methods is to go to MDN:MediaQueryList#Browser_compatibility and check out MediaQueryList inheriting from EventTarget section of the table. Thanks to mdn/browser-compat-data#3674 for making this contribution."
+"では英語のままにしますー"
+"Suggested change
+        
+          
+        
+      
+    
+    
+      
+          
+            
+            React は描画された内容が、サーバ・クライアント間で同一であることを期待します。React はテキストコンテンツの差異を修復することは可能ですが、その不一致はバグとして扱い、それらを修正すべきです。開発用モードでは、React は描画された内容をクライアントで再利用しようとする際の不一致について警告します。不一致がある場合に属性の差異が修復されるという保証はありません。これはパフォーマンス上の理由から重要です。なぜなら、ほとんどのアプリケーションにおいて不一致が発生するということは稀であり、全てのマークアップを検証することはとてつもなく高コストになるためです。
+          
+          
+            
+            React はレンダーされる内容が、サーバ・クライアント間で同一であることを期待します。React はテキストコンテンツの差異を修復することは可能ですが、その不一致はバグとして扱い、修正すべきです。開発用モードでは、React は両者のレンダーの不一致について警告します。不一致がある場合に属性の差異が修復されるという保証はありません。これはパフォーマンス上の理由から重要です。なぜなら、ほとんどのアプリケーションにおいて不一致が発生するということは稀であり、全てのマークアップを検証することは許容不可能なほど高コストになるためです。
+          
+      
+    
+    
+  
+
+""about mismatches during hydration"" とは「サーバ側の hydration」と「クライアント側の hydration （つまり初回レンダー）」とのミスマッチのことですのでそのように明示しました"
+"[must]
+漢字を開いておいてもらえるとより読みやすいかと思います。
+  
+    
+      
+        Suggested change
+        
+          
+        
+      
+    
+    
+      
+          
+            
+            この形で PropType を使用をする必要がある場合、PropType のフォーク版（[これら](https://github.com/aackerman/PropTypes) [2つの](https://github.com/developit/proptypes)パッケージなど）を使用するか、あるいは新たにフォーク版を作成することをお勧めします。
+          
+          
+            
+            この形で PropType を使用をする必要がある場合、PropType のフォーク版（[これら](https://github.com/aackerman/PropTypes) [2つの](https://github.com/developit/proptypes)パッケージなど）を使用するか、あるいは新たにフォーク版を作成することをおすすめします。"
+"Suggested change
+        
+          
+        
+      
+    
+    
+      
+          
+            
+            下記のコンポーネントは、 `componentDidMount` でAJAXコールして得られたデータをローカルコンポーネントのstateに流し込んでいます。 
+          
+          
+            
+            下記のコンポーネントは、`componentDidMount` で AJAX コールして得られたデータをローカルコンポーネントの state に流し込んでいます。"
+"Suggestion: Banyak pengguna React mengakui membaca [Thinking in React](/docs/thinking-in-react.html) sebagai momen dimana React akhirnya ""clicked"" untuk mereka. Ini mungkin panduan React yang paling tua tetapi masih relevan."
+"Now tell them what they should expect to see."
+"I'd rather not have a whitelist because gopax. This whitelist is only useful for blocking XLM; trust lines already handle the whitelisting. Lets remove this."
+"I have checked slides: 77, 78, 79, 80 and 81.
+To go with mentioned criteria, slides seem fine. One thing I noticed is, the text size, which is either preferred to be 18 or 24.
+It is not strictly followed.
+@imsk please check if you can make up to the mentioned criteria of font size."
+"renamed the variable 👍"
+"Work through"
+"Suggested change
+        
+          
+        
+      
+    
+    
+      
+          
+            
+            * A [Workflow](workflow.md), that defines the process of definition and development of the tasks, from the idea to the release.
+          
+          
+            
+            * A [Workflow](workflow.md) that defines the process of definition and development of the tasks, from the idea to the release."
+"haha thanks @Tirokk"
+"To be specific, this should be added to app/MMB/package.json"
+"I changed it after your suggestion."
+"サジェストいただいた方が良いのでそちらで！"
+"This is great. Perfect for Inbox type applications where you want the time to continue updating. I'll get this merged in tomorrow."
+"7979b74 deeply changes the way we handle Hero and Navbar by separating the two concepts.
+Navbar is now fixed with sticky CSS position, which is a major optimization for performances."
+"Since Web Components is a name I think it doesn't have to be italicized 😄"
+"@amitstein, @pablocastro  - I'd like to use this branch as a basis for the lerna conversion for samples/**. May I contribute directly to your branch?"
+"I was trying to make the custom input have a background color transparent white, not gray"
+"Codecov Report
+
+❗️ No coverage uploaded for pull request base (master@869383b). Click here to learn what that means.
+The diff coverage is n/a."
+"TODO warning too?"
+"Eric would like us to use riteway for new tests. The package is already added, just convert the import and tests ;)"
+"This pull request is being automatically deployed with ZEIT Now (learn more).
+To see the status of your deployment, click below or on the icon next to each commit.
+🔍 Inspect: https://zeit.co/opencollective/opencollective-frontend/sinquhrdbw
+🌍 Preview: In Progress"
+"No! In that case I'll approve this and merge. 👍"
+"I haven't tried the PR but based upon what you are describing it would be the correct implementation."
+"Our GraphQL schema saves us here, because you must enter an Integer. But if that wouldn't be the case, we would have a cypher injection vulnerability here."
+"Probably a good idea, it will be easier to remember."
+"Also I think we should add some documentation to the readme on how to configure this setting"
+"Tanpa koma."
+"@xdamman Yes I plan to add it in another PR"
+"Ok, can you add the runtime you want to support to travis?
+
+It seems that I can't specify minor version in travis config"
+"I've sent you an invitation!"
+"Suggested change
+        
+          
+        
+      
+    
+    
+      
+          
+            
+            React 16.2 以下を使用している場合、または ref forwarding で提供される以上の柔軟性が必要な場合は、[この代替アプローチ](https://gist.github.com/gaearon/1a018a023347fe1c2476073330cc5509)を使用して ref を別の名前の prop として明示的に渡すことができます。
+          
+          
+            
+            React 16.2 以下を使用している場合、または ref forwarding で提供される以上の柔軟性が必要な場合は、[この代替手法](https://gist.github.com/gaearon/1a018a023347fe1c2476073330cc5509)を使用して ref を異なる名前の props として明示的に渡すことができます。"
+"Lol, my heads always a week ahead, moved all content to week 5 😸"
+"Test summary
+ 48  •  0  •  0 •  0
+
+Run details
+
+
+
+
+
+
+
+
+
+Project
+Human-Connection
+
+
+Status
+Passed
+
+
+Commit
+06b9732
+
+
+Started
+Dec 10, 2019 6:12 AM
+
+
+Ended
+Dec 10, 2019 6:23 AM
+
+
+Duration
+10:35 💡
+
+
+OS
+Linux Ubuntu Linux - 16.04
+
+
+Browser
+Chromium 78 
+
+
+
+View run in Cypress Dashboard ➡️
+
+This comment has been generated by cypress-bot as a result of this project's GitHub integration settings. You can manage this integration in this project's settings in the Cypress Dashboard"
+"It feels to my like the learning outcomes of this would be the same as the learning outcomes of week 10 - if UX/UI week is staying in the course. But it makes more sense to me to teach 'founder' skills by doing user testing on a prototype before building anything (like week 10), rather than after building the initial app, and then only using user testing for the next feature.
+If we think that these skills need to be part of the taught portion of the course (a slightly contentious issue amongst F&C9), why not amalgamate week 10 & 11 in terms of introducing user testing & client interaction?
+UX/UI principles themselves can be peppered throughout the course, as per F&C9's stop go continue."
+"Oh no don't worry, these are indicating that our code tests failed (actually they were not triggered because we did too much commits in a short time). But everything's fine, you can see what was actually merged in the ""Files Changed"" tab 🙂"
+"This pull request is automatically deployed with Now.
+To access deployments, click Details below or on the icon next to each push."
+"Suggested change
+        
+          
+        
+      
+    
+    
+      
+          
+            
+            Ini adalah kasus penggunaan yang langka. Jika butuh, Anda bisa [gunakan sebuah *ref* yang bisa diubah-ubah](#is-there-something-like-instance-variables) menjadi secara manual menyetorkan nilai *boolean* sesuai dengan apakah Anda berada pada *render* pertama atau selanjutnya, kemudia memeriksa penandanya (*flag*) pada efek yang Anda buat. (Jika sering melakukan hal ini, ada baiknya Anda membuat sebuah *custom Hook*.)
+          
+          
+            
+            Ini adalah kasus penggunaan yang langka. Jika butuh, Anda dapat [menggunakan sebuah *ref* yang *mutable*](#is-there-something-like-instance-variables) untuk menyimpan secara manual nilai *boolean* sesuai dengan apakah Anda berada pada *render* pertama atau selanjutnya, kemudian memeriksa penandanya (*flag*) pada efek yang Anda buat. (Jika sering melakukan hal ini, ada baiknya Anda membuat sebuah *custom Hook*.)
+          
+      
+    
+    
+  
+
+This translation makes more sense, IMO."
+"My poor - small - tired - brain can't process that :-)"
+"this is a bit confusing for me.. I saw your commit message ""webapp was built with NODE_ENV=production but started with
+NODE_ENV=development""
+but it seems that now you are doing the opposite, oder? Line 18 says don't install production dependencies... but build it in a production environment??"
+"This still breaks server-side rendering because componentWillMount fires on the server but window is not defined."
+"intent: string = null [](start = 16, length = 21)
+
+intent?: string"
+"Thanks for the comments, I've made the updates :)"
+"This pull request is automatically deployed with Now.
+To access deployments, click Details below or on the icon next to each push."
+"Actually, I'm pretty unclear about whether Gaza is going to run completely separately"
+"Pull Request Test Coverage Report for Build 338
+
+0 of 0  (NaN%) changed or added relevant lines in 0 files are covered.
+No unchanged relevant lines lost coverage.
+Overall coverage remained the same at 81.098%
+
+
+
+
+
+Totals
+
+
+
+
+
+Change from base Build 320:
+0.0%
+
+
+Covered Lines:
+1914
+
+
+Relevant Lines:
+2291
+
+
+
+
+💛  - Coveralls"
+"Suggested change
+        
+          
+        
+      
+    
+    
+      
+          
+            
+            ### Menggunakan Model Backbone di Komponen-Komponen React {#using-backbone-models-in-react-components}
+          
+          
+            
+            ### Menggunakan Model Backbone pada Komponen React {#using-backbone-models-in-react-components}"
+"Why not use riteway?"
+"timeout is the the timeout for getting gps locations I guess. maxiumumAge sounds like, how long it will allow you to use lat, lng. Infinity sounds ok to me. I can set timeout."
+"This pull request is being automatically deployed with ZEIT Now (learn more).
+To see the status of your deployment, click below or on the icon next to each commit.
+🔍 Inspect: https://zeit.co/opencollective/opencollective-frontend/hwlqnyntsu
+🌍 Preview: In Progress"
+"Suggested change
+        
+          
+        
+      
+    
+    
+      
+          
+            
+            `createReactClass()` の場合、渡されるオブジェクトの関数として `getDefaultProps()` を定義する必要があります。
+          
+          
+            
+            `createReactClass()` の場合、渡されるオブジェクト内の関数として `getDefaultProps()` を定義する必要があります。"
+"既存のcrowdin翻訳が三目並べになっていますのでこちらでお願いします"
+"Thank you! Cite Bailey too please"
+"You modified it because you preferred not to destructure. So I am just asking why you make the change as it seems to be arbitrary."
+"These bitwise operators are hard to read, I think includes would be better.
+  
+    
+      
+        Suggested change
+        
+          
+        
+      
+    
+    
+      
+          
+            
+              t.truthy(~code.indexOf('exports.zero = zero;'));
+          
+          
+            
+              t.true(code.includes('exports.zero = zero;'));"
+"Sorry, that does not seem to replace the lines below... But I think it's better that all the logic is in the return statement or before the return statement, and not mixed like it is now. Thoughts?"
+"Remove commented (disabled) code."
+"Remove this."
+"So because you use offline cache, you want to display first data from the cache (unless cacheConfig.force is true), and then fetch data from the network, and for it to update, this is necessary. Correct?"
+"Thank you for very nice documentation @dpordomingo !"
+"Please mention the issue that you are solving. It will be easier for us to give scores😃"
+"Suggested change
+        
+          
+        
+      
+    
+    
+      
+          
+            
+            Sebagai tambahan, pertimbangkan bahwa desain *Hooks* itu lebih efision dalam beberapa hal:
+          
+          
+            
+            Sebagai tambahan, pertimbangkan bahwa desain *Hooks* itu lebih efisien dalam beberapa hal:"
+"I just pushed another commit that changes this to 400"
+"@thoragio cool thx looks good, il just verify it runs on my machine tonight.
+@ericelliott any thoughts on this?"
+"@shellscape thank you for finishing this"
+https://docs.mongodb.com/getting-started/cpp/documents/
+"This pull request is automatically deployed with Now.
+To access deployments, click Details below or on the icon next to each push."
+"Test summary
+ 50  •  0  •  0 •  0
+
+Run details
+
+
+
+
+
+
+
+
+
+Project
+Human-Connection
+
+
+Status
+Passed
+
+
+Commit
+76d2d63
+
+
+Started
+Dec 17, 2019 5:32 PM
+
+
+Ended
+Dec 17, 2019 5:47 PM
+
+
+Duration
+14:35 💡
+
+
+OS
+Linux Ubuntu Linux - 16.04
+
+
+Browser
+Chromium 79 
+
+
+
+View run in Cypress Dashboard ➡️
+
+This comment has been generated by cypress-bot as a result of this project's GitHub integration settings. You can manage this integration in this project's settings in the Cypress Dashboard"
+"@smikitky ありがとうございます！"
+"Test summary
+ 59  •  0  •  0 •  0
+
+Run details
+
+
+
+
+
+
+
+
+
+Project
+Human-Connection
+
+
+Status
+Passed
+
+
+Commit
+13cdeec
+
+
+Started
+Feb 3, 2020 1:11 PM
+
+
+Ended
+Feb 3, 2020 1:25 PM
+
+
+Duration
+14:41 💡
+
+
+OS
+Linux Ubuntu Linux - 16.04
+
+
+Browser
+Electron 78 
+
+
+
+View run in Cypress Dashboard ➡️
+
+This comment has been generated by cypress-bot as a result of this project's GitHub integration settings. You can manage this integration in this project's settings in the Cypress Dashboard"
+"Merging but would still like a review of the documents by @jorgeschnura"
+"same as 👆"
+"Test summary
+ 50  •  0  •  0 •  0
+
+Run details
+
+
+
+
+
+
+
+
+
+Project
+Human-Connection
+
+
+Status
+Passed
+
+
+Commit
+60b3035
+
+
+Started
+Dec 12, 2019 8:44 PM
+
+
+Ended
+Dec 12, 2019 8:59 PM
+
+
+Duration
+15:13 💡
+
+
+OS
+Linux Ubuntu Linux - 16.04
+
+
+Browser
+Chromium 79 
+
+
+
+View run in Cypress Dashboard ➡️
+
+This comment has been generated by cypress-bot as a result of this project's GitHub integration settings. You can manage this integration in this project's settings in the Cypress Dashboard"
+"@wxsms Thank you for quick response & merge!
+If you need anything else about cdnjs in the future, you can open issue on cdnjs repo, we will handle it ASAP 😄"
+"Please replace line 12 with the reading & writing documentation link, unless you have a reason to require the Git lesson."
+"missing return … if you don't return, continued execution may fail with errors. Generally, I found that begin, repeat, prompt, and end must be return or execution may fail in subsequent turns..."
+"Absolutely @Betree appreciate that 👍
+My Twitter handle is @james_madhacks"
+"think we need an await for this.fillTelemetryProperties()"
+"I know, this is still just preparing to make it good. This is not finished"
+"This pull request is automatically deployed with Now.
+To access deployments, click Details below or on the icon next to each push."
+"Your Render PR Server at https://oc-styleguide-pr-3535.onrender.com is now live!
+View it on your dashboard at https://dashboard.render.com/static/srv-bp51ev08atn0r94s5ms0."
+Yes
+"Deploy preview for ja-reactjs ready!
+Built with commit 564b601
+https://deploy-preview-130--ja-reactjs.netlify.com"
+"It's meant to be there. It was {!showCreditCardForm && error && (error)} but the linter went a bit crazy. I've just tested it though and I can remove the second && error"
+"in the field commented ?
+
+comments written by a user in contributions to other users?
+or
+comments he has received on his own contributions?
+or
+Both?
+@ulfgebhardt @roschaefer @Tirokk @mattwr18"
+"I was in a hurry and not concentrated … 😬"
+"We need the es variant to support const in the code, btw"
+"Suggested change
+        
+          
+        
+      
+    
+    
+      
+          
+            
+            * Jika anda lebih suka **belajar konsep langkah demi langkah**, mulai dengan [panduan untuk konsep utama](/docs/hello-world.html) kami.
+          
+          
+            
+            * Jika anda lebih suka **belajar konsep langkah demi langkah**, mulailah dengan [panduan untuk konsep utama](/docs/hello-world.html) kami."
+"Yes, I forgot and did it locally yet. Push it up all together …"
+"I think this didn't work in jest because of the how you are importing it @Tirokk
+why is there both a ~ and a ..?? cause it lives in the root path?
+did you try ../../../shared/moderation/report.js??"
+"This is perfect, thank you so much @amychan331 !"
+ok
+"Hi @vsharma20v , just so you know, you can generally edit anything or push new commits to change the same PR without having to close it!"
+"This pull request is automatically deployed with Now.
+To access deployments, click Details below or on the icon next to each push."
+"This pull request is automatically deployed with Now.
+To access deployments, click Details below or on the icon next to each push."
+"Thank you @ruf-io !"
+"This pull request is automatically deployed with Now.
+To access deployments, click Details below or on the icon next to each push."
+"So we allow one character usernames yet?"
+"???
+Why then in file backend/src/schema/types/type/Post.gql, line 19:
+pinnedAt: String @cypher(
+      statement: ""MATCH (this)<-[pinned:PINNED]-(:User) WHERE NOT this.deleted = true AND NOT this.disabled = true RETURN pinned.createdAt""
+    )
+
+In my eyes it is a kind of code quality if we are as good as specific we can be. That’s why we are writing test to nail the things more down, as an example.
+For sure at the moment only users can pin posts. But that only users can do something is true  for a lot of things. Only users can emote to posts, but we query for the label User as well like in file ""backend/src/schema/resolvers/posts.js“, line 315:
+        emotionsCount: '<-[related:EMOTED]-(:User)',
+
+I thing we should just decide if we want to be as specific as possible or as free as possible …
+In my eyes more specific tracks down more possible errors …"
+"This pull request is automatically deployed with Now.
+To access deployments, click Details below or on the icon next to each push."
+"great thanks @Tirokk, almost all if not all stem from the use of the Editor, which leverages tiptap
+This is also failing the cypress tests because of the validations we have added this morning. for some reason it is sending an empty string to the backend, instead of sending the text.
+""After sending the first comment the text in the comment field is not deleted or field is not updated.""
+
+this is what I pointed out this morning and also occurs when one clicks the cancel button, then types something, and then submits a comment or clicks the cancel button again. This is to due with the editor, as it doesn't occur on a ds-input field.
+
+""The comment counter does not count, if I send a comment.""
+
+This is due to the fact that we are just refetching the comments, instead of refetching the entire post, which contains the commentCount attribute. We could go back to refetching the same Post, or maybe have a function that queries for the Post with only the comments and commentCount, but I had difficulty getting this working and commented on the issue above.
+
+""Submit comment button is not disabled, if text is smaller a 3 characters.""
+
+This is because we are not able to validate the Editor in the frontend, our validation schema only works for ds-input fields... we could write our own custom validations though
+
+""Comments appear in the wrong order under the post: Last as the topmost?""
+
+I think this is working for me(as was intended), it has the latest comments at the top
+
+""Comments should be deleted or edited.""
+
+yes, this is a separate ticket
+
+""Mentions with @should be working.""
+
+great catch, have pushed up the code for them to work"
+"This pull request is automatically deployed with Now.
+To access deployments, click Details below or on the icon next to each push."
+"I've just added a sentence about about apps built by previous cohorts"
+"not sure, theres no test on this, but ill ask @faceyspacey"
+"I think it's a nice idea but choosing correctly who is going to go. I'm sorry but it's true that the lack of social abilities could be an issue.
+I agree with David, only one person could be a bit awkward. 2 or 3 would be better. No more! I guess the goal of that it is to create a link with the new employee. If there are more than 3 people, I think it's difficult to create a trust relation.
+I don't know if we should try to do it on Monday. We have 2 new employees but one of them already has friends at the office. In this case, I think it's not worth it to do it."
+"This pull request is automatically deployed with Now.
+To access deployments, click Details below or on the icon next to each push."
+"@dependabot-bot rebase"
+:D
+"@leo There. Everything works now. 🎉"
+"Codecov Report
+
+❗️ No coverage uploaded for pull request base (master@3c36cad). Click here to learn what that means.
+The diff coverage is n/a."
+"Yeah yeah, I'm not sure what I was thinking with this. I will remove."
+"Ok, adding it to localization makes sense. Not sure about naming it DateFormatter, We are basically just renaming moment. I think it makes sense when new people look at the code, that they actually understand at once that we are using moment"
+"I Inspected to understand what could be wrong, here is the mistake, when you run npm run lint:fix this command will run  eslint '**/*.js' ""--fix"" along with the staged file paths.
+'**/*.js' will include all .js files as it was intended for the script command npm run lint.
+The solution to this is to use eslint command directly i.e
+""*.{js}"": [
+      ""eslint --fix"",
+      ""prettier --write"",
+      ""git add""
+    ],"
+"One would hope so … 😉"
+"Oh yeah, I'll just pop in a unit test covering that :)"
+"@dependabot rebase"
+"This pull request is automatically deployed with Now.
+To access deployments, click Details below or on the icon next to each push."
+"I can pre-define it, but I know that there's some that are not listed in that list.
+For example Catalina introduced ...security?Privacy_ScreenCapture which is not in that list. That list is also missing Privacy_Microphone, which I think was Mojave or El Capitan, but in general it will depend on the user's OS version.
+I can add that list and then still allow a generic string?"
+"Not sure why it is missing. I would say it is not important now. I just need to be able to click the logout button on an iPhone X, hence the margin."
+"I was thinking the same. If we don't wanna move it into .github to avoid ""vendor lock-in"" at least we could move it into the docs directory."
+"@rondale-sc I got the repo reverted back to where we want it. Is this ready to go? Needs a rebase to fix conflicts at least."
+"Thanks :). I will release it with the next feature."
+"shim は simulate のことではなくてこれのことなので、「シミュレートだと誤訳だ」と言われないか心配なのですが、かといって上手い訳語も思いつかないです…。「再現」とかの方がいいかもしれません。"
+"For reference:"
+"Is the user really who he/she represents himself to be? (not a very good sentence)
+Could be
+Is the user who they say they are?"
+"No problem. I'll do my best to keep the changes coming when I have some more free time."
+"@Kundan28 ok I will try to fix the typos."
+"The question is - is it really such a big issue for us? What do you prefer?"
+"This can be a const if all you're doing is pushing answers to it."
+"@agonzalez95 @piamancini PR ready"
+"dalam -> pada
+Jangan gunakan kata di karena di hanya digunakan untuk  kata-kata yang menyatakan tempat atau sesuatu yang dianggap tempat.
+Lihat: https://beritagar.id/artikel/tabik/perbedaan-pemakaian-kata-depan-di-dan-pada
+
+anda -> Anda"
+"this link does exist, it's just has an extra s. It should be: https://github.com/foundersandcoders/master-reference/blob/master/coursebook/general/code-review.md"
+"Suggested change
+        
+          
+        
+      
+    
+    
+      
+          
+            
+            making big changes. The VP Of Engineering is responsible to involve the CTO in 
+          
+          
+            
+            making big changes. The VP of Engineering is responsible to involve the CTO in"
+"再レンダーの間ということを明示しましたが如何でしょうか。
+  
+    
+      
+        Suggested change
+        
+          
+        
+      
+    
+    
+      
+          
+            
+            この例の `useState` が *フック*（この単語の意味するところはすぐ後で説明します）です。関数コンポーネントの中でローカルな state を使うために呼び出しています。この state は複数のレンダー間で React によって保持されます。`useState` は*現在の* state の値と、それを更新するための関数とをペアにして返します。この関数はイベントハンドラーやその他の場所から呼び出すことができます。クラスコンポーネントにおける `this.setState` と似ていますが、新しい state が古いものとマージされないという違いがあります。（`useState` と `this.state` の違いについては[ステートフックの利用](/docs/hooks-state.html)で例を挙げて説明します）
+          
+          
+            
+            この例の `useState` が *フック*（この単語の意味するところはすぐ後で説明します）です。関数コンポーネントの中でローカルな state を使うために呼び出しています。この state は以降の再レンダーの間も React によって保持されます。`useState` は*現在の* state の値と、それを更新するための関数とをペアにして返します。この関数はイベントハンドラーやその他の場所から呼び出すことができます。クラスコンポーネントにおける `this.setState` と似ていますが、新しい state が古いものとマージされないという違いがあります。（`useState` と `this.state` の違いについては[ステートフックの利用](/docs/hooks-state.html)で例を挙げて説明します）"
+"Add EOF here. Rest looks good to me 👍"
+"It looks great!
+
+Thanks!
+
+do you want to move that webpack loader over to this organisation?
+
+I think I'll keep it separate for now, for one because while it was definitely written for Styled Components, I did see a void in general for custom processors of Stylelint, and it could be that there are some use cases for some of the other custom processors, or maybe new cool things like Styled Components will be invented in the future that might want to use it :).
+And then I'm also a bit proud and protective of it as it's my first npm module so I think my pride wants to keep it on my page for now :P.
+If at some point in the future it for some reason would make a lot of sense to migrate it I'd be open to it, but for now I also see reasons like the above to keep it separate :)."
+"Disable CosmosDbTests again.
+There seems to be a config problem in the build server that prevent tests to reach the service.
+If enabled and the CosmosDb Emulator is running, these tests will pass locally."
+"Usually you would try to have one assertion per spec. You can easily create a new spec by saying:
+it('adds `createdAt` to `FOLLOW` relationship', async () => { ... })
+Redundancy is not a problem with software tests."
+"Bener, sepertinya kita sesuaikan dengan term dari React aja, jadi props?"
+"This is not objective, what does it mean to deliver products on time exactly?
+Is your goal to always deliver on time? Are you tracking when you don/t?"
+"Deploy preview for id-reactjs ready!
+Built with commit 4f7feb3
+https://deploy-preview-117--id-reactjs.netlify.com"
+"Yes same result"
+"@jaroslav-kubicek Not necessary. I just did not understand this sentence:
+
+That weird date changing to Jan 26th is functionality from datepicker with minDate. `Start date has minDate tdy and End date is set to tmw, therefore it scrolls to 26. (Booking conditions, and common sense, says you have to set End date as 1 day after Start date).
+
+Should be ""you cannot set past dates""... 🙄"
+"This pull request is being automatically deployed with ZEIT Now (learn more).
+To see the status of your deployment, click below or on the icon next to each commit.
+🔍 Inspect: https://zeit.co/opencollective/opencollective-frontend/gxcxqatfsf
+✅ Preview: In Progress"
+"Also, there are a few more edits neede on the slideshow."
+"Released in version 0.4.0!"
+"use marginVertical instead"
+"Open in Gitpod - starts a development workspace for this pull request in code review mode and opens it in a browser IDE."
+"oh, thanks, forgot about that, cos I'm only using .json file"
+"Made property required 👍"
+"Wow, I was anticipating something very tedious, but there are only four conflicts and all of them are fairly easy to resolve :)
+So should I directly push to this branch to resolve conflicts?"
+"🎉 This PR is included in version 0.3.0 🎉
+The release is available on:
+
+npm package (@latest dist-tag)
+GitHub release
+
+Your semantic-release bot 📦🚀"
+"@all-contributors please add @xnng  for code"
+"No I haven't done that else where.  @alodahl I have already made the change and removed the text and added link instead.  Will that be fine?  Or shall I change it back?  Please do review my PR.  So that I can start working on the other issue"
+"@esraajb you might be interested to have a look at this"
+"This pull request is automatically deployed with Now.
+To access deployments, click Details below or on the icon next to each push."
+"I think it would be better to pass the onPress function"
+"Cool! Will add some docs soon."
+"@Betree yes, the less we have there, the better"
+"Suggested change
+        
+          
+        
+      
+    
+    
+      
+          
+            
+            > `children` が `Fragment` の場合、それは1つの子要素として扱われ、走査されません。
+          
+          
+            
+            > `children` が `Fragment` の場合、それは 1 つの子要素として扱われ、走査されません。"
+"@mariobehling Since the above mentioned end points are causing any problem while rendering the page, please merge this! But assistance on this from @Orbiter @saurabhjn76 @dynamitechetan would be great!"
+"@mattwr18 I love the term „emoted“, you made my day. 😅 is it Even s Word?"
+"yes, that's right... we have a positive emotions filter for now...
+I also don't like the naming GeneralFilterItems as it' too general 🤣
+Do you have a suggestion of a better naming convention? There are only two hard things in Computer Science: cache invalidation and naming things."
+"& https://github.com/foundersandcoders/gaza-curriculum
+😉"
+"This pull request is being automatically deployed with ZEIT Now (learn more).
+To see the status of your deployment, click below or on the icon next to each commit.
+🔍 Inspect: https://zeit.co/opencollective/opencollective-frontend/ohkkkfhrnn
+✅ Preview: In Progress"
+"This pull request is automatically deployed with Now.
+To access deployments, click Details below or on the icon next to each push."
+"Looks good! Big improvement."
+"@ogerly we came across this bug in a pair-programming"
+"Please change to a notation other than code notation."
+"we actually discussed that @alina-beck... it's sooo annoying!!!"
+"LGTM :)"
+"Suggested change
+        
+          
+        
+      
+    
+    
+      
+          
+            
+            * every Monday–Friday 11:45
+          
+          
+            
+            * every Monday–Friday 11:30"
+"Will this be merged?"
+"LSApplicationQueriesSchemes is the only addition, the rest is reformatting"
+"@des-des @bradreeder I also really like this plan and think we can 'user-test' it ;)
+More than happy to jump on the UX/UI part of the teaching.
+Agree with @sohilpandya that might be good to offer some options as there are so many to choose from but better to have someone in the space to offer help in case its needed..
+Super exciting new thing!
+:)"
+"This:
+const fastJson = require('fast-json-stringify')
+const stringify = fastJson({
+  title: 'schema with required field',
+  type: 'object',
+  properties: {
+    str: {
+      type: 'string',
+      required: true
+    },
+    num: {
+      type: 'number'
+    }
+  }
+})
+
+console.log(stringify({
+  str: 'string'
+}) // '{""str"":""string"",""num"":null}'"
+thanks~
+"Pull Request Test Coverage Report for Build 81982
+
+2 of 2   (100.0%)  changed or added relevant lines in 1 file are covered.
+No unchanged relevant lines lost coverage.
+Overall coverage increased (+0.002%) to 86.541%
+
+
+
+
+
+Totals
+
+
+
+
+
+Change from base Build 81970:
+0.002%
+
+
+Covered Lines:
+4592
+
+
+Relevant Lines:
+5107
+
+
+
+
+💛  - Coveralls"
+"This pull request is automatically deployed with Now.
+To access deployments, click Details below or on the icon next to each push."
+"We could probably add there even the bookingId so we don't have to prop-drill it, right? (not in this PR)"
+"@znarf CI passed, up-to-date with master"
+"@sofer Okay, I have opened this up for 3 person projects. Do you think its a good idea"
+"@alodahl  I have made the required changes."
+"Can you also double-check:
+
+that 2/5  and 3/14 either have no automatic tests, or working ones
+the 'sum' test in 2/6"
+"@mattwr18 @roschaefer sorry I didn't respond earlier! I think what we could do – after the release – is display the active filters in the same place we display the active hashtag. Ideally with the possibility to disable all filters (or even single filters) right there. Would you like that?"
+"secaran inline -> secara inline 😄"
+"Yes please! All of the links need quick descriptions. You can add a ### Supplemental Resources section if you need one. Roles in tech probably doesn't need a lesson section.
+
+Ok, Added description to links."
+"Could we document this somewhere?"
+"This change isn't needed. WaterFallDialogs are still step based so just revert this change"
+"Suggested change
+        
+          
+        
+      
+    
+    
+      
+          
+            
+            *Rationale* there are 2 goals we want to keep in mind, while working with Kanban
+          
+          
+            
+            *Rationale* there are 2 goals we want to keep in mind while working with Kanban"
+"基底レベルの DOM、レンダリング、イベントハンドラの仕様に詳しい方の意見が欲しいところです。"
+"Pull Request Test Coverage Report for Build #1765
+
+0 of 0   changed or added relevant lines in 0 files are covered.
+No unchanged relevant lines lost coverage.
+Overall coverage increased (+0.06%) to 82.26%
+
+
+
+
+
+Totals
+
+
+
+
+
+Change from base Build #1751:
+0.06%
+
+
+Covered Lines:
+2705
+
+
+Relevant Lines:
+3165
+
+
+
+
+💛  - Coveralls"
+"Suggested change
+        
+          
+        
+      
+    
+    
+      
+          
+            
+            ES6 クラスでは、コンストラクターで `this.state` へ代入することで state の初期値を定義できます。
+          
+          
+            
+            ES6 クラスでは、コンストラクタで `this.state` へ代入することで state の初期値を定義できます。"
+"Deploy preview for ja-reactjs ready!
+Built with commit f892d21
+https://deploy-preview-263--ja-reactjs.netlify.com"
+"Thank you!"
+"If you assign each callback a prop, you could make it optional and have () => {} as the default."
+"IMO it will be better if tap behaves same like click (i.e) take an element selector to tap instead of coordinates as it will be cumbersome for users to calculate it which will keep changing based on the viewport. Can it be like await tap(link('taiko')) , thoughts?
+
+I have fixed this, can you please review ?"
+"Got nice help and influences of @mattwr18 !!!"
+"Move this logic to a function named renderAvatar() and then return the JSX from that function."
+"Yeah, it looks like underscore in that small font...I checked it now on the big screen.
+Sorry for the inconvenience."
+"I just made this fix"
+"Yes, that's a much cleaner way of doing it. I will give it a try. Thank you!"
+"Seems to be a deprecated API: https://vuejs.org/v2/guide/components-slots.html#Scoped-Slots-with-the-slot-scope-Attribute"
+"Deploy preview for ja-reactjs ready!
+Built with commit 9c20799
+https://deploy-preview-314--ja-reactjs.netlify.com"
+"@Soumya0803 this is a good video!  Can you tell me which commands it doesn't cover?
+You can go ahead and add this link, add a little in the file about how long it is and what it covers, and adjust the Projected Time accordingly.  Thank you for finding that 😊"
+"I was curious what the difference between this.$emit and this.$parent.$emit was, and found this SO post.
+As far as I understand it, this is the way to tell the parent component to emit an event to its parent? so like emit an event to a grandparent component.
+Is that correct @alina-beck?"
+"This pull request is automatically deployed with Now.
+To access deployments, click Details below or on the icon next to each push."
+"If component gets updated later (which will happen because LoggedInUser is fetched after the mount) then we won't get the updated LoggedInUser. We don't need to store the user in the state anymore, we can rely on this.props directly."
+"Good  work, thanks! 👍"
+"dalam -> pada"
+"Coverage remained the same at 100.0% when pulling fe048ef on update-changelog into 2685933 on master."
+"@mattwr18 ah yeah I didn't noticed that we're blocked on this. I've found this for backend validations but I haven't researched how to integrate this."
+"@Lakshita7, could you please move everything from supplemental resources into the supplemental materials section below?"
+"@emad-elsaid You have to setup Travis on the official repo since you are admin.
+You could also add the test master branch badge then in ReadMe."
+"👆🏼"
+"Mmm maybe it has more sense to make this mandatory (to respond to selector) and do not have hotels as default? WDYT?"
+EOF
+"@smikitky レビューありがとうございます！諸々修正しましたのでご確認お願いいたします🙏"
+"Can you replace lines 57-59 with a real working image?"
+"this is part of the UserQuery, so it would so users who you have blocked... this was specifically asked for.
+I have updated the PostQuery to remove posts by those you have Muted... and found out why it was till passing cypress..."
+"Hi @pydevsg , just make the changes what @alodahl suggested and we'll merge your PR. :)"
+"Suggested change
+        
+          
+        
+      
+    
+    
+      
+          
+            
+                It's that simple to add information to that database. You can check it in your mongodb shell to see if data is actually inserted or not.  
+          
+          
+            
+                It's that simple to add information to that database. You can check it in your MongoDB shell to see if data is actually inserted or not."
+"Is passing map here necessary since you have the provider?"
+"Looks like incorrect markdown"
+"We'll have to bump this to 4.0.0 and note in the PR that this contains a breaking change in the form of a new minimum version of Rollup."
+"LGTM
+Thanks for your contribution @wrongtest"
+Done
+"@praveenscience I found their images helpful & easy so taken from there. As the graphical installation through app is same as their."
+"I agree that calling submit twice is not the way we should solve this. I agree to remove this test - its not a valid test. Setting the same password again is a valid option. (How would the server know its the same - its the users fault - we could certainly make a client-side check tho)"
+"I agree on your choice of words for this translation part 😄 , though ""dioperkan"" still feels a little bit weird to me haha, what about ""diberikan"""
+"No capital letters in the middle of the sentence please. If you are using capital letters, please use full stop instead."
+"マージしました、ありがとうございましたー"
+"should be displays slug, no? cause further down when you test for obfuscates slug you expect it to equal UNAVAILABLE?"
+"了解です！"
+Genau
+"Codecov Report
+
+Merging #680 into master will not change coverage.
+The diff coverage is n/a.
+
+
+@@          Coverage Diff           @@
+##           master    #680   +/-   ##
+======================================
+  Coverage    20.2%   20.2%           
+======================================
+  Files         157     157           
+  Lines        2208    2208           
+  Branches      105     105           
+======================================
+  Hits          446     446           
+  Misses       1738    1738           
+  Partials       24      24"
+"Returns Promise not ""Future"""
+"Hashid of the auto-increment id sounds good"
+"Just pulled and tested. Thanks tomer!"
+"Suggested change
+        
+          
+        
+      
+    
+    
+      
+          
+            
+            * アロー関数を利用する。例： `onClick={(e) => this.handleClick(e)}`。
+          
+          
+            
+            * 例えば `onClick={(e) => this.handleClick(e)}` のような形でアロー関数を利用する。
+          
+      
+    
+    
+  
+
+いちおうこれでもいいと思うのでご検討ください"
+"Moved the stuff in the ""Lesson Breakdown"" spreadsheet into GitHub issues! 🎉
+Here's the relevant one for this PR: #88"
+"This pull request is being automatically deployed with ZEIT Now (learn more).
+To see the status of your deployment, click below or on the icon next to each commit.
+🔍 Inspect: https://zeit.co/opencollective/opencollective-frontend/nwzdyyorla
+✅ Preview: In Progress"
+"Suggested change
+        
+          
+        
+      
+    
+    
+      
+          
+            
+            与えられた `props` を持つテストインスタンスを全て検索します。
+          
+          
+            
+            与えられた `props` を持つ全ての子テストインスタンスを検索します。"
+"How could we mesure this two ""improve"" items."
+"@xdan I forgot to bump the versions and make the latest tag. Could you do it for me?"
+"This pull request is automatically deployed with Now.
+To access deployments, click Details below or on the icon next to each push.
+Latest deployment for this branch: https://effector-git-fork-abliarsar-is-ts-types.zerobias.now.sh"
+"To be honest, I could not figure out another way to do it, so I documented the only way I could see how. :-)
+Maybe we could change the name of the component to something else other than 404, but I am not sure that would make any real difference.
+I'm fine with it as it is unless you have any other ideas. I'll merge this one for now, but feel free to add any changes you come up with later."
+"I mean, it makes sense, now we just show what is passed through the graphql. But, if I put the existing app on Spanish, it shows me Sr. which is the spanish translation for Mr."
+"I can hear the servers worldwide crying:
+
+We should have pinned our major 😢
+
+Our company has something like 20 separate frontend apps that all broke on this merge. Time to go fix them 1-by-1. Perhaps there's an announcement system to the create-react-app ecosystem on a change like this before it's done?
+For reference, our command which now fails was ""serve -s -t -p 5000 ."". This is now met with ""ERROR: Unknown or unexpected option: -t""."
+"Actually Github does not support https for custom domains. Please get the automatic deployment on gh-pages ready asap. Thanks."
+"byebug is a development dependency so then we include it will raise error when someone is installing the gem normally from rubygems as the development dependencies are not installed in this case."
+"Suggested change
+        
+          
+        
+      
+    
+    
+      
+          
+            
+            `props` は、 React コンポーネントへの入力です。親のコンポーネントから子コンポーネントへと渡されるデータを指します。
+          
+          
+            
+            `props` は、React コンポーネントへの入力のことです。親コンポーネントから子コンポーネントへと順番に渡されるようなデータです。
+          
+      
+    
+    
+  
+
+「親から子に渡される」はだいたい正しい props の性質ではありますが、定義そのものではないので、誤解を招きにくい形にしました。（親から受け継がない props も当然たくさんあるので）"
+"This is great! Be sure to use code notation for any code in this file."
+"I'm going to approve this but I don't understand how users can unblock themselves? You did not change any permissions so I don't know how that prevents from users unblocking them for other users?
+
+yeah, I actually overstated what the user could do... they currently would have a button to unblock the other user, but if clicked, it doesn't unblock themselves, it removes a blocked relationship if it exists between the current user and the owner of the profile.
+This is still misleading, but not as dangerous as I originally thought. I have updated the description"
+"Please make the headers for the different companies consistent, and put a space between the number and the title, ie 1. Google"
+"@dependabot rebase"
+"This pull request is automatically deployed with Now.
+To access deployments, click Details below or on the icon next to each push."
+"Thanks @Betree
+I've added a check that activity is chosen."
+"This pull request is automatically deployed with Now.
+To access deployments, click Details below or on the icon next to each push."
+"@smikitky
+Just completed these.
+
+ rollback content/blog content same as master
+ Ignore lint target to content/blog
+
+I'm waiting for your review!"
+"Thanks @yalet ! This looks like a fantastic clean-up! Let me look at the CI failure and I'll get back to you with any other comments."
+"Test summary
+ 66  •  0  •  0 •  0
+
+Run details
+
+
+
+
+
+
+
+
+
+Project
+Human-Connection
+
+
+Status
+Passed
+
+
+Commit
+f47cd87 ℹ️
+
+
+Started
+Feb 24, 2020 5:54 AM
+
+
+Ended
+Feb 24, 2020 6:17 AM
+
+
+Duration
+22:34 💡
+
+
+OS
+Linux Ubuntu Linux - 16.04
+
+
+Browser
+Firefox 68 
+
+
+
+View run in Cypress Dashboard ➡️
+
+This comment has been generated by cypress-bot as a result of this project's GitHub integration settings. You can manage this integration in this project's settings in the Cypress Dashboard"
+"@julienp mind landing this and releasing? 😄"
+"@Blackhex please have a look"
+"nitpick: noticed that the name for this step is release in other repos & it is production_release on this one.
+Worth changing, to keep things in line.
+Otherwise 👍"
+"@AdnoC I just realised I wasn't checking the existence of _reactInternalInstance and _reactInternalFiber before digging into it like the previous code did. I've pushed an updated commit for this."
+"Remove names."
+"This pull request is automatically deployed with Now.
+To access deployments, click Details below or on the icon next to each push."
+"it would be nice to wrap these in <transition name=""ds-transition-fade""> to keep it consistent across the code base"
+"안녕하세요 이 공고는 3년차 이하 채용 공고인가요?"
+"devour is still encoding urls for me.
+My js is: jsonApi.all('list').post({}, { data: { 'duplicate-list-id': resource } })
+which is generating: http://localhost:3000/lists?data=%7B%22duplicate-list-id%22:%227%22%7D 
+I've spent a whole day trying to figure it out but can't :/
+Any ideas would be greatly appreciated."
+"Suggested change
+        
+          
+        
+      
+    
+    
+      
+          
+            
+            このようなものを宣言するための[短い記法](#短い記法)もありますが、現時点ではまだ人気のあるツールすべてでサポートされているわけではありません。
+          
+          
+            
+            このようなものを宣言するための[短い記法](#short-syntax)もありますが、現時点ではまだ人気のあるツールすべてでサポートされているわけではありません。"
+"Test summary
+ 48  •  0  •  0 •  0
+
+Run details
+
+
+
+
+
+
+
+
+
+Project
+Human-Connection
+
+
+Status
+Passed
+
+
+Commit
+6a52673
+
+
+Started
+Nov 28, 2019 4:37 AM
+
+
+Ended
+Nov 28, 2019 4:50 AM
+
+
+Duration
+13:20 💡
+
+
+OS
+Linux Ubuntu Linux - 16.04
+
+
+Browser
+Chromium 78 
+
+
+
+View run in Cypress Dashboard ➡️
+
+This comment has been generated by cypress-bot as a result of this project's GitHub integration settings. You can manage this integration in this project's settings in the Cypress Dashboard"
+"@leonardohof Looks great and tests are passing!
+In the original issue, there was this bullet ""remove redundant withData usage around pages and components"". Can you have a try at that?
+
+Yes, I'll try."
+"@NivedhaSenthil can you pls review now? Azure is happy 😸"
+"No prob!"
+"This breaks the design unfortunately and therefore I don’t like so much … 😬"
+"@sivaranjanidev Please resolve the conflicts with the master.
+
+I will resolve it today"
+#prettier
+"@takanorip 「全てのイベントに対応するメソッド」という点で「それぞれ」は自明かなと思って外したのですが、あって問題があるわけではないのでこのままで大丈夫です！"
+"レンダリング -> レンダー
+DOMの前後に半角スペースが必要"
+"What about HTTP/2 calls to upgrade to WebSockets? Can we dynamically populate the HTTP version in this response? I'm not sure it matters, but it may lead to confusing debugging and AFAIK we don't specifically NOT support HTTP/2 anywhere. (The ABS channels are all HTTP/1.1, but there's nothing stopping an outside channel from using HTTP/2.) Not a ship stopper, but food for thought."
+"I have included the changes that you have commented.
+Root readme changes. Update local readme.
+Update tsconfig file."
+"Are the mentioned_in_comment and comment_on_post cypher statements the same, or am I missing something?
+the $reason would be different, right? but since it's passed in as a variable that would be ok to use the same cypher statement, no?"
+"The general idea is: we shouldn't touch the global styles when the modal is not visible."
+"Suggested change
+        
+          
+        
+      
+    
+    
+      
+          
+            
+               - Should you follow any patter for you commit ?
+          
+          
+            
+               - What does a good commit message look like?"
+"Your comment mentioned some confusion about how to handle prettier. Can you walk me through the conclusions you came to?"
+"Main reason I prefer smaller files is you can look at the titles and know the scope of what the folder and each file contains. If it's in one file you don't know until you've read the file.
+I saw your comment #28 (comment) only went ahead as it came across like you didn't mind. I'm happy to go with either, it's only a preference thing for me too."
+"I don't know if this is right. I think devops also needs the ""branch=master"" URL paramter.
+W/o that, any time the build fails on any branch, the master branch would be marked as failed."
+"We have raised over eight million USD so far, and we are currently growing our team.
+(Avoid starting with source{d} as it looks weird to start with a lower case letter, and avoid ambiguous or not broadly known abbreviations such as MM)"
+"Suggested change
+        
+          
+        
+      
+    
+    
+      
+          
+            
+            > この最適化を使う場合、**副作用の内部で使われ、かつ副作用外部のスコープで変化する値**を利用するようにしてください。さもないとあなたのコードは以前のレンダー時の古い値を参照してしまうことになります。その他の最適化のオプションについては [Hooks API リファレンス](/docs/hooks-reference.html)で説明しています。
+          
+          
+            
+            > この最適化を使う場合、**時間の経過とともに変化し副作用によって使用される外部スコープからの値**が配列に含まれていることを確認してください。さもないとあなたのコードは以前のレンダー時の古い値を参照してしまうことになります。その他の最適化のオプションについては [Hooks API リファレンス](/docs/hooks-reference.html)で説明しています。"
+"確認ありがとうございます。句点の後の不要な半角スペースが他にもあったので削除しました。"
+"Test summary
+ 48  •  0  •  0 •  0
+
+Run details
+
+
+
+
+
+
+
+
+
+Project
+Human-Connection
+
+
+Status
+Passed
+
+
+Commit
+1b016be
+
+
+Started
+Dec 2, 2019 5:45 AM
+
+
+Ended
+Dec 2, 2019 5:59 AM
+
+
+Duration
+14:00 💡
+
+
+OS
+Linux Ubuntu Linux - 16.04
+
+
+Browser
+Chromium 78 
+
+
+
+View run in Cypress Dashboard ➡️
+
+This comment has been generated by cypress-bot as a result of this project's GitHub integration settings. You can manage this integration in this project's settings in the Cypress Dashboard"
+"@edorivai this should be ready for review now. I left a couple of comments on the substantive changes I made to the tests.
+It seems like the tests should ideally be run against multiple versions of React, unless the plan is to move to React 16 as a part of v2."
+"If you want to know more
+https://developer.android.com/studio/build/multidex"
+"great! thanks for that... I'll still have a look at the docs, and ideally use it myself... I guessed that is what the 'e' was, but I would have just used email personally... I don't know what the 4 characters less buys you, but I know programmers are different."
+"@Akshat-Jain I checked the current status of accounts.susi.ai and found that this bug already exists. The problem here is that on chat.susi and skills.susi when we click on login, it appears in a dialog box but in accounts.susi we have a different page and I researched this issue and saw that whenever a browser autofill when a page loads for the first time the onchange event is not triggered. Issue regarding this is created here #265. Thanks."
+"Test summary
+ 50  •  0  •  0 •  0
+
+Run details
+
+
+
+
+
+
+
+
+
+Project
+Human-Connection
+
+
+Status
+Passed
+
+
+Commit
+0a97b6f
+
+
+Started
+Dec 30, 2019 5:07 PM
+
+
+Ended
+Dec 30, 2019 5:19 PM
+
+
+Duration
+12:11 💡
+
+
+OS
+Linux Ubuntu Linux - 16.04
+
+
+Browser
+Chromium 79 
+
+
+
+View run in Cypress Dashboard ➡️
+
+This comment has been generated by cypress-bot as a result of this project's GitHub integration settings. You can manage this integration in this project's settings in the Cypress Dashboard"
+"Suggested change
+        
+          
+        
+      
+    
+    
+      
+          
+            
+            The Management Team defines the company OKRs and the high lever OKRs,  meanwhile
+          
+          
+            
+            The Management Team defines the company OKRs and the high level OKRs,  while"
+"These are duplicate tests, written in two places. See line 145-186 and line 210-251
+https://github.com/getgauge/taiko/blob/master/test/unit-tests/textMatch.test.js#L145
+https://github.com/getgauge/taiko/blob/master/test/unit-tests/textMatch.test.js#L210"
+"Nice, thanks"
+"Can you please give learners a link to the moment they should start watching, or tell them the minutes:seconds they should jump to to learn these specific ones? I can’t ask them to spend 2 hours on these videos."
+"It's possible that you could see both unblock and unmute buttons, right? I wonder how that would look like 🤔"
+"Pull Request Test Coverage Report for Build 93284
+
+6 of 7   (85.71%)  changed or added relevant lines in 1 file are covered.
+1 unchanged line in 1 file lost coverage.
+Overall coverage increased (+0.005%) to 85.516%
+
+
+
+
+
+Changes Missing Coverage
+Covered Lines
+Changed/Added Lines
+%
+
+
+
+
+libraries/botbuilder/src/inspectionMiddleware.ts
+6
+7
+85.71%
+
+
+
+
+
+
+
+Files with Coverage Reduction
+New Missed Lines
+%
+
+
+
+
+libraries/botbuilder/src/inspectionMiddleware.ts
+1
+80.0%
+
+
+
+
+
+
+
+Totals
+
+
+
+
+
+Change from base Build 93222:
+0.005%
+
+
+Covered Lines:
+8087
+
+
+Relevant Lines:
+9115
+
+
+
+
+💛  - Coveralls"
+"This pull request is automatically deployed with Now.
+To access deployments, click Details below or on the icon next to each push."
+"If you merge with develop there will be an unused import"
+"What the hell are you trying to reinvent here? This is very wrong. Never ever play with opaque identifiers on the client side! You are working with Hotel type, right? So use originalId field."
+"I enjoy backend work but JavaScript is my broad expertise, specializing in Node. I like databases like MongoDB. I have experience with Microsoft SQL server but I don't that will apply here :)
+I will make another pull request because I was starting to work on the Jasmine testing issue this morning."
+"yeah, you're right. KISS does not always make sense. ;) I change it."
+"let's stay with it for the moment. It can still be edited on Github."
+"Suggested change
+        
+          
+        
+      
+    
+    
+      
+          
+            
+            ES6 クラスを使う代わりに、 `create-react-class` を使うことができます。
+          
+          
+            
+            ES6 クラスを使う代わりに、`create-react-class` を使うことができます。"
+"@des-des Fair enough. I reckon all campuses, insofar as speaker slots have ever been all campuses. We spoke about day 5 (Thursday) in Nazareth not being an ideal time for an external speaker to come in. But as far as I know, external speakers have been few and far between (so far) anyway. Is that right?
+Now that Nazareth has alumni, we could theoretically have mentors showcasing the projects they have made?"
+"how does this check that it is cryptographic? I guess there isn't a way to check that, so you must just check that it is any string?"
+"WOW!
+I just tested it with a directory and the reponse size shrinked from 100KB to 4.4KB.
+Wonderful. Thanks! 😲"
+"I did that change to improve generated code readability, if I close the '`' in the newline the generated code will be:
+if (obj.lastName !== undefined) {
+        json += '""lastName"":'
+
+        json += $asString(obj.lastName)
+
+        json += ','
+
+      }
+instead of
+if (obj.lastName !== undefined) {
+        json += '""lastName"":'
+        json += $asString(obj.lastName)
+        json += ','
+      }
+Is it ok to you?"
+"Hmm... Have you tried putting the slug right behind the user name? I don't love the current solution on the posts but I don't really see a quick and easy way to make it prettier, so maybe just go with it for now.
+I would make the font a bit smaller on the user profile (top left in your screenshot), though."
+"@daumie well, OK. It might be unnecessary for short strings, but base64 will wrap long strings automatically. This might be undesired for certain use case, when a newline would break the integrity of, say, the content of a file."
+"I think it's quite usual in React Native and the official type works with React but not with RN (React doesn't have setNativeProps)."
+"Remove this file"
+"Now or in the future? Should I merge it or wait?"
+"👍"
+"and in English:
+  
+    
+      
+        Suggested change
+        
+          
+        
+      
+    
+    
+      
+          
+            
+                ""inappropriatePictureText"" : ""Contribution picture is blurred""
+          
+          
+            
+                ""inappropriatePictureText"" : ""When should my picture be blurred"""
+"This pull request is automatically deployed with Now.
+To access deployments, click Details below or on the icon next to each push."
+"Actually looked into how it is used here https://github.com/opencollective/opencollective-frontend/blob/master/src/components/CreateCollective.js#L124"
+"And that fits in a tweet!
+https://twitter.com/francesc/status/1009487969198075905"
+"Do you have a Twitter account to mention you in release tweet?"
+"Suggested change
+        
+          
+        
+      
+    
+    
+      
+          
+            
+            Form small groups and answer at least 2 long-answer or more shorter-answer questions to make sure you understand:
+          
+          
+            
+            Form small groups and answer these questions to assess your own understanding:"
+"this API is available through the navigator.geolocation global - you do not need to import it."
+"👍"
+"念のため確認してたらCJK統合漢字のコードポイント間違ってました…（コピペ元から間違ってました）"
+"An error occuring at this step is either a misconfiguration or a problem with Recaptcha service itself, nothing I would report to the user."
+"This pull request is being automatically deployed with ZEIT Now (learn more).
+To see the status of your deployment, click below or on the icon next to each commit.
+🔍 Inspect: https://zeit.co/opencollective/opencollective-frontend/tcrpljfmir
+✅ Preview: In Progress"
+"Suggested change
+        
+          
+        
+      
+    
+    
+      
+          
+            
+            React は活発なオープンソースコミュニティからのバグ報告、プルリクエストのオープン、[RFC の送信](https://github.com/reactjs/rfcs)に依存しています。フィードバックを促すため、私たちはリリースされていない機能を含んだ React の特別なビルドを共有することがあります。
+          
+          
+            
+            React はバグを報告し、プルリクエストをオープンし、[RFC を投稿](https://github.com/reactjs/rfcs)してくださっている活発なオープンソースコミュニティを頼りにしています。フィードバックを促すため、私たちはリリースされていない機能を含んだ React の特別なビルドを共有することがあります。
+          
+      
+    
+    
+  
+
+「依存」はちょっと強すぎる気がしたので弱めてみましたがどうでしょうか"
+"By ""required"" are you talking about the field into its parent object?
+Because if I have the following schema it is still invalid to coerce the data=null value to 0:
+{
+  type: 'object',
+  properties: {
+    data: {
+      type: 'integer'
+    }
+  }
+}"
+"Suggested change
+        
+          
+        
+      
+    
+    
+      
+          
+            
+            function KomponenSaya() {
+          
+          
+            
+            function MyComponent() {"
+"Will update cy.signup, the wait time after the modal, and the unneeded alias and push changes 🙌
+EDIT: Addressed comments and all tests passing 🎉"
+"Typo. ""17:00"""
+"Just released eslint-plugin-flowtype-errors@2.0.2-0 🎉
+npm i -D eslint-plugin-flowtype-errors@2.0.2-0"
+"I did use some script to do it 😛
+Also I should check vscode-pull-request! Thanks for being on top of this as always 🙏"
+"This is great. Code looks good. If it works, good for me!
+Which example can we check?
+
+@znarf You can see working on https://opencollective-frontend-norpduawls.now.sh/how-it-works
+Try changing the language"
+"Thanks @DuncanMacWeb, this looks good to me, I'll test it and merge asap."
+"We actually have it that way across our modals."
+"Menurut ku kata ui akan lebih baik di ganti menjadi antarmuka pengguna, mungkin bagi kita yang sudah paham dan sering mendengar kata ini bisa langsung paham, tapi di satu sisi kita harus mepertimbangkan apakah orang lain di luar sana juga paham dengan kata singkatan ini.
+https://kbbi.kemdikbud.go.id/entri/antarmuka%20pengguna"
+"@sachin235 probably 'User is aksed for' is better after a line break"
+"@Blackhex, please check the commit I pushed. If it looks good, I will merge this PR."
+"This line is pretty strange... please look at it in the markdown preview and change it."
+"I really like the idea of getting them to document it, but what if all 4 groups decide to do react? or even if there is a 50/50 split and half decide to do react and the other half decide to elm. Do we want them to repeat the work in terms of creating readmes or should we get everyone who wants to learn a specific tech together and create one set of resrouces."
+"So sorry for that...I was seeing the changes in the wrong file."
+"Would be great if you could care for it @mattwr18 !!! 😘
+I am not in a big hurry. Would be just nice to have it merged before the next production gets deployed. @roschaefer"
+"If this gets merged, the ToC need to be updated"
+"Package should be renamed to @rollup/plugin-typescript throughout this file."
+"Also, please change the typos pointed out yesterday."
+"got me... 😊 we do!"
+"なるほど、合うように全体を変えれば良かったんですね。"
+"@zweimach Thanks! I'll take a look shortly.
+Oh, while you're at it, don't forget to translate the page title as well. Let's use Virtual DOM dan Internal"
+"Codecov Report
+
+Merging #700 into master will not change coverage.
+The diff coverage is n/a.
+
+
+@@           Coverage Diff           @@
+##           master     #700   +/-   ##
+=======================================
+  Coverage   21.27%   21.27%           
+=======================================
+  Files         161      161           
+  Lines        2257     2257           
+  Branches      113      113           
+=======================================
+  Hits          480      480           
+  Misses       1749     1749           
+  Partials       28       28
+
+
+
+Impacted Files
+Coverage Δ
+
+
+
+
+
+webapp/components/Upload/index.vue
+84.21% <ø> (ø)
+⬆️"
+"Maybe instead of kosong, in this context plain was meant to be biasa. What do you think? 😄"
+"Pull Request Test Coverage Report for Build #2185
+
+19 of 19   (100.0%)  changed or added relevant lines in 1 file are covered.
+2 unchanged lines in 1 file lost coverage.
+Overall coverage decreased (-0.06%) to 88.247%
+
+
+
+
+
+Files with Coverage Reduction
+New Missed Lines
+%
+
+
+
+
+libraries/botframework-config/src/botConfigurationBase.ts
+2
+85.59%
+
+
+
+
+
+
+
+Totals
+
+
+
+
+
+Change from base Build #2184:
+-0.06%
+
+
+Covered Lines:
+3232
+
+
+Relevant Lines:
+3520
+
+
+
+
+💛  - Coveralls"
+"The diagram added is here. Anyone is free to make any changes in the diagram or comments in case I am missing something"
+"""By solving problems using the foundations of the language first, you will begin to understand what problems frameworks were built to simplify. This will let you make more effective judgements on which technologies to use in future.""
+Unsure if current phrasing makes it clear why you will appreciate what problems frameworks solve by using vanilla js. Can we assume that everyone knows that under the surface jQuery is written in vanilla javascript?"
+"This pull request is automatically deployed with Now.
+To access deployments, click Details below or on the icon next to each push."
+"@bradreeder
+
+Could you let us know what the relevant Nazareth repos are so we can add them in as well?
+
+The only london-specific repos are:
+
+https://github.com/foundersandcoders/london-curriculum - I thought we said at the Curriculum Committee that there wasn't going to be a Nazareth one for now? But @des-des it might be worth creating one, even if it's purely for s-g-cs atm?
+https://github.com/FAC10 - @des-des, unless you have made one already, if you make one called FAC1-Nazareth, my links will work ;)"
+"Again, what level are they expected to have achieved by the end of this week (7 kyu/6kyu)?"
+"Suggested change
+        
+          
+        
+      
+    
+    
+      
+          
+            
+            npm install --save-dev rollup-plugin-buble
+          
+          
+            
+            npm install --save-dev @rollup/plugin-buble"
+"much better descriptions!"
+"Test summary
+ 50  •  0  •  0 •  0
+
+Run details
+
+
+
+
+
+
+
+
+
+Project
+Human-Connection
+
+
+Status
+Passed
+
+
+Commit
+d48c10c
+
+
+Started
+Dec 10, 2019 10:53 PM
+
+
+Ended
+Dec 10, 2019 11:07 PM
+
+
+Duration
+14:26 💡
+
+
+OS
+Linux Ubuntu Linux - 16.04
+
+
+Browser
+Chromium 78 
+
+
+
+View run in Cypress Dashboard ➡️
+
+This comment has been generated by cypress-bot as a result of this project's GitHub integration settings. You can manage this integration in this project's settings in the Cypress Dashboard"
+"Dimensions is taking the dimension of the whole window, as opposed to the dimensions of the element it seems."
+"Please try to avoid inline styles. This object is created every time and it may cause problems with PureComponent later (Text is one of the adepts for PureComponent)..."
+"@alodahl I have made the new PR as required."
+"Your are still passing the result of withFeatures into configureFeature which is wrong."
+"In Ember's historyLocation object they reference previousURL using the _previousURL property name (note the dangling underscore). When router-scroll extends this object, it should reference the same property name. Here's historyLocation:
+https://github.com/emberjs/ember.js/blob/v3.1.0/packages/ember-routing/lib/location/history_location.js"
+"This pull request is automatically deployed with Now.
+To access deployments, click Details below or on the icon next to each push."
+"This pull request is automatically deployed with Now.
+To access deployments, click Details below or on the icon next to each push."
+"Also, I would draw people's attention to this https://vueschool.io/lessons/vuejs-computed-properties?friend=vuejs
+where it talks about the benefit of using a computed property over a method, even though in their example, and our use case, they show the same results, is that ""computed properties are cached based on their reactive dependencies. A computed property will only re-evaluate when some of its reactive dependencies have changed. This means as long as message has not changed, multiple access to the reversedMessage computed property will immediately return the previously computed result without having to run the function again."""
+"This pull request is automatically deployed with Now.
+To access deployments, click Details below or on the icon next to each push."
+"made in this Pull Request instead of made in this issue would make it more precise"
+"the info under each step should be indented.  Right now, with it all on the same level, we have no idea what is part of which step."
+"Huh, this was supposed to be merged after #1097
+Please read the the message in the Pull Request next time before merging :-)"
+"Ah ok! Thanks"
+"This pull request is being automatically deployed with ZEIT Now (learn more).
+To see the status of your deployment, click below or on the icon next to each commit.
+🔍 Inspect: https://zeit.co/opencollective/opencollective-frontend/mbxrpuvqde
+✅ Preview: In Progress"
+"🎉 This PR is included in version 2.2.0 🎉
+The release is available on GitHub release
+Your semantic-release bot 📦🚀"
+"I'm trying to test this scenario by modifying the fetchQuery:
+  const fetchQuery = async (operation, variables, cacheConfig) => {
+    return {
+      data: null,
+      errors: [
+        {
+          message: 'Some message',
+        },
+      ],
+    };
+
+Then I get the following message, is this the expected behavior? Or am I testing it wrong (and how can I test it correctly)?"
+"Suggested change
+        
+          
+        
+      
+    
+    
+      
+          
+            
+              stage: test-ci
+          
+          
+            
+              stage: release"
+"あれ、merge commitしたはずですが..."
+"@IDragonfire Works for me. No cache-problems and no recursive-objects."
+"This pull request is being automatically deployed with ZEIT Now (learn more).
+To see the status of your deployment, click below or on the icon next to each commit.
+🔍 Inspect: https://zeit.co/opencollective/opencollective-frontend/nkpfluipok
+🌍 Preview: In Progress"
+"no link in source"
+"that was fast!"
+"The dependency react was updated from 16.5.0 to 16.5.1.
+The dependency react-dom was updated from 16.5.0 to 16.5.1.
+The devDependency react-test-renderer was updated from 16.5.0 to 16.5.1.
+
+Update to these versions instead 🚀
+
+Release Notes for v16.5.1
+16.5.1 (September 13, 2018)
+React
+
+Improve the warning when React.forwardRef receives an unexpected number of arguments. (@andresroberto in #13636)
+
+React DOM
+
+Fix a regression in unstable exports used by React Native Web. (@aweary in #13598)
+Fix a crash when component defines a method called isReactComponent. (@gaearon in #13608)
+Fix a crash in development mode in IE9 when printing a warning. (@link-alex in #13620)
+Provide a better error message when running react-dom/profiling with schedule/tracking. (@bvaughn in #13605)
+If a ForwardRef component defines a displayName, use it in warnings. (@probablyup in #13615)
+
+Schedule (Experimental)
+
+Add a separate profiling entry point at schedule/tracking-profiling. (@bvaughn in #13605)"
+"This error message is not user friendly. Plus it gives a dump of the stack.
+Please handle this is a way that a user can understand and take action.
+Also do not throw errors as a string if you want to identify this throw a generic appError
+https://www.npmjs.com/package/apperror"
+"Remove this."
+"Up to both of you - how much do you need to know about GitHub before the accessibility workshop? I was going to do the scavenger hunt at 16:00 for biz-dev and then finish the day with the consensus talk (i.e. you just read all this stuff - how did we decide it in the first place?)"
+"Haha, could be. But gmail was originally announced on April 1st, it must be an internal joke to announce on April Fools. And it has an entry in their help center."
+"Suggested change
+        
+          
+        
+      
+    
+    
+      
+          
+            
+              ""description"": ""Import files as data-URIs or to ES6 modules."",
+          
+          
+            
+              ""description"": ""Import files as data-URIs or as ES6 modules"","
+"This PR has been verified. The gauge team will be looking into this soon.
+/cc @getgauge/core"
+"@yangshun  Thank You"
+"This pull request is automatically deployed with Now.
+To access deployments, click Details below or on the icon next to each push."
+"IMO: leaf を「葉コンポーネント」とすると伝わりにくいので「枝葉のコンポーネント」か「末梢のコンポーネント」は如何でしょうか"
+"now after changes  #620 @manaswinidas"
+"I think it would be good if we use rgb() or hex code for colors."
+"Thanks for the fix @blunderdome"
+"Suggested change
+        
+          
+        
+      
+    
+    
+      
+          
+            
+            - The coding challenge is currently available in Go, Python, JavaScript, Ruby, C++, Scala and Java. Other languages can be requested and we will consider the possibility of adding them. Candidates should complete the challenge in the language they feel most comfortable with.
+          
+          
+            
+            - Coding challenges are currently available in Go, Python, JavaScript, Ruby, C++, Scala and Java. Other languages can be requested and we will consider the possibility of adding them. Candidates should complete the challenge in the language they feel most comfortable with."
+"true but then we'd have to remember that syntax everytime we needed to set the version. I don't mind having it be a script on each package.  The other thing is running the above command would also set the version on all of our samples and not just the library packages.
+
+In reply to: 210604346 [](ancestors = 210604346)"
+"@shiryz cool, I'd be inclined to agree. The documentation for CRA is quite extensive, so I feel if students want more info on this stuff they can delve into it in the docs.
+@astroash what do you think, is it okay to stay like this?"
+"This pull request is being automatically deployed with ZEIT Now (learn more).
+To see the status of your deployment, click below or on the icon next to each commit.
+🔍 Inspect: https://zeit.co/opencollective/opencollective-frontend/gttvxzazmf
+🌍 Preview: In Progress"
+"Suggested change
+        
+          
+        
+      
+    
+    
+      
+          
+            
+            category: リファレンス
+          
+          
+            
+            category: Reference
+          
+      
+    
+    
+  
+
+ここは翻訳しないことになっています 🙇"
+"Codecov Report
+
+Merging #566 into master will not change coverage.
+The diff coverage is n/a.
+
+
+@@           Coverage Diff           @@
+##           master     #566   +/-   ##
+=======================================
+  Coverage   20.14%   20.14%           
+=======================================
+  Files         157      157           
+  Lines        2210     2210           
+  Branches      105      105           
+=======================================
+  Hits          445      445           
+  Misses       1741     1741           
+  Partials       24       24"
+"This question will not check any understanding of Whiteboard."
+"Suggested change
+        
+          
+        
+      
+    
+    
+      
+          
+            
+            **Tapi apa yang terjadi jika `friend` prop berubah** saat komponen sudah ada di layar? Komponen kita akan terus menampilkan status online teman yang berbeda. Ini adalah bug. Kita juga akan menyebabkan kebocoran memory atau kerusakan saat pelepasan karena pemanggilan unsubscribe akan menggunakan *ID* teman yang salah.
+          
+          
+            
+            **Tapi apa yang terjadi jika *props* `friend` berubah** saat komponen sudah ada di layar? Komponen kita akan terus menampilkan status online teman yang berbeda. Ini adalah bug. Kita juga akan menyebabkan kebocoran memory atau kerusakan saat pelepasan karena pemanggilan unsubscribe akan menggunakan *ID* teman yang salah."
+"This pull request is automatically deployed with Now.
+To access deployments, click Details below or on the icon next to each push."
+"I find it a bit counter-intuitive that !isVisible returns non null."
+"Simulateのイベントに対して渡すので修正してみました。
+  
+    
+      
+        Suggested change
+        
+          
+        
+      
+    
+    
+      
+          
+            
+            > React はコンポーネントで使用しているイベントプロパティ（例えば keyCode 、 which など）を何も作成しないため、あなたはそれらをコンポーネントに与える必要があります。
+          
+          
+            
+            > React はコンポーネントで使用しているイベントプロパティ（例えば keyCode 、 which など）を何も作成しないため、あなたはそれを渡す必要があります。"
+"Deploy preview for id-reactjs ready!
+Built with commit 03ace3f
+https://deploy-preview-47--id-reactjs.netlify.com"
+"same as above 👆"
+"Directly Name the source. You could say: Adding a new remote repo (from [atlassian.com] (link here)"
+"Your Render PR Server at https://oc-styleguide-pr-3538.onrender.com is now live!
+View it on your dashboard at https://dashboard.render.com/static/srv-bp5a0j88atn0r94scl00."
+"state -> state"
+"@agreene-coursera we need CI to come back green first."
+"@tbergq  🚀"
+"@RobinCsl, it is still with WIP label. Should I merge it anyways?"
+"Please look through the comments on  this 'conversation' page and make sure you've addressed all of them.
+
+@alodahl I have checked and made all the changes as required."
+"@bluer73 I think we could merge this, once the mention about the lunch is changed from one to 2 or 3."
+"let's address this when we do the TS conversion next month"
+"Pull Request Test Coverage Report for Build 129
+
+0 of 0   changed or added relevant lines in 0 files are covered.
+No unchanged relevant lines lost coverage.
+Overall coverage remained the same at 100.0%
+
+
+
+
+
+Totals
+
+
+
+
+
+Change from base Build 128:
+0.0%
+
+
+Covered Lines:
+43
+
+
+Relevant Lines:
+43
+
+
+
+
+💛  - Coveralls"
+"We're currently using Next.js 7, which includes support for Webpack 4. Maybe we're missing some type of upgrade."
+"You call the whole document ""retrospectives"". Then you call the cohort version ""stop-go-continue"". Then you call the team version ""project retrospectives"", but within this title it is referred to as ""a smaller s-g-c"".
+The naming makes it really confusing to understand which thing you are talking about when you say ""s-g-c"" and which thing you are talking about when you say ""retrospective""."
+"@MohamedOmarii @hibaakel @m4v15 @mattlub Might be worth merging this in before your week, since it has a link to the CSS tricks article & updates the timings so there's no gap between 11:30-11:45. But it's up to you."
+"@dependabot rebase"
+"Wasn't this initially added in cf988ad, which was released with 0.4.0?"
+"""This""."
+"thanks @roschaefer... at which width does it look weird? I checked it out for all the width available on mobile responsive firefox, and it looks good, I think
+yes, we talked about opening a separate issue for the performance issue, which @Tirokk remembers having a conversation with @appinteractive about(may or may not be related)"
+"Pull Request Test Coverage Report for Build 2135
+
+0 of 0   changed or added relevant lines in 0 files are covered.
+No unchanged relevant lines lost coverage.
+Overall coverage remained the same at 82.088%
+
+
+
+
+
+Totals
+
+
+
+
+
+Change from base Build 2129:
+0.0%
+
+
+Covered Lines:
+2631
+
+
+Relevant Lines:
+3088
+
+
+
+
+💛  - Coveralls"
+"@mattwr18 do you think it would be a good idea to manage the anonymous state directly in the Avatar component? I feel it would make sense but haven't thought it through in detail."
+"정말 감사합니다!"
+https://www.npmjs.com/package/node-fetch#class-headers
+"It was automatic after a npm run build:langs.
+Probably because this string appears elsewhere with the same id but with a different label.
+I'll change."
+"Is this deployed already?"
+"how is an array search n^2? It'd just be n in this case."
+"@DNS-404 @Akshat-Jain @stealthanthrax @akshatnitd I have fixed the case for logged out users and regarding the issue with logged In users, the issue is not with the client. Whenever a user tries to access the admin page, a call showAdminService is made to server to verify whether a user is an admin or not. If user is not an admin then a permission denied message is displayed which then redirects us to the home page. But sometimes when the server gets multiple api calls, it responds with an error 503, due to which the permission denied message is not displayed.
+This is a problem with server as mentioned in fossasia/susi_skill_cms#854 by @akshatnitd . Try reloading the page and check console for 503. Checkout this gif below."
+"The dependency postcss was updated from 6.0.23 to 7.0.3.
+
+Update to this version instead 🚀
+
+Release Notes for 7.0.3
+
+Fix tokenizer extendability (by @shellscape)."
+"there are conflicts, cc @jakubzaba"
+"Simplify this method, you've got a lot of duplication."
