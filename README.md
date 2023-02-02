@@ -1,3 +1,5 @@
+This is Github-Sentiment-Analysis project
+
 # pull-request-comments-script
 
 Simple python scripts that pulls data from GitHub using its v4 graphQL API.
